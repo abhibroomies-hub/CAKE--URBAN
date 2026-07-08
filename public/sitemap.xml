@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://www.cakeurban.com/sitemap_core.xml</loc>
+    <lastmod>2026-07-06</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.cakeurban.com/sitemap_sectors.xml</loc>
+    <lastmod>2026-07-06</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.cakeurban.com/sitemap_specialties.xml</loc>
+    <lastmod>2026-07-06</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.cakeurban.com/sitemap_combinations.xml</loc>
+    <lastmod>2026-07-06</lastmod>
+  </sitemap>
+</sitemapindex>
