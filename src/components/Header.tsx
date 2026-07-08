@@ -611,11 +611,17 @@ export function Header() {
                     const isWedding = item.includes("Wedding");
                     const isAnniversary = item.includes("Anniversary");
                     const isKids = item.includes("Kids");
+                    const isCorporate = item.includes("Corporate");
+                    const isCustomOrBespoke = item.includes("Bespoke") || item.includes("Custom");
+                    const isPhoto = item.includes("Photo");
 
                     const destination = isBirthday ? "/birthday-cakes"
                       : isWedding ? "/wedding-cakes"
                       : isAnniversary ? "/anniversary-cakes"
                       : isKids ? "/kids-cakes"
+                      : isCorporate ? "/corporate-catering"
+                      : isCustomOrBespoke ? "/custom-order"
+                      : isPhoto ? "/shop?category=photo"
                       : `/shop?search=${encodeURIComponent(item.replace(/[^\w\s]/g, '').trim())}`;
 
                     return (
@@ -653,11 +659,17 @@ export function Header() {
                     const isWedding = item.includes("Wedding");
                     const isAnniversary = item.includes("Anniversary");
                     const isKids = item.includes("Kids");
+                    const isCorporate = item.includes("Corporate");
+                    const isCustomOrBespoke = item.includes("Bespoke") || item.includes("Custom");
+                    const isPhoto = item.includes("Photo");
 
                     const destination = isBirthday ? "/birthday-cakes"
                       : isWedding ? "/wedding-cakes"
                       : isAnniversary ? "/anniversary-cakes"
                       : isKids ? "/kids-cakes"
+                      : isCorporate ? "/corporate-catering"
+                      : isCustomOrBespoke ? "/custom-order"
+                      : isPhoto ? "/shop?category=photo"
                       : `/shop?search=${encodeURIComponent(item.replace(/[^\w\s]/g, '').trim())}`;
 
                     return (

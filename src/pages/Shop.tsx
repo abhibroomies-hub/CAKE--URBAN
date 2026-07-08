@@ -3,7 +3,7 @@ import { db } from '../lib/firebase';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { Product, CartItem } from '../types';
 import { useCart } from '../lib/store';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { SkeletonGrid, EmptyState } from '../components/FeedbackStates';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -48,6 +48,7 @@ import RecentlyViewedDrawer from '../components/RecentlyViewedDrawer';
 
 export default function Shop() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { addItem } = useCart();
 
   // 1. DATA HOOK STATE
@@ -67,6 +68,48 @@ export default function Shop() {
   const [selectedDiets, setSelectedDiets] = useState<string[]>([]);
   const [selectedPremiumTiers, setSelectedPremiumTiers] = useState<string[]>([]);
   const [isPremiumOnly, setIsPremiumOnly] = useState(false);
+
+  // Parse query parameters from URL
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const search = params.get('search');
+    const category = params.get('category');
+    const occasion = params.get('occasion');
+    const tab = params.get('tab');
+
+    if (search) {
+      setSearchQuery(decodeURIComponent(search));
+    } else {
+      setSearchQuery("");
+    }
+
+    if (category) {
+      const cleanCat = decodeURIComponent(category).toLowerCase();
+      if (cleanCat === 'combos' || cleanCat === 'hampers' || cleanCat === 'gift-hampers') {
+        setSelectedCategories(['Gift Hampers']);
+      } else if (cleanCat === 'photo' || cleanCat === 'photo-cakes') {
+        setSelectedCategories(['Photo Cakes']);
+      } else if (cleanCat === 'designer' || cleanCat === 'designer-cakes') {
+        setSelectedCategories(['Designer Collection']);
+      } else {
+        const formatted = cleanCat.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        setSelectedCategories([formatted]);
+      }
+    } else {
+      setSelectedCategories([]);
+    }
+
+    if (occasion) {
+      const formattedOcc = decodeURIComponent(occasion).split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      setSelectedOccasions([formattedOcc]);
+    } else {
+      setSelectedOccasions([]);
+    }
+
+    if (tab === 'occasions') {
+      setIsFilterDrawerOpen(true);
+    }
+  }, [location.search]);
 
   // Responsive Drawer/Modal states
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);

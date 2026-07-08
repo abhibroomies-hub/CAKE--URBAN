@@ -183,27 +183,25 @@ export default function Home() {
           </div>
 
           {/* Right Side Visuals (Gorgeous Pedestal Base Cake) */}
-          <div className="w-full lg:w-[45%] relative flex justify-center z-10">
+          <div className="w-full lg:w-[48%] relative flex justify-center z-10">
             <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="relative w-full max-w-[380px] aspect-square flex items-center justify-center rounded-full bg-gradient-to-tr from-pink-100/50 to-purple-100/30 p-4 shadow-[0_15px_40px_rgba(0,0,0,0.03)]"
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="relative w-full max-w-[420px] aspect-square rounded-[36px] overflow-hidden border border-pink-100/30 shadow-[0_15px_45px_rgba(255,79,163,0.06)] bg-white"
             >
-              {/* Pedestal Stand behind the cake */}
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400')] bg-cover bg-center rounded-full mix-blend-multiply opacity-20" />
-              
               <img 
                 src={heroImage} 
                 alt="Perfect Celebration Cake" 
-                className="w-[90%] h-[90%] object-contain relative z-10 hover:scale-105 transition-transform duration-500 drop-shadow-[0_25px_40px_rgba(0,0,0,0.12)]"
+                className="w-full h-full object-cover relative z-10 hover:scale-103 transition-transform duration-500"
+                referrerPolicy="no-referrer"
               />
 
               {/* Dotted rotate "Custom Cakes Available" badge */}
               <motion.div 
                 animate={{ rotate: 360 }}
                 transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                className="absolute -right-4 bottom-10 w-24 h-24 rounded-full bg-white border-2 border-dashed border-pink-200 shadow-lg flex items-center justify-center p-1.5 z-20"
+                className="absolute right-4 bottom-4 w-20 h-20 rounded-full bg-white/90 backdrop-blur-md border-2 border-dashed border-pink-200 shadow-lg flex items-center justify-center p-1.5 z-20"
               >
                 <div className="text-center">
                   <p className="text-[8px] font-black uppercase text-pink-500 tracking-wider leading-none">Custom</p>
@@ -258,6 +256,109 @@ export default function Home() {
       </section>
 
       {/* ---------------------------------------------------------
+          SECTION 2.3: TRENDING FLAVORS (Mockup High-Fidelity)
+          --------------------------------------------------------- */}
+      <section className="relative z-10 py-10 px-4 md:px-8 max-w-[1280px] mx-auto select-none">
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex items-center gap-2">
+            <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight">
+              Trending Flavors
+            </h2>
+            <span className="text-[#FF4FA3] text-xl font-bold">〰</span>
+          </div>
+          <button 
+            onClick={() => { playBtnTap(); navigate('/shop'); }}
+            className="text-pink-500 hover:text-pink-600 font-extrabold text-[14px] uppercase tracking-wider transition-colors border border-pink-100 hover:border-pink-300 px-5 py-2 rounded-full bg-white/50 backdrop-blur-sm"
+          >
+            View All
+          </button>
+        </div>
+
+        {/* Scrollable list on mobile, clean grid on desktop */}
+        <div className="flex overflow-x-auto pb-6 pt-2 px-1 md:pb-0 md:grid md:grid-cols-6 gap-6 md:gap-8 no-scrollbar snap-x scroll-smooth">
+          {[
+            { 
+              name: "Chocolate", 
+              img: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&h=400&fit=crop", 
+              textColor: "text-[#4E2E1E]",
+              bgGrad: "bg-gradient-to-br from-[#FFF8F2] via-[#EAD0C0] to-[#CBA289]",
+              glowColor: "bg-amber-800",
+              gemLeft: "from-amber-700 to-amber-950",
+              gemRight: "from-pink-300 to-pink-500"
+            },
+            { 
+              name: "Strawberry", 
+              img: flavorStrawberry, 
+              textColor: "text-[#FF4FA3]",
+              bgGrad: "bg-gradient-to-br from-[#FFF0F3] via-[#FFD0DE] to-[#FFA1C2]",
+              glowColor: "bg-pink-500",
+              gemLeft: "from-pink-400 to-pink-600",
+              gemRight: "from-pink-200 to-pink-400"
+            },
+            { 
+              name: "Pistachio", 
+              img: flavorPistachio, 
+              textColor: "text-emerald-700",
+              bgGrad: "bg-gradient-to-br from-[#F5FFFA] via-[#E2F5E2] to-[#BCD8BC]",
+              glowColor: "bg-emerald-500",
+              gemLeft: "from-emerald-400 to-emerald-600",
+              gemRight: "from-yellow-300 to-amber-400"
+            },
+            { 
+              name: "Mango", 
+              img: flavorMango, 
+              textColor: "text-amber-500 font-bold",
+              bgGrad: "bg-gradient-to-br from-[#FFFFF0] via-[#FFF2CC] to-[#FFE082]",
+              glowColor: "bg-amber-500",
+              gemLeft: "from-amber-400 to-amber-600",
+              gemRight: "from-orange-400 to-red-500"
+            },
+            { 
+              name: "Blueberry", 
+              img: flavorBlueberry, 
+              textColor: "text-blue-900",
+              bgGrad: "bg-gradient-to-br from-[#F0F8FF] via-[#DBE9FA] to-[#B2CFF7]",
+              glowColor: "bg-blue-500",
+              gemLeft: "from-blue-400 to-blue-700",
+              gemRight: "from-purple-300 to-indigo-500"
+            },
+            { 
+              name: "Black Forest", 
+              img: flavorBlackForest, 
+              textColor: "text-[#1A1A1A] font-black",
+              bgGrad: "bg-gradient-to-br from-[#FFF5F5] via-[#FFD6D6] to-[#FFA3A3]",
+              glowColor: "bg-red-500",
+              gemLeft: "from-red-600 to-rose-950",
+              gemRight: "from-pink-300 to-pink-500"
+            }
+          ].map((flav, idx) => (
+            <motion.div
+              key={idx}
+              whileHover={{ y: -6 }}
+              onClick={() => { playBtnTap(); navigate(`/shop?flavor=${flav.name}`); }}
+              className="snap-center shrink-0 flex flex-col items-center cursor-pointer select-none group"
+            >
+              <div className={`relative w-28 h-28 md:w-32 md:h-32 rounded-full flex items-center justify-center ${flav.bgGrad} p-1.5 shadow-[0_8px_25px_rgba(0,0,0,0.06)] ring-1 ring-slate-100 transition-all duration-300 group-hover:shadow-[0_12px_35px_rgba(0,0,0,0.12)] group-hover:scale-105`}>
+                <div className="w-[88%] h-[88%] rounded-full overflow-hidden shadow-inner relative z-10 bg-white">
+                  <img src={flav.img} alt={flav.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" referrerPolicy="no-referrer" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/30 pointer-events-none rounded-full" />
+                </div>
+                
+                <div className={`absolute -inset-0.5 rounded-full ${flav.glowColor} opacity-0 group-hover:opacity-10 transition-opacity duration-300 blur-sm`} />
+                <div className={`absolute bottom-0.5 left-1 w-5 h-5 rounded-full bg-gradient-to-br ${flav.gemLeft} border border-white shadow-md z-20 transition-transform duration-300 group-hover:scale-110`} />
+                <div className={`absolute bottom-2 right-0.5 w-4 h-4 rounded-full bg-gradient-to-br ${flav.gemRight} border border-white shadow-md z-20 transition-transform duration-300 group-hover:scale-115`} />
+              </div>
+              <div className="text-center mt-3">
+                <span className={`text-[13px] md:text-[14px] font-extrabold tracking-tight transition-colors group-hover:text-pink-500 ${flav.textColor}`}>
+                  {flav.name}
+                </span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------------------------------------------------------
           SECTION 2.5: SHOP BY CATEGORIES (Mockup High-Fidelity)
           --------------------------------------------------------- */}
       <section className="relative z-10 py-10 px-4 md:px-8 max-w-[1280px] mx-auto select-none">
@@ -271,71 +372,89 @@ export default function Home() {
         </div>
 
         {/* Scrollable list on mobile, clean grid on desktop */}
-        <div className="flex overflow-x-auto pb-4 md:pb-0 md:grid md:grid-cols-6 gap-5 no-scrollbar snap-x scroll-smooth">
+        <div className="flex overflow-x-auto pb-6 pt-2 px-1 md:pb-0 md:grid md:grid-cols-6 gap-6 md:gap-8 no-scrollbar snap-x scroll-smooth">
           {[
             { 
               name: "Birthday Cakes", 
-              desc: "Celebrate life's milestones",
-              img: "https://images.unsplash.com/photo-1535141192574-5d4897c13636?w=200&h=200&fit=crop", 
-              bg: "bg-[#FFF0F5]", 
-              border: "border-pink-100",
+              img: "https://images.unsplash.com/photo-1535141192574-5d4897c13636?w=350&h=350&fit=crop", 
+              textColor: "text-[#C84B7C]",
+              bgGrad: "bg-gradient-to-br from-[#FFF0F3] via-[#FFD0DE] to-[#FFA1C2]",
+              glowColor: "bg-pink-500",
+              gemLeft: "from-pink-400 to-pink-600",
+              gemRight: "from-pink-200 to-pink-400",
               route: "/birthday-cakes" 
             },
             { 
               name: "Anniversary Cakes", 
-              desc: "Baked with romance",
-              img: "https://images.unsplash.com/photo-1513135065346-a098a63a71ee?w=200&h=200&fit=crop", 
-              bg: "bg-[#FFEBEB]", 
-              border: "border-red-100",
+              img: "https://images.unsplash.com/photo-1513135065346-a098a63a71ee?w=350&h=350&fit=crop", 
+              textColor: "text-[#B91C1C]",
+              bgGrad: "bg-gradient-to-br from-[#FFF5F5] via-[#FFD6D6] to-[#FFA3A3]",
+              glowColor: "bg-red-500",
+              gemLeft: "from-red-600 to-rose-950",
+              gemRight: "from-pink-300 to-pink-500",
               route: "/anniversary-cakes" 
             },
             { 
               name: "Photo Cakes", 
-              desc: "Print your memories",
-              img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop", 
-              bg: "bg-[#E6F8FA]", 
-              border: "border-cyan-100",
+              img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=350&h=350&fit=crop", 
+              textColor: "text-[#0891B2]",
+              bgGrad: "bg-gradient-to-br from-[#E6F8FA] via-[#BCEEF3] to-[#86E3EC]",
+              glowColor: "bg-cyan-500",
+              gemLeft: "from-cyan-400 to-cyan-600",
+              gemRight: "from-blue-200 to-cyan-300",
               route: "/shop?category=photo" 
             },
             { 
               name: "Custom Cakes", 
-              desc: "Unleash your mind",
-              img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=200&h=200&fit=crop", 
-              bg: "bg-[#FFF9E6]", 
-              border: "border-yellow-100",
+              img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=350&h=350&fit=crop", 
+              textColor: "text-[#D9822B] font-bold",
+              bgGrad: "bg-gradient-to-br from-[#FFFFF0] via-[#FFF2CC] to-[#FFE082]",
+              glowColor: "bg-amber-500",
+              gemLeft: "from-amber-400 to-amber-600",
+              gemRight: "from-orange-400 to-red-500",
               route: "/custom-order" 
             },
             { 
               name: "Dessert Boxes", 
-              desc: "Curated treat boxes",
-              img: "https://images.unsplash.com/photo-1549417229-aa67d3263c09?w=200&h=200&fit=crop", 
-              bg: "bg-[#FFF0E6]", 
-              border: "border-orange-100",
+              img: "https://images.unsplash.com/photo-1549417229-aa67d3263c09?w=350&h=350&fit=crop", 
+              textColor: "text-[#C2410C]",
+              bgGrad: "bg-gradient-to-br from-[#FFF7ED] via-[#FED7AA] to-[#FDBA74]",
+              glowColor: "bg-orange-500",
+              gemLeft: "from-orange-400 to-orange-600",
+              gemRight: "from-yellow-200 to-orange-300",
               route: "/desserts" 
             },
             { 
               name: "Cupcakes", 
-              desc: "Tiny frosted delights",
-              img: "https://images.unsplash.com/photo-1587314168485-3236d6710814?w=200&h=200&fit=crop", 
-              bg: "bg-[#EBF3FF]", 
-              border: "border-blue-100",
+              img: "https://images.unsplash.com/photo-1587314168485-3236d6710814?w=350&h=350&fit=crop", 
+              textColor: "text-[#1D4ED8]",
+              bgGrad: "bg-gradient-to-br from-[#EFF6FF] via-[#DBEAFE] to-[#BFDBFE]",
+              glowColor: "bg-blue-500",
+              gemLeft: "from-blue-400 to-blue-700",
+              gemRight: "from-indigo-300 to-purple-500",
               route: "/cupcakes" 
             }
           ].map((cat, idx) => (
             <motion.div
               key={idx}
-              whileHover={{ y: -6, scale: 1.02 }}
+              whileHover={{ y: -6 }}
               onClick={() => { playBtnTap(); navigate(cat.route); }}
-              className={`snap-center shrink-0 min-w-[150px] w-[160px] md:w-auto ${cat.bg} border ${cat.border} rounded-[24px] p-4 flex flex-col items-center justify-between cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 text-center relative overflow-hidden group`}
+              className="snap-center shrink-0 flex flex-col items-center cursor-pointer select-none group"
             >
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-white shadow-sm mb-3">
-                <img src={cat.img} alt={cat.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+              <div className={`relative w-28 h-28 md:w-32 md:h-32 rounded-full flex items-center justify-center ${cat.bgGrad} p-1.5 shadow-[0_8px_25px_rgba(0,0,0,0.06)] ring-1 ring-slate-100 transition-all duration-300 group-hover:shadow-[0_12px_35px_rgba(0,0,0,0.12)] group-hover:scale-105`}>
+                <div className="w-[88%] h-[88%] rounded-full overflow-hidden shadow-inner relative z-10 bg-white">
+                  <img src={cat.img} alt={cat.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" referrerPolicy="no-referrer" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/30 pointer-events-none rounded-full" />
+                </div>
+                
+                <div className={`absolute -inset-0.5 rounded-full ${cat.glowColor} opacity-0 group-hover:opacity-10 transition-opacity duration-300 blur-sm`} />
+                <div className={`absolute bottom-0.5 left-1 w-5 h-5 rounded-full bg-gradient-to-br ${cat.gemLeft} border border-white shadow-md z-20 transition-transform duration-300 group-hover:scale-110`} />
+                <div className={`absolute bottom-2 right-0.5 w-4 h-4 rounded-full bg-gradient-to-br ${cat.gemRight} border border-white shadow-md z-20 transition-transform duration-300 group-hover:scale-115`} />
               </div>
-              <h3 className="text-xs font-black text-slate-800 leading-tight uppercase tracking-wider mb-1.5">{cat.name}</h3>
-              <p className="text-[10px] text-slate-500 font-bold hidden md:block">{cat.desc}</p>
-              
-              <div className="mt-3 w-7 h-7 rounded-full bg-white flex items-center justify-center text-pink-500 shadow-sm border border-slate-50 group-hover:bg-pink-500 group-hover:text-white transition-all">
-                <ArrowRight className="w-3.5 h-3.5" />
+              <div className="text-center mt-3">
+                <span className={`text-[13px] md:text-[14px] font-extrabold tracking-tight transition-colors group-hover:text-pink-500 ${cat.textColor}`}>
+                  {cat.name}
+                </span>
               </div>
             </motion.div>
           ))}
@@ -443,48 +562,6 @@ export default function Home() {
                   <Plus className="w-4 h-4" />
                 </button>
               </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------------
-          SECTION 3: TRENDING FLAVORS
-          --------------------------------------------------------- */}
-      <section className="relative z-10 py-10 px-6 max-w-[1280px] mx-auto select-none">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[#111111] tracking-tight">
-            Trending Flavors
-          </h2>
-          <button 
-            onClick={() => { playBtnTap(); navigate('/shop'); }}
-            className="text-pink-500 hover:text-pink-600 font-extrabold text-[14px] uppercase tracking-wider transition-colors"
-          >
-            View All
-          </button>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 justify-center">
-          {[
-            { name: "Chocolate", img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=300&fit=crop", color: "ring-amber-800/10 hover:ring-amber-800 text-[#4E2E1E]" },
-            { name: "Strawberry", img: flavorStrawberry, color: "ring-pink-100 hover:ring-[#FF4FA3] text-[#FF4FA3]" },
-            { name: "Pistachio", img: flavorPistachio, color: "ring-emerald-100 hover:ring-emerald-600 text-emerald-700" },
-            { name: "Mango", img: flavorMango, color: "ring-amber-100 hover:ring-amber-500 text-amber-600" },
-            { name: "Blueberry", img: flavorBlueberry, color: "ring-blue-100 hover:ring-blue-600 text-blue-700" },
-            { name: "Black Forest", img: flavorBlackForest, color: "ring-slate-100 hover:ring-slate-800 text-slate-800" }
-          ].map((flav, index) => (
-            <motion.div
-              key={index}
-              whileHover={{ scale: 1.05 }}
-              onClick={() => { playBtnTap(); navigate(`/shop?flavor=${flav.name}`); }}
-              className="flex flex-col items-center space-y-3 cursor-pointer select-none"
-            >
-              <div className={`w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden ring-4 ${flav.color} shadow-md transition-all duration-300 bg-white p-1`}>
-                <img src={flav.img} alt={flav.name} className="w-full h-full object-cover rounded-full" />
-              </div>
-              <span className={`text-[14px] md:text-[15px] font-black tracking-tight ${flav.color.split(' ').pop()}`}>
-                {flav.name}
-              </span>
             </motion.div>
           ))}
         </div>
@@ -713,9 +790,10 @@ export default function Home() {
             <ul className="space-y-2.5 text-xs font-black text-slate-500">
               <li><button onClick={() => { playBtnTap(); navigate('/'); }} className="hover:text-[#FF4FA3] transition-colors">Home</button></li>
               <li><button onClick={() => { playBtnTap(); navigate('/shop'); }} className="hover:text-[#FF4FA3] transition-colors">Cakes</button></li>
-              <li><button onClick={() => { playBtnTap(); navigate('/occasions'); }} className="hover:text-[#FF4FA3] transition-colors">Occasions</button></li>
+              <li><button onClick={() => { playBtnTap(); navigate('/shop?tab=occasions'); }} className="hover:text-[#FF4FA3] transition-colors">Occasions</button></li>
               <li><button onClick={() => { playBtnTap(); navigate('/custom-order'); }} className="hover:text-[#FF4FA3] transition-colors">Custom Cakes</button></li>
               <li><button onClick={() => { playBtnTap(); navigate('/corporate-catering'); }} className="hover:text-[#FF4FA3] transition-colors text-pink-600">Corporate Orders 💼</button></li>
+              <li><button onClick={() => { playBtnTap(); navigate('/seo-directory'); }} className="hover:text-amber-600 transition-colors font-bold flex items-center gap-1">SEO Map Directory 📍</button></li>
             </ul>
           </div>
 
