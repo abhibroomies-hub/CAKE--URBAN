@@ -33,7 +33,13 @@ import {
   Star,
   Home,
   Grid,
-  Palette
+  Palette,
+  Mail,
+  Lock,
+  Smartphone,
+  Eye,
+  EyeOff,
+  Loader2
 } from 'lucide-react';
 import { useUI, useCart } from '../lib/store';
 import { useAuth } from '../hooks/useAuth';
@@ -91,6 +97,106 @@ export function Header() {
   // Load products dynamically for search suggestions
   const [dbProducts, setDbProducts] = useState<any[]>([]);
   const [wishlistItems, setWishlistItems] = useState<any[]>([]);
+
+  // Mini Login / Signup states inside the profile popover
+  const [miniAuthMode, setMiniAuthMode] = useState<'login' | 'signup'>('login');
+  const [miniEmail, setMiniEmail] = useState('');
+  const [miniPassword, setMiniPassword] = useState('');
+  const [miniFullName, setMiniFullName] = useState('');
+  const [miniPhone, setMiniPhone] = useState('');
+  const [miniLoading, setMiniLoading] = useState(false);
+  const [showMiniPass, setShowMiniPass] = useState(false);
+
+  const handleMiniLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (miniLoading) return;
+    if (!miniEmail || !miniPassword) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+    setMiniLoading(true);
+    playBtnTap();
+    try {
+      const { signInWithEmailAndPassword } = await import('firebase/auth');
+      await signInWithEmailAndPassword(auth, miniEmail.trim(), miniPassword);
+      playSuccessChime();
+      toast.success("Successfully logged in!");
+      setProfileDropdownOpen(false);
+      // Clear fields
+      setMiniEmail('');
+      setMiniPassword('');
+    } catch (err: any) {
+      console.error(err);
+      let errMsg = "Login failed. Please verify email and password.";
+      if (err.code === 'auth/user-not-found') {
+        errMsg = "User account not found. Please sign up.";
+      } else if (err.code === 'auth/wrong-password') {
+        errMsg = "Incorrect password. Please try again.";
+      } else if (err.code === 'auth/invalid-email') {
+        errMsg = "Please enter a valid email address.";
+      }
+      toast.error(errMsg);
+    } finally {
+      setMiniLoading(false);
+    }
+  };
+
+  const handleMiniSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (miniLoading) return;
+    if (!miniEmail || !miniPassword || !miniFullName || !miniPhone) {
+      toast.error("All fields are compulsory.");
+      return;
+    }
+    if (miniPassword.length < 6) {
+      toast.error("Password must be at least 6 characters.");
+      return;
+    }
+    const cleaned = miniPhone.replace(/\D/g, '');
+    if (cleaned.length < 10 || cleaned.length > 13) {
+      toast.error("Please enter a valid phone number (10-13 digits).");
+      return;
+    }
+    setMiniLoading(true);
+    playBtnTap();
+    try {
+      const { createUserWithEmailAndPassword } = await import('firebase/auth');
+      const { doc, setDoc } = await import('firebase/firestore');
+      const userCred = await createUserWithEmailAndPassword(auth, miniEmail.trim(), miniPassword);
+      const u = userCred.user;
+
+      // Save user details to Firestore
+      const userRef = doc(db, 'users', u.uid);
+      await setDoc(userRef, {
+        uid: u.uid,
+        email: miniEmail.trim(),
+        displayName: miniFullName.trim(),
+        phoneNumber: miniPhone.trim(),
+        role: 'customer',
+        createdAt: new Date().toISOString()
+      });
+
+      playSuccessChime();
+      toast.success("Account created successfully!");
+      setProfileDropdownOpen(false);
+      // Clear fields
+      setMiniEmail('');
+      setMiniPassword('');
+      setMiniFullName('');
+      setMiniPhone('');
+    } catch (err: any) {
+      console.error(err);
+      let errMsg = "Failed to create account.";
+      if (err.code === 'auth/email-already-in-use') {
+        errMsg = "This email is already registered.";
+      } else if (err.code === 'auth/invalid-email') {
+        errMsg = "Please enter a valid email address.";
+      }
+      toast.error(errMsg);
+    } finally {
+      setMiniLoading(false);
+    }
+  };
 
   // 1. Typing animation loop
   useEffect(() => {
@@ -474,82 +580,212 @@ export function Header() {
             <div className="relative">
               <button 
                 onClick={() => { setProfileDropdownOpen(!profileDropdownOpen); triggerSlideSound(); }}
-                className="w-12 h-12 rounded-full overflow-hidden border border-slate-100 hover:border-pink-300 shadow-sm hover:scale-105 transition-all"
+                className="w-12 h-12 rounded-full overflow-hidden border border-slate-100 hover:border-pink-300 shadow-sm hover:scale-105 transition-all flex items-center justify-center bg-white"
               >
-                <img 
-                  src={(profile as any)?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100"} 
-                  className="w-full h-full object-cover" 
-                  alt="Profile"
-                />
+                {user ? (
+                  <img 
+                    src={(profile as any)?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100"} 
+                    className="w-full h-full object-cover" 
+                    alt="Profile"
+                  />
+                ) : (
+                  <User className="w-5 h-5 text-slate-600 hover:text-pink-600 transition-colors" />
+                )}
               </button>
 
               <AnimatePresence>
                 {profileDropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 15 }}
-                    className="absolute right-0 mt-3 w-64 bg-white/95 backdrop-blur-xl border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.12)] rounded-3xl p-2 z-50 text-left font-sans"
-                  >
-                    <div className="p-4 border-b border-slate-100 flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 text-white font-black flex items-center justify-center text-sm shadow">
-                        {profile?.displayName ? profile.displayName.charAt(0).toUpperCase() : "U"}
+                  user ? (
+                    /* Authenticated Dropdown */
+                    <motion.div
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 15 }}
+                      className="absolute right-0 mt-3 w-64 bg-white/95 backdrop-blur-xl border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.12)] rounded-3xl p-2 z-50 text-left font-sans"
+                    >
+                      <div className="p-4 border-b border-slate-100 flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 text-white font-black flex items-center justify-center text-sm shadow">
+                          {profile?.displayName ? profile.displayName.charAt(0).toUpperCase() : "U"}
+                        </div>
+                        <div className="min-w-0">
+                          <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider truncate">
+                            {profile?.displayName || "Verified User"}
+                          </h4>
+                          <p className="text-[10px] text-slate-400 truncate">{user?.email}</p>
+                        </div>
                       </div>
-                      <div className="min-w-0">
-                        <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider truncate">
-                          {profile?.displayName || "Gourmet Guest"}
-                        </h4>
-                        <p className="text-[10px] text-slate-400 truncate">{user?.email || "guest@cakeurban.com"}</p>
+
+                      <div className="p-2 space-y-0.5">
+                        {[
+                          { label: 'My Orders', icon: ShoppingBag, href: '/my-orders' },
+                          { label: 'Wishlist', icon: Heart, href: '/profile' },
+                          { label: 'Saved Addresses', icon: MapPin, href: '/profile' },
+                          { label: 'Rewards & Offers', icon: Ticket, href: '/rewards' },
+                          { label: 'My Profile', icon: User, href: '/profile' },
+                          { label: 'Settings', icon: Settings, href: '/profile' },
+                        ].map((item) => (
+                          <Link 
+                            key={item.label}
+                            to={item.href}
+                            onClick={() => setProfileDropdownOpen(false)}
+                            className="flex items-center gap-3 px-3.5 py-2.5 text-xs font-black uppercase tracking-widest text-slate-600 hover:bg-pink-50/50 hover:text-pink-600 rounded-2xl transition-all"
+                          >
+                            <item.icon className="w-4 h-4" />
+                            <span>{item.label}</span>
+                          </Link>
+                        ))}
+
+                        {isAdmin && (
+                          <Link 
+                            to="/admin"
+                            onClick={() => setProfileDropdownOpen(false)}
+                            className="flex items-center gap-3 px-3.5 py-2.5 text-xs font-black uppercase tracking-widest text-emerald-600 hover:bg-emerald-50 rounded-2xl transition-all"
+                          >
+                            <LayoutDashboard className="w-4 h-4" />
+                            <span>Admin Dashboard</span>
+                          </Link>
+                        )}
+
+                        <div className="h-px bg-slate-100 my-1" />
+
+                        <button 
+                          onClick={async () => {
+                            setProfileDropdownOpen(false);
+                            try { await signOut(auth); } catch (e) {}
+                            toast.success("Successfully logged out from Cake Urban");
+                            navigate('/');
+                          }}
+                          className="w-full flex items-center gap-3 px-3.5 py-2.5 text-xs font-black uppercase tracking-widest text-rose-500 hover:bg-rose-50 rounded-2xl transition-all text-left"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          <span>Logout</span>
+                        </button>
                       </div>
-                    </div>
+                    </motion.div>
+                  ) : (
+                    /* Beautiful responsive mini auth form inside the dropdown */
+                    <motion.div
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 15 }}
+                      className="absolute right-0 mt-3 w-80 bg-white border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.12)] rounded-[32px] p-5 z-50 text-left font-sans"
+                    >
+                      <div className="mb-4 pb-3 border-b border-slate-100 flex justify-between items-center">
+                        <div>
+                          <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider">
+                            {miniAuthMode === 'login' ? 'Gourmet Login' : 'Create Account'}
+                          </h4>
+                          <p className="text-[10px] text-slate-400 mt-0.5 font-medium">CakeUrban Security Portal</p>
+                        </div>
+                        <Sparkles className="w-4 h-4 text-pink-500 animate-pulse" />
+                      </div>
 
-                    <div className="p-2 space-y-0.5">
-                      {[
-                        { label: 'My Orders', icon: ShoppingBag, href: '/my-orders' },
-                        { label: 'Wishlist', icon: Heart, href: '/profile' },
-                        { label: 'Saved Addresses', icon: MapPin, href: '/profile' },
-                        { label: 'Rewards & Offers', icon: Ticket, href: '/rewards' },
-                        { label: 'My Profile', icon: User, href: '/profile' },
-                        { label: 'Settings', icon: Settings, href: '/profile' },
-                      ].map((item) => (
-                        <Link 
-                          key={item.label}
-                          to={item.href}
-                          onClick={() => setProfileDropdownOpen(false)}
-                          className="flex items-center gap-3 px-3.5 py-2.5 text-xs font-black uppercase tracking-widest text-slate-600 hover:bg-pink-50/50 hover:text-pink-600 rounded-2xl transition-all"
+                      <form onSubmit={miniAuthMode === 'login' ? handleMiniLogin : handleMiniSignup} className="space-y-3">
+                        {miniAuthMode === 'signup' && (
+                          <div className="space-y-1">
+                            <label className="text-[9px] font-black uppercase tracking-[0.15em] text-slate-500 block">Full Name</label>
+                            <div className="relative flex items-center">
+                              <User className="absolute left-3 w-3.5 h-3.5 text-slate-400" />
+                              <input
+                                type="text"
+                                required
+                                placeholder="Your Name"
+                                value={miniFullName}
+                                onChange={(e) => setMiniFullName(e.target.value)}
+                                className="w-full h-10 rounded-xl border border-slate-100 pl-9 pr-3 bg-slate-50 text-xs font-semibold focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 text-slate-800"
+                              />
+                            </div>
+                          </div>
+                        )}
+
+                        {miniAuthMode === 'signup' && (
+                          <div className="space-y-1">
+                            <label className="text-[9px] font-black uppercase tracking-[0.15em] text-slate-500 block">Phone Number</label>
+                            <div className="relative flex items-center">
+                              <Smartphone className="absolute left-3 w-3.5 h-3.5 text-slate-400" />
+                              <input
+                                type="tel"
+                                required
+                                placeholder="Phone Number"
+                                maxLength={15}
+                                value={miniPhone}
+                                onChange={(e) => setMiniPhone(e.target.value.replace(/[^\d+]/g, ''))}
+                                className="w-full h-10 rounded-xl border border-slate-100 pl-9 pr-3 bg-slate-50 text-xs font-semibold focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 text-slate-800 font-mono"
+                              />
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="space-y-1">
+                          <label className="text-[9px] font-black uppercase tracking-[0.15em] text-slate-500 block">Email Address</label>
+                          <div className="relative flex items-center">
+                            <Mail className="absolute left-3 w-3.5 h-3.5 text-slate-400" />
+                            <input
+                              type="email"
+                              required
+                              placeholder="your.email@example.com"
+                              value={miniEmail}
+                              onChange={(e) => setMiniEmail(e.target.value)}
+                              className="w-full h-10 rounded-xl border border-slate-100 pl-9 pr-3 bg-slate-50 text-xs font-semibold focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 text-slate-800"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-1">
+                          <label className="text-[9px] font-black uppercase tracking-[0.15em] text-slate-500 block">Password</label>
+                          <div className="relative flex items-center">
+                            <Lock className="absolute left-3 w-3.5 h-3.5 text-slate-400" />
+                            <input
+                              type={showMiniPass ? "text" : "password"}
+                              required
+                              placeholder="••••••"
+                              value={miniPassword}
+                              onChange={(e) => setMiniPassword(e.target.value)}
+                              className="w-full h-10 rounded-xl border border-slate-100 pl-9 pr-9 bg-slate-50 text-xs font-semibold focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 text-slate-800"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowMiniPass(!showMiniPass)}
+                              className="absolute right-3 text-slate-400 hover:text-slate-600"
+                            >
+                              {showMiniPass ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                            </button>
+                          </div>
+                        </div>
+
+                        <button
+                          type="submit"
+                          disabled={miniLoading}
+                          className="w-full h-11 mt-2 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 hover:brightness-110 text-white font-black tracking-[0.15em] text-[10px] uppercase flex items-center justify-center gap-2 shadow-lg disabled:opacity-50 transition-all"
                         >
-                          <item.icon className="w-4 h-4" />
-                          <span>{item.label}</span>
-                        </Link>
-                      ))}
+                          {miniLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : (miniAuthMode === 'login' ? 'SECURE LOG IN' : 'CREATE ACCOUNT')}
+                        </button>
+                      </form>
 
-                      {isAdmin && (
-                        <Link 
-                          to="/admin"
-                          onClick={() => setProfileDropdownOpen(false)}
-                          className="flex items-center gap-3 px-3.5 py-2.5 text-xs font-black uppercase tracking-widest text-emerald-600 hover:bg-emerald-50 rounded-2xl transition-all"
-                        >
-                          <LayoutDashboard className="w-4 h-4" />
-                          <span>Admin Dashboard</span>
-                        </Link>
-                      )}
+                      <div className="mt-4 pt-3 border-t border-slate-100 text-center">
+                        <p className="text-[11px] text-slate-500 font-medium">
+                          {miniAuthMode === 'login' ? "Don't have an account?" : "Already registered?"}{' '}
+                          <button
+                            type="button"
+                            onClick={() => setMiniAuthMode(miniAuthMode === 'login' ? 'signup' : 'login')}
+                            className="text-pink-600 font-black uppercase tracking-wider hover:underline ml-1"
+                          >
+                            {miniAuthMode === 'login' ? 'Sign Up' : 'Log In'}
+                          </button>
+                        </p>
 
-                      <div className="h-px bg-slate-100 my-1" />
-
-                      <button 
-                        onClick={async () => {
-                          setProfileDropdownOpen(false);
-                          try { await signOut(auth); } catch (e) {}
-                          toast.success("Successfully logged out from Cake Urban");
-                          navigate('/');
-                        }}
-                        className="w-full flex items-center gap-3 px-3.5 py-2.5 text-xs font-black uppercase tracking-widest text-rose-500 hover:bg-rose-50 rounded-2xl transition-all text-left"
-                      >
-                        <LogOut className="w-4 h-4" />
-                        <span>Logout</span>
-                      </button>
-                    </div>
-                  </motion.div>
+                        <div className="mt-3 flex justify-center">
+                          <Link
+                            to={miniAuthMode === 'login' ? '/login' : '/signup'}
+                            onClick={() => setProfileDropdownOpen(false)}
+                            className="text-[9px] font-black text-slate-400 hover:text-slate-600 uppercase tracking-[0.15em] underline"
+                          >
+                            Or open full screen portal ↗
+                          </Link>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )
                 )}
               </AnimatePresence>
             </div>

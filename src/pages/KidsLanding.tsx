@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, 
@@ -12,10 +12,15 @@ import {
   Plus, 
   MessageCircle,
   Clock,
-  Star
+  Star,
+  Loader2
 } from 'lucide-react';
 import { useCart } from '../lib/store';
 import { toast } from 'sonner';
+import { db } from '../lib/firebase';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { Product } from '../types';
+import { ProductCard } from '../components/ProductCard';
 import { 
   LuxuryConcierge, 
   QuickOrderModal, 
@@ -28,6 +33,52 @@ import {
 export default function KidsLanding() {
   const [isQuickOrderOpen, setIsQuickOrderOpen] = useState(false);
   const addCartItem = useCart((state) => state.addItem);
+  const [dbProducts, setDbProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    const unsubscribe = onSnapshot(
+      collection(db, 'products'),
+      (snap) => {
+        if (!snap.empty) {
+          const prods = snap.docs.map(doc => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              name: data.name || "",
+              description: data.description || "",
+              price: Number(data.price) || 0,
+              categories: data.categories || [],
+              occasions: data.occasions || [],
+              flavors: data.flavors || [],
+              images: data.images || [],
+              stockStatus: data.stockStatus || 'in-stock',
+              isCustomizable: data.isCustomizable !== false,
+              isBestseller: !!data.isBestseller,
+              isNew: !!data.isNew,
+              weights: data.weights || [0.5, 1.0, 2.0],
+              dietary: data.dietary || ["Eggless"],
+              rating: data.rating || 4.8,
+              reviewsCount: data.reviewsCount || Math.floor(Math.random() * 80) + 20,
+            } as Product;
+          });
+          // Filter products where occasion includes Kids Special or Kids
+          const filtered = prods.filter(p => 
+            p.occasions?.some(occ => occ.toLowerCase() === 'kids special' || occ.toLowerCase() === 'kids') ||
+            p.categories?.some(cat => cat.toLowerCase().includes('kids'))
+          );
+          setDbProducts(filtered);
+        }
+        setLoading(false);
+      },
+      (err) => {
+        console.error("Error fetching kids products:", err);
+        setLoading(false);
+      }
+    );
+    return () => unsubscribe();
+  }, []);
 
   // Character selection states
   const [selectedCharacter, setSelectedCharacter] = useState('Unicorn');
@@ -332,6 +383,39 @@ export default function KidsLanding() {
             ))}
           </div>
 
+        </div>
+      </section>
+
+      {/* Dynamic Kids Cakes from Bakery */}
+      <section className="py-20 bg-slate-50 border-b border-slate-200/30">
+        <div className="max-w-[1320px] mx-auto px-4 md:px-8 xl:px-0 space-y-12">
+          <div className="text-center md:text-left">
+            <span className="text-[10px] font-black text-sky-500 tracking-[0.3em] uppercase block mb-1">ONLINE KIDS BAKERY</span>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-950 tracking-tight">
+              Freshly Baked Kids Masterpieces
+            </h2>
+            <p className="text-xs text-slate-500 font-semibold max-w-sm mt-1">
+              Fairy-tale unicorn, astronaut, and jungle safari theme cakes direct from our ovens, 100% organic colors.
+            </p>
+          </div>
+
+          {loading ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
+            </div>
+          ) : dbProducts.length === 0 ? (
+            <div className="text-center py-16 bg-white rounded-3xl border border-slate-100 p-8">
+              <Sparkles className="w-8 h-8 text-sky-400 mx-auto mb-2 animate-bounce" />
+              <p className="text-sm font-black text-slate-700">No kids database cakes yet.</p>
+              <p className="text-xs text-slate-400 mt-1">Try our custom package studio below to design one!</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {dbProducts.slice(0, 12).map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

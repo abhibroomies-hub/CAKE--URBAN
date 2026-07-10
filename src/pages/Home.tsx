@@ -13,7 +13,9 @@ import {
   Phone,
   Mail,
   Truck,
-  Plus
+  Plus,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { playSuccessChime, playBtnTap } from '../lib/sound';
@@ -33,6 +35,15 @@ import flavorMango from '../assets/images/regenerated_image_1783519211943.png';
 import flavorBlueberry from '../assets/images/regenerated_image_1783519214755.png';
 import flavorBlackForest from '../assets/images/regenerated_image_1783519217409.png';
 import midnightImage from '../assets/images/regenerated_image_1783520153768.png';
+
+// Newly regenerated category and flavor images
+import categoryBirthday from '../assets/images/regenerated_image_1783601219648.png';
+import categoryAnniversary from '../assets/images/regenerated_image_1783601222157.png';
+import categoryPhoto from '../assets/images/regenerated_image_1783601224998.png';
+import categoryCustom from '../assets/images/regenerated_image_1783601227410.png';
+import categoryDessert from '../assets/images/regenerated_image_1783601230131.png';
+import categoryCupcakes from '../assets/images/regenerated_image_1783601232735.png';
+import flavorChocolate from '../assets/images/regenerated_image_1783601216873.png';
 
 // ---------------------------------------------------------
 // FLOATING DECORATIONS WITH PARALLAX MOUSE EFFECT
@@ -96,6 +107,65 @@ export default function Home() {
   const navigate = useNavigate();
   const [emailInput, setEmailInput] = useState('');
   const [screenHearts, setScreenHearts] = useState<{ id: number; x: number; y: number }[]>([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    {
+      id: 0,
+      badge: "100% Eggless",
+      titleLine1: "Every Cake",
+      titleLine2: "Tells a",
+      highlight: "Sweet",
+      titleLine3: "Story",
+      desc: "Handcrafted with love, baked with absolute perfection. Every slice is a premium masterpiece tailored for your special moments.",
+      img: heroImage,
+      ctaText: "Order Now",
+      ctaLink: "/shop",
+      bgGrad: "from-white via-[#FFF3F7] to-[#FFF9FC]",
+      accentText: "text-pink-500",
+      highlightGrad: "from-pink-500 to-rose-500",
+      isDark: false,
+    },
+    {
+      id: 1,
+      badge: "Midnight surprise",
+      titleLine1: "Midnight",
+      titleLine2: "Cake",
+      highlight: "Surprise",
+      titleLine3: "Delivery",
+      desc: "Create unforgettable memories! We deliver fresh gourmet cakes right when the clock strikes 12, securely and silently.",
+      img: midnightImage,
+      ctaText: "Explore Midnight Cakes",
+      ctaLink: "/shop",
+      bgGrad: "from-slate-900 via-purple-950 to-slate-950",
+      accentText: "text-purple-400",
+      highlightGrad: "from-purple-400 to-fuchsia-400",
+      isDark: true,
+    },
+    {
+      id: 2,
+      badge: "Designer Studio",
+      titleLine1: "Design Your",
+      titleLine2: "Dream Cake",
+      highlight: "In 3D",
+      titleLine3: "",
+      desc: "Unleash your culinary creativity! Choose shapes, flavors, toppings, and multi-tier adjustments in real-time.",
+      img: categoryCustom,
+      ctaText: "Launch 3D Configurator",
+      ctaLink: "/ai-designer",
+      bgGrad: "from-white via-[#FFF7ED] to-[#FFFBF7]",
+      accentText: "text-amber-500",
+      highlightGrad: "from-amber-500 to-orange-500",
+      isDark: false,
+    }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
 
   const handleJoinClub = (e: React.FormEvent) => {
     e.preventDefault();
@@ -135,12 +205,13 @@ export default function Home() {
       </div>
 
       {/* ---------------------------------------------------------
-          SECTION 1: HERO BANNER (Every Cake Tells a Sweet Story)
+          SECTION 1: HERO BANNER (Dynamic Interactive Carousel)
           --------------------------------------------------------- */}
       <section className="relative z-10 pt-4 pb-6 px-4 md:px-8 max-w-[1280px] mx-auto select-none">
-        <div className="rounded-[40px] overflow-hidden relative bg-white border border-pink-50/50 p-6 md:p-10 lg:p-14 xl:p-16 flex flex-col lg:flex-row items-center justify-between gap-12 shadow-[0_15px_45px_rgba(255,79,163,0.03)]">
-          {/* Confetti & Sprinkle circles in background */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-40">
+        <div className={`rounded-[32px] md:rounded-[40px] overflow-hidden relative border border-pink-100/20 shadow-[0_20px_50px_rgba(255,79,163,0.05)] transition-all duration-700 bg-gradient-to-br ${slides[currentSlide].bgGrad} ${slides[currentSlide].isDark ? 'text-white' : 'text-slate-800'}`}>
+          
+          {/* Confetti & Sprinkle background decorations */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
             <div className="absolute top-[15%] left-[25%] w-4 h-4 rounded-full bg-yellow-300 animate-bounce" />
             <div className="absolute top-[65%] left-[10%] w-3 h-3 rounded-full bg-blue-300 animate-pulse" />
             <div className="absolute top-[35%] left-[85%] w-5 h-5 rounded-full bg-pink-100/60" />
@@ -148,68 +219,139 @@ export default function Home() {
             <div className="absolute top-[10%] left-[80%] w-6 h-6 rounded-full bg-yellow-100/50" />
           </div>
 
-          {/* Left Side Content */}
-          <div className="w-full lg:w-[50%] space-y-6 text-left relative z-10">
-            {/* Eggless Badge tag */}
-            <div className="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-100 text-amber-700 px-4 py-1.5 rounded-full text-xs font-extrabold tracking-wider uppercase shadow-sm">
-              <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-              <span>100% Eggless</span>
-            </div>
-
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-800 leading-[1.1] tracking-tight">
-              Every Cake <br />
-              Tells a <span className="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">Sweet</span> <br />
-              <span className="font-display italic text-pink-500 font-normal tracking-wide">Story</span>
-            </h1>
-
-            <p className="text-sm md:text-base text-slate-500 font-semibold max-w-[440px] leading-relaxed">
-              Handcrafted with love, baked with perfection.
-            </p>
-
-            <div className="pt-2 flex flex-row items-center gap-3">
-              <button 
-                onClick={() => { playBtnTap(); navigate('/shop'); }}
-                className="h-13 px-8 rounded-full bg-pink-500 hover:bg-pink-600 text-white font-black text-xs uppercase tracking-wider shadow-[0_10px_25px_rgba(236,72,153,0.3)] hover:scale-103 active:scale-95 transition-all duration-300 cursor-pointer"
+          {/* Carousel Slide Wrapper */}
+          <div className="p-3 min-[360px]:p-4 min-[400px]:p-6 md:p-10 lg:p-14 xl:p-16 relative z-10">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="flex flex-row items-center justify-between gap-3 sm:gap-6 lg:gap-12"
               >
-                Order Now
-              </button>
-              <button 
-                onClick={() => { playBtnTap(); navigate('/shop'); }}
-                className="h-13 px-8 rounded-full bg-white border border-slate-200 text-slate-700 hover:text-pink-600 hover:border-pink-300 font-black text-xs uppercase tracking-wider hover:scale-103 active:scale-95 transition-all duration-300 cursor-pointer"
-              >
-                Explore Cakes
-              </button>
-            </div>
-          </div>
+                {/* Left Side Content */}
+                <div className="w-[58%] lg:w-[50%] space-y-2 sm:space-y-4 md:space-y-6 text-left relative z-10">
+                  {/* Category Badge Sticker */}
+                  <div className="inline-flex">
+                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 sm:px-3.5 sm:py-1.5 rounded-full text-[8px] sm:text-[10px] md:text-xs font-black tracking-wider uppercase shadow-sm border ${
+                      slides[currentSlide].isDark 
+                        ? 'bg-white/10 border-white/20 text-pink-300' 
+                        : 'bg-amber-50/90 border-amber-100 text-amber-800'
+                    }`}>
+                      <Star className="w-2.5 sm:w-3 md:w-3.5 h-2.5 sm:h-3 md:h-3.5 fill-current" />
+                      <span>{slides[currentSlide].badge}</span>
+                    </span>
+                  </div>
 
-          {/* Right Side Visuals (Gorgeous Pedestal Base Cake) */}
-          <div className="w-full lg:w-[48%] relative flex justify-center z-10">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="relative w-full max-w-[420px] aspect-square rounded-[36px] overflow-hidden border border-pink-100/30 shadow-[0_15px_45px_rgba(255,79,163,0.06)] bg-white"
-            >
-              <img 
-                src={heroImage} 
-                alt="Perfect Celebration Cake" 
-                className="w-full h-full object-cover relative z-10 hover:scale-103 transition-transform duration-500"
-                referrerPolicy="no-referrer"
-              />
+                  <h1 className="text-[14px] min-[360px]:text-[16px] min-[400px]:text-[18px] sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-black leading-[1.15] sm:leading-[1.1] tracking-tight">
+                    {slides[currentSlide].titleLine1} <br />
+                    {slides[currentSlide].titleLine2} <span className={`bg-gradient-to-r ${slides[currentSlide].highlightGrad} bg-clip-text text-transparent`}>{slides[currentSlide].highlight}</span> <br />
+                    {slides[currentSlide].titleLine3 && (
+                      <>
+                        <span className="font-display italic text-pink-500 font-normal tracking-wide text-xs min-[360px]:text-sm sm:text-xl md:text-3xl lg:text-4xl xl:text-5xl">{slides[currentSlide].titleLine3}</span>
+                      </>
+                    )}
+                  </h1>
 
-              {/* Dotted rotate "Custom Cakes Available" badge */}
-              <motion.div 
-                animate={{ rotate: 360 }}
-                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                className="absolute right-4 bottom-4 w-20 h-20 rounded-full bg-white/90 backdrop-blur-md border-2 border-dashed border-pink-200 shadow-lg flex items-center justify-center p-1.5 z-20"
-              >
-                <div className="text-center">
-                  <p className="text-[8px] font-black uppercase text-pink-500 tracking-wider leading-none">Custom</p>
-                  <p className="text-[8px] font-black uppercase text-slate-700 tracking-wider leading-none mt-0.5">Cakes</p>
-                  <p className="text-[7px] font-bold text-slate-400 uppercase mt-1 leading-none">Available</p>
+                  <p className={`text-[9px] min-[360px]:text-[10px] sm:text-xs md:text-sm lg:text-base font-semibold max-w-[460px] leading-relaxed line-clamp-2 sm:line-clamp-none ${slides[currentSlide].isDark ? 'text-purple-150/80' : 'text-slate-500'}`}>
+                    {slides[currentSlide].desc}
+                  </p>
+
+                  <div className="pt-1 flex flex-row items-center gap-1.5 sm:gap-3">
+                    <button 
+                      onClick={() => { playBtnTap(); navigate(slides[currentSlide].ctaLink); }}
+                      className="h-7 sm:h-11 md:h-13 px-2.5 sm:px-6 md:px-8 rounded-full bg-pink-500 hover:bg-pink-600 text-white font-black text-[8px] sm:text-[10px] md:text-xs uppercase tracking-wider shadow-[0_10px_25px_rgba(236,72,153,0.3)] hover:scale-103 active:scale-95 transition-all duration-300 cursor-pointer"
+                    >
+                      {slides[currentSlide].ctaText}
+                    </button>
+                    <button 
+                      onClick={() => { playBtnTap(); navigate('/shop'); }}
+                      className={`hidden sm:inline-flex h-11 md:h-13 px-6 md:px-8 rounded-full border font-black text-[10px] md:text-xs uppercase tracking-wider hover:scale-103 active:scale-95 transition-all duration-300 cursor-pointer ${
+                        slides[currentSlide].isDark 
+                          ? 'border-white/20 bg-white/5 hover:bg-white/10 text-white' 
+                          : 'border-slate-200 bg-white hover:text-pink-600 hover:border-pink-300 text-slate-700'
+                      }`}
+                    >
+                      Explore Cakes
+                    </button>
+                  </div>
+                </div>
+
+                {/* Right Side Visuals (Gourmet Image with White Border Glow) */}
+                <div className="w-[38%] lg:w-[46%] relative flex justify-center z-10 shrink-0">
+                  <div className="relative w-full max-w-[420px] aspect-square rounded-xl min-[400px]:rounded-2xl md:rounded-3xl overflow-hidden border-2 md:border-4 border-white shadow-[0_10px_30px_rgba(0,0,0,0.1)] bg-slate-50">
+                    <img 
+                      src={slides[currentSlide].img} 
+                      alt={slides[currentSlide].titleLine1} 
+                      className="w-full h-full object-cover relative z-10 hover:scale-105 transition-transform duration-700"
+                      referrerPolicy="no-referrer"
+                    />
+
+                    {/* Dotted rotate badge */}
+                    <motion.div 
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                      className="absolute right-1 bottom-1 sm:right-4 sm:bottom-4 w-7 h-7 sm:w-16 md:w-20 sm:h-16 md:h-20 rounded-full bg-white/95 backdrop-blur-md border border-dashed border-pink-200 shadow-md flex items-center justify-center p-0.5 z-20 scale-75 sm:scale-100"
+                    >
+                      <div className="text-center">
+                        <p className="text-[5px] sm:text-[7px] md:text-[8px] font-black uppercase text-pink-500 tracking-wider leading-none">Custom</p>
+                        <p className="text-[5px] sm:text-[7px] md:text-[8px] font-black uppercase text-slate-700 tracking-wider leading-none mt-0.5">Cakes</p>
+                        <p className="text-[4px] sm:text-[6px] md:text-[7px] font-bold text-slate-400 uppercase mt-1 leading-none">Available</p>
+                      </div>
+                    </motion.div>
+                  </div>
                 </div>
               </motion.div>
-            </motion.div>
+            </AnimatePresence>
+
+            {/* Slide Navigation Buttons (Only visible on hover/active or simple buttons on tablet/desktop) */}
+            <div className="absolute top-1/2 -translate-y-1/2 left-2 md:left-4 z-20">
+              <button
+                onClick={() => {
+                  playBtnTap();
+                  setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+                }}
+                className={`w-9 md:w-11 h-9 md:h-11 rounded-full flex items-center justify-center shadow-lg border backdrop-blur-md active:scale-90 transition-all ${
+                  slides[currentSlide].isDark 
+                    ? 'bg-white/10 hover:bg-white/20 border-white/10 text-white' 
+                    : 'bg-white/80 hover:bg-white border-slate-100 text-slate-800'
+                }`}
+              >
+                <ChevronLeft className="w-5 h-5 stroke-[2.5]" />
+              </button>
+            </div>
+            <div className="absolute top-1/2 -translate-y-1/2 right-2 md:right-4 z-20">
+              <button
+                onClick={() => {
+                  playBtnTap();
+                  setCurrentSlide((prev) => (prev + 1) % slides.length);
+                }}
+                className={`w-9 md:w-11 h-9 md:h-11 rounded-full flex items-center justify-center shadow-lg border backdrop-blur-md active:scale-90 transition-all ${
+                  slides[currentSlide].isDark 
+                    ? 'bg-white/10 hover:bg-white/20 border-white/10 text-white' 
+                    : 'bg-white/80 hover:bg-white border-slate-100 text-slate-800'
+                }`}
+              >
+                <ChevronRight className="w-5 h-5 stroke-[2.5]" />
+              </button>
+            </div>
+
+            {/* Bottom dot indicators */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
+              {slides.map((s, idx) => (
+                <button
+                  key={s.id}
+                  onClick={() => { playBtnTap(); setCurrentSlide(idx); }}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    idx === currentSlide 
+                      ? 'w-6 bg-pink-500' 
+                      : `w-2 ${slides[currentSlide].isDark ? 'bg-white/30 hover:bg-white/50' : 'bg-slate-300 hover:bg-slate-400'}`
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -217,41 +359,58 @@ export default function Home() {
       {/* ---------------------------------------------------------
           SECTION 2: HORIZONTAL FEATURE CAPSULES (Mockup Styling)
           --------------------------------------------------------- */}
-      <section className="relative z-20 max-w-[1280px] mx-auto px-4 md:px-8 mb-8 select-none">
-        <div className="bg-white border border-slate-50 rounded-[28px] py-4 px-6 md:px-8 shadow-[0_10px_35px_rgba(0,0,0,0.03)]">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center divide-y md:divide-y-0 md:divide-x divide-slate-100">
-            
-            <div className="flex items-center gap-4 py-2 md:py-0 md:px-4 justify-start">
-              <div className="w-12 h-12 rounded-2xl bg-pink-50 flex items-center justify-center text-pink-500 shrink-0 shadow-sm">
-                <Truck className="w-6 h-6 stroke-[2]" />
-              </div>
-              <div className="text-left">
-                <h4 className="text-[13px] font-black text-slate-800 leading-tight">Same Day Delivery</h4>
-                <p className="text-[10.5px] text-slate-400 font-bold mt-0.5">On time, every time</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 py-3 md:py-0 md:px-6 justify-start">
-              <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-600 shrink-0 shadow-sm">
-                <Clock className="w-6 h-6 stroke-[2]" />
-              </div>
-              <div className="text-left">
-                <h4 className="text-[13px] font-black text-slate-800 leading-tight">Midnight Delivery</h4>
-                <p className="text-[10.5px] text-slate-400 font-bold mt-0.5">Because surprises matter</p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 py-2 md:py-0 md:px-6 justify-start">
-              <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-500 shrink-0 shadow-sm">
-                <Sparkles className="w-6 h-6 stroke-[2]" />
-              </div>
-              <div className="text-left">
-                <h4 className="text-[13px] font-black text-slate-800 leading-tight">Fresh & Premium</h4>
-                <p className="text-[10.5px] text-slate-400 font-bold mt-0.5">Only the finest ingredients</p>
-              </div>
-            </div>
-
-          </div>
+      <section className="relative z-20 max-w-[1280px] mx-auto px-3 min-[380px]:px-4 md:px-8 mb-8 select-none">
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6">
+          {[
+            {
+              title: "Same Day Delivery",
+              desc: "On time, every time",
+              icon: Truck,
+              bg: "bg-pink-50/60 hover:bg-pink-100/80",
+              text: "text-pink-500",
+              border: "border-pink-50/80",
+              shadow: "hover:shadow-pink-100/30"
+            },
+            {
+              title: "Midnight Delivery",
+              desc: "Because surprises matter",
+              icon: Clock,
+              bg: "bg-purple-50/60 hover:bg-purple-100/80",
+              text: "text-purple-600",
+              border: "border-purple-50/80",
+              shadow: "hover:shadow-purple-100/30"
+            },
+            {
+              title: "Fresh & Premium",
+              desc: "Only the finest ingredients",
+              icon: Sparkles,
+              bg: "bg-amber-50/60 hover:bg-amber-100/80",
+              text: "text-amber-500",
+              border: "border-amber-50/80",
+              shadow: "hover:shadow-amber-100/30"
+            }
+          ].map((item, idx) => {
+            const IconComponent = item.icon;
+            return (
+              <motion.div
+                key={idx}
+                whileHover={{ y: -4, scale: 1.02 }}
+                className={`flex flex-col md:flex-row items-center text-center md:text-left gap-1.5 sm:gap-3 md:gap-4 p-2.5 sm:p-4 md:px-6 md:py-5 rounded-[18px] sm:rounded-[24px] bg-white border ${item.border} shadow-[0_8px_25px_rgba(0,0,0,0.02)] hover:shadow-xl ${item.shadow} transition-all duration-300`}
+              >
+                <div className={`w-9 h-9 min-[380px]:w-10 min-[380px]:h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl ${item.bg} flex items-center justify-center ${item.text} shrink-0 shadow-inner transition-colors duration-300`}>
+                  <IconComponent className="w-4.5 h-4.5 sm:w-6 sm:h-6 stroke-[2.5]" />
+                </div>
+                <div className="min-w-0">
+                  <h4 className="text-[9px] min-[360px]:text-[10px] min-[400px]:text-[11px] sm:text-[13px] md:text-[14px] font-black text-slate-800 leading-tight tracking-tight">
+                    {item.title}
+                  </h4>
+                  <p className="text-[7.5px] min-[360px]:text-[8.5px] sm:text-[10px] md:text-[11px] text-slate-400 font-extrabold mt-0.5 leading-none sm:leading-normal line-clamp-1">
+                    {item.desc}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 
@@ -274,12 +433,12 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Scrollable list on mobile, clean grid on desktop */}
-        <div className="flex overflow-x-auto pb-6 pt-2 px-1 md:pb-0 md:grid md:grid-cols-6 gap-6 md:gap-8 no-scrollbar snap-x scroll-smooth">
+        {/* Beautiful responsive grid on all devices */}
+        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-4 sm:gap-6 md:gap-8 pt-2">
           {[
             { 
               name: "Chocolate", 
-              img: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&h=400&fit=crop", 
+              img: flavorChocolate, 
               textColor: "text-[#4E2E1E]",
               bgGrad: "bg-gradient-to-br from-[#FFF8F2] via-[#EAD0C0] to-[#CBA289]",
               glowColor: "bg-amber-800",
@@ -336,20 +495,20 @@ export default function Home() {
               key={idx}
               whileHover={{ y: -6 }}
               onClick={() => { playBtnTap(); navigate(`/shop?flavor=${flav.name}`); }}
-              className="snap-center shrink-0 flex flex-col items-center cursor-pointer select-none group"
+              className="flex flex-col items-center cursor-pointer select-none group w-full"
             >
-              <div className={`relative w-28 h-28 md:w-32 md:h-32 rounded-full flex items-center justify-center ${flav.bgGrad} p-1.5 shadow-[0_8px_25px_rgba(0,0,0,0.06)] ring-1 ring-slate-100 transition-all duration-300 group-hover:shadow-[0_12px_35px_rgba(0,0,0,0.12)] group-hover:scale-105`}>
+              <div className={`relative w-20 h-20 min-[400px]:w-24 min-[400px]:h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full flex items-center justify-center ${flav.bgGrad} p-1 md:p-1.5 shadow-[0_8px_25px_rgba(0,0,0,0.06)] ring-1 ring-slate-100 transition-all duration-300 group-hover:shadow-[0_12px_35px_rgba(0,0,0,0.12)] group-hover:scale-105`}>
                 <div className="w-[88%] h-[88%] rounded-full overflow-hidden shadow-inner relative z-10 bg-white">
                   <img src={flav.img} alt={flav.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" referrerPolicy="no-referrer" />
                   <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/30 pointer-events-none rounded-full" />
                 </div>
                 
                 <div className={`absolute -inset-0.5 rounded-full ${flav.glowColor} opacity-0 group-hover:opacity-10 transition-opacity duration-300 blur-sm`} />
-                <div className={`absolute bottom-0.5 left-1 w-5 h-5 rounded-full bg-gradient-to-br ${flav.gemLeft} border border-white shadow-md z-20 transition-transform duration-300 group-hover:scale-110`} />
-                <div className={`absolute bottom-2 right-0.5 w-4 h-4 rounded-full bg-gradient-to-br ${flav.gemRight} border border-white shadow-md z-20 transition-transform duration-300 group-hover:scale-115`} />
+                <div className={`absolute bottom-0.5 left-0.5 w-3.5 h-3.5 sm:w-5 sm:h-5 rounded-full bg-gradient-to-br ${flav.gemLeft} border border-white shadow-md z-20 transition-transform duration-300 group-hover:scale-110`} />
+                <div className={`absolute bottom-1.5 right-0.5 w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-gradient-to-br ${flav.gemRight} border border-white shadow-md z-20 transition-transform duration-300 group-hover:scale-115`} />
               </div>
               <div className="text-center mt-3">
-                <span className={`text-[13px] md:text-[14px] font-extrabold tracking-tight transition-colors group-hover:text-pink-500 ${flav.textColor}`}>
+                <span className={`text-[11px] min-[400px]:text-[12px] sm:text-[13px] md:text-[14px] font-extrabold tracking-tight text-center transition-colors group-hover:text-pink-500 line-clamp-1 ${flav.textColor}`}>
                   {flav.name}
                 </span>
               </div>
@@ -371,12 +530,12 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Scrollable list on mobile, clean grid on desktop */}
-        <div className="flex overflow-x-auto pb-6 pt-2 px-1 md:pb-0 md:grid md:grid-cols-6 gap-6 md:gap-8 no-scrollbar snap-x scroll-smooth">
+        {/* Beautiful responsive grid on all devices */}
+        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-4 sm:gap-6 md:gap-8 pt-2">
           {[
             { 
               name: "Birthday Cakes", 
-              img: "https://images.unsplash.com/photo-1535141192574-5d4897c13636?w=350&h=350&fit=crop", 
+              img: categoryBirthday, 
               textColor: "text-[#C84B7C]",
               bgGrad: "bg-gradient-to-br from-[#FFF0F3] via-[#FFD0DE] to-[#FFA1C2]",
               glowColor: "bg-pink-500",
@@ -386,7 +545,7 @@ export default function Home() {
             },
             { 
               name: "Anniversary Cakes", 
-              img: "https://images.unsplash.com/photo-1513135065346-a098a63a71ee?w=350&h=350&fit=crop", 
+              img: categoryAnniversary, 
               textColor: "text-[#B91C1C]",
               bgGrad: "bg-gradient-to-br from-[#FFF5F5] via-[#FFD6D6] to-[#FFA3A3]",
               glowColor: "bg-red-500",
@@ -396,7 +555,7 @@ export default function Home() {
             },
             { 
               name: "Photo Cakes", 
-              img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=350&h=350&fit=crop", 
+              img: categoryPhoto, 
               textColor: "text-[#0891B2]",
               bgGrad: "bg-gradient-to-br from-[#E6F8FA] via-[#BCEEF3] to-[#86E3EC]",
               glowColor: "bg-cyan-500",
@@ -406,7 +565,7 @@ export default function Home() {
             },
             { 
               name: "Custom Cakes", 
-              img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=350&h=350&fit=crop", 
+              img: categoryCustom, 
               textColor: "text-[#D9822B] font-bold",
               bgGrad: "bg-gradient-to-br from-[#FFFFF0] via-[#FFF2CC] to-[#FFE082]",
               glowColor: "bg-amber-500",
@@ -416,7 +575,7 @@ export default function Home() {
             },
             { 
               name: "Dessert Boxes", 
-              img: "https://images.unsplash.com/photo-1549417229-aa67d3263c09?w=350&h=350&fit=crop", 
+              img: categoryDessert, 
               textColor: "text-[#C2410C]",
               bgGrad: "bg-gradient-to-br from-[#FFF7ED] via-[#FED7AA] to-[#FDBA74]",
               glowColor: "bg-orange-500",
@@ -426,7 +585,7 @@ export default function Home() {
             },
             { 
               name: "Cupcakes", 
-              img: "https://images.unsplash.com/photo-1587314168485-3236d6710814?w=350&h=350&fit=crop", 
+              img: categoryCupcakes, 
               textColor: "text-[#1D4ED8]",
               bgGrad: "bg-gradient-to-br from-[#EFF6FF] via-[#DBEAFE] to-[#BFDBFE]",
               glowColor: "bg-blue-500",
@@ -439,20 +598,20 @@ export default function Home() {
               key={idx}
               whileHover={{ y: -6 }}
               onClick={() => { playBtnTap(); navigate(cat.route); }}
-              className="snap-center shrink-0 flex flex-col items-center cursor-pointer select-none group"
+              className="flex flex-col items-center cursor-pointer select-none group w-full"
             >
-              <div className={`relative w-28 h-28 md:w-32 md:h-32 rounded-full flex items-center justify-center ${cat.bgGrad} p-1.5 shadow-[0_8px_25px_rgba(0,0,0,0.06)] ring-1 ring-slate-100 transition-all duration-300 group-hover:shadow-[0_12px_35px_rgba(0,0,0,0.12)] group-hover:scale-105`}>
+              <div className={`relative w-20 h-20 min-[400px]:w-24 min-[400px]:h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full flex items-center justify-center ${cat.bgGrad} p-1 md:p-1.5 shadow-[0_8px_25px_rgba(0,0,0,0.06)] ring-1 ring-slate-100 transition-all duration-300 group-hover:shadow-[0_12px_35px_rgba(0,0,0,0.12)] group-hover:scale-105`}>
                 <div className="w-[88%] h-[88%] rounded-full overflow-hidden shadow-inner relative z-10 bg-white">
                   <img src={cat.img} alt={cat.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" referrerPolicy="no-referrer" />
                   <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/30 pointer-events-none rounded-full" />
                 </div>
                 
                 <div className={`absolute -inset-0.5 rounded-full ${cat.glowColor} opacity-0 group-hover:opacity-10 transition-opacity duration-300 blur-sm`} />
-                <div className={`absolute bottom-0.5 left-1 w-5 h-5 rounded-full bg-gradient-to-br ${cat.gemLeft} border border-white shadow-md z-20 transition-transform duration-300 group-hover:scale-110`} />
-                <div className={`absolute bottom-2 right-0.5 w-4 h-4 rounded-full bg-gradient-to-br ${cat.gemRight} border border-white shadow-md z-20 transition-transform duration-300 group-hover:scale-115`} />
+                <div className={`absolute bottom-0.5 left-0.5 w-3.5 h-3.5 sm:w-5 sm:h-5 rounded-full bg-gradient-to-br ${cat.gemLeft} border border-white shadow-md z-20 transition-transform duration-300 group-hover:scale-110`} />
+                <div className={`absolute bottom-1.5 right-0.5 w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-gradient-to-br ${cat.gemRight} border border-white shadow-md z-20 transition-transform duration-300 group-hover:scale-115`} />
               </div>
               <div className="text-center mt-3">
-                <span className={`text-[13px] md:text-[14px] font-extrabold tracking-tight transition-colors group-hover:text-pink-500 ${cat.textColor}`}>
+                <span className={`text-[11px] min-[400px]:text-[12px] sm:text-[13px] md:text-[14px] font-extrabold tracking-tight text-center transition-colors group-hover:text-pink-500 line-clamp-1 ${cat.textColor}`}>
                   {cat.name}
                 </span>
               </div>
@@ -480,15 +639,15 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Scrollable list on mobile, clean grid on desktop */}
-        <div className="flex overflow-x-auto pb-4 md:pb-0 md:grid md:grid-cols-5 gap-6 no-scrollbar snap-x scroll-smooth">
+        {/* Beautiful 2-column grid on mobile, 5-column on desktop */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6 pt-2">
           {[
             { 
               id: "bestseller-1", 
               name: "Chocolate Truffle", 
               price: 699, 
               rating: 4.9,
-              img: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=400&fit=crop", 
+              img: flavorChocolate, 
               tag: "Bestseller",
               bg: "bg-amber-50/40"
             },
@@ -497,7 +656,7 @@ export default function Home() {
               name: "Red Velvet Bliss", 
               price: 699, 
               rating: 4.9,
-              img: "https://images.unsplash.com/photo-1535141192574-5d4897c13636?w=400&h=400&fit=crop", 
+              img: flavorStrawberry, 
               tag: "Bestseller",
               bg: "bg-red-50/40"
             },
@@ -506,7 +665,7 @@ export default function Home() {
               name: "Butterscotch Crunch", 
               price: 699, 
               rating: 4.8,
-              img: "https://images.unsplash.com/photo-1508737027454-e6454ef45afd?w=400&h=400&fit=crop", 
+              img: flavorMango, 
               tag: "Bestseller",
               bg: "bg-yellow-50/40"
             },
@@ -515,7 +674,7 @@ export default function Home() {
               name: "Blueberry Cheesecake", 
               price: 749, 
               rating: 4.9,
-              img: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400&h=400&fit=crop", 
+              img: flavorBlueberry, 
               tag: "Premium Choice",
               bg: "bg-blue-50/40"
             },
@@ -524,7 +683,7 @@ export default function Home() {
               name: "Ferrero Rocher", 
               price: 799, 
               rating: 4.9,
-              img: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&h=400&fit=crop", 
+              img: flavorBlackForest, 
               tag: "Chef Signature",
               bg: "bg-amber-100/20"
             }
@@ -532,34 +691,34 @@ export default function Home() {
             <motion.div
               key={prod.id}
               whileHover={{ y: -8 }}
-              className={`snap-center shrink-0 min-w-[200px] w-[220px] md:w-auto ${prod.bg} border border-slate-100 rounded-[28px] overflow-hidden p-3 shadow-sm hover:shadow-lg transition-all duration-300 text-left flex flex-col justify-between`}
+              className={`w-full ${prod.bg} border border-slate-100 rounded-[20px] sm:rounded-[28px] overflow-hidden p-2.5 sm:p-3 shadow-sm hover:shadow-lg transition-all duration-300 text-left flex flex-col justify-between`}
             >
               <div>
-                <div className="relative aspect-square rounded-[22px] overflow-hidden mb-3.5 bg-slate-100">
+                <div className="relative aspect-square rounded-[16px] sm:rounded-[22px] overflow-hidden mb-2.5 sm:mb-3.5 bg-slate-100">
                   {prod.tag && (
-                    <span className="absolute top-2.5 left-2.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-extrabold text-[9px] uppercase tracking-wider px-3 py-1 rounded-full shadow-md z-10">
+                    <span className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-extrabold text-[7px] sm:text-[9px] uppercase tracking-wider px-2 py-0.5 sm:px-3 sm:py-1 rounded-full shadow-md z-10">
                       {prod.tag}
                     </span>
                   )}
                   <img src={prod.img} alt={prod.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                 </div>
 
-                <div className="px-1.5">
-                  <div className="flex items-center gap-1 text-amber-500 text-[11px] font-black mb-1">
-                    <Star className="w-3.5 h-3.5 fill-current" />
+                <div className="px-1">
+                  <div className="flex items-center gap-1 text-amber-500 text-[10px] sm:text-[11px] font-black mb-0.5 sm:mb-1">
+                    <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current" />
                     <span>{prod.rating}</span>
                   </div>
-                  <h3 className="font-black text-xs text-slate-800 uppercase tracking-wide line-clamp-1">{prod.name}</h3>
+                  <h3 className="font-black text-[11px] sm:text-xs text-slate-800 uppercase tracking-wide line-clamp-1">{prod.name}</h3>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-3.5 px-1.5 mt-2 border-t border-slate-50/85">
-                <span className="font-black text-sm text-slate-900">₹{prod.price}</span>
+              <div className="flex items-center justify-between pt-2 sm:pt-3.5 px-1 mt-2 border-t border-slate-50/85">
+                <span className="font-black text-xs sm:text-sm text-slate-900">₹{prod.price}</span>
                 <button 
                   onClick={() => { playBtnTap(); navigate(`/product/1`); }}
-                  className="w-8 h-8 rounded-full bg-white border border-slate-100 flex items-center justify-center text-pink-500 hover:bg-pink-500 hover:text-white transition-all shadow-sm active:scale-90"
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white border border-slate-100 flex items-center justify-center text-pink-500 hover:bg-pink-500 hover:text-white transition-all shadow-sm active:scale-90"
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
               </div>
             </motion.div>

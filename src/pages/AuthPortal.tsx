@@ -322,8 +322,9 @@ export default function AuthPortal() {
   const handleCompleteGoogleDetails = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading || !currentUser) return;
-    if (!phone || phone.trim().length !== 10) {
-      toast.error("Please enter a valid 10-digit mobile number.");
+    const cleanedPhone = phone.replace(/\D/g, '');
+    if (!phone || cleanedPhone.length < 10 || cleanedPhone.length > 13) {
+      toast.error("Please enter a valid phone number (10-13 digits).");
       return;
     }
     setLoading(true);

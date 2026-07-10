@@ -616,7 +616,7 @@ export default function Shop() {
                 />
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {filteredProducts.map((prod) => {
                   const inWish = wishlist.some(w => w.id === prod.id);
                   const inCompare = compareList.some(c => c.id === prod.id);
@@ -625,69 +625,73 @@ export default function Shop() {
                       layout
                       key={prod.id}
                       onClick={() => handleOpenQuickView(prod)}
-                      className="bg-white/50 backdrop-blur-md border border-white/80 rounded-[30px] overflow-hidden group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative cursor-pointer text-left"
+                      className="bg-white/50 backdrop-blur-md border border-white/80 rounded-[20px] sm:rounded-[30px] overflow-hidden group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative cursor-pointer text-left flex flex-col justify-between"
                     >
-                      {/* Photo Header */}
-                      <div className="relative h-48 overflow-hidden bg-slate-100 border-b border-slate-50">
-                        <img 
-                          src={prod.images[0]} 
-                          alt={prod.name} 
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60" />
+                      <div>
+                        {/* Photo Header */}
+                        <div className="relative h-36 xs:h-44 sm:h-48 overflow-hidden bg-slate-100 border-b border-slate-50">
+                          <img 
+                            src={prod.images[0]} 
+                            alt={prod.name} 
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60" />
 
-                        {/* Top corner actions */}
-                        <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-10">
-                          {/* Heart wishlist */}
-                          <button
-                            onClick={(e) => handleToggleWishlist(prod, e)}
-                            className="w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center text-slate-500 hover:text-pink-600 transition-transform active:scale-95"
-                          >
-                            <Heart className={`w-4.5 h-4.5 ${inWish ? 'text-pink-600 fill-current' : ''}`} />
-                          </button>
+                          {/* Top corner actions */}
+                          <div className="absolute top-2.5 right-2.5 flex flex-col gap-1.5 z-10">
+                            {/* Heart wishlist */}
+                            <button
+                              onClick={(e) => handleToggleWishlist(prod, e)}
+                              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center text-slate-500 hover:text-pink-600 transition-transform active:scale-95"
+                            >
+                              <Heart className={`w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 ${inWish ? 'text-pink-600 fill-current' : ''}`} />
+                            </button>
 
-                          {/* Spec Contrast */}
-                          <button
-                            onClick={(e) => handleToggleCompare(prod, e)}
-                            className={`w-8 h-8 rounded-full shadow-md flex items-center justify-center transition-transform active:scale-95 ${
-                              inCompare ? 'bg-indigo-600 text-white' : 'bg-white/90 text-slate-500 hover:text-indigo-600'
-                            }`}
-                            title="Add to Contrast Table"
-                          >
-                            <Maximize2 className="w-4 h-4" />
-                          </button>
+                            {/* Spec Contrast */}
+                            <button
+                              onClick={(e) => handleToggleCompare(prod, e)}
+                              className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full shadow-md flex items-center justify-center transition-transform active:scale-95 ${
+                                inCompare ? 'bg-indigo-600 text-white' : 'bg-white/90 text-slate-500 hover:text-indigo-600'
+                              }`}
+                              title="Add to Contrast Table"
+                            >
+                              <Maximize2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                            </button>
+                          </div>
+
+                          {/* Special flags */}
+                          <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10">
+                            {prod.isNew && (
+                              <span className="bg-purple-600 text-white text-[7px] sm:text-[8px] font-black tracking-widest uppercase px-1.5 py-0.5 rounded">
+                                New
+                              </span>
+                            )}
+                            {prod.isBestseller && (
+                              <span className="bg-pink-600 text-white text-[7px] sm:text-[8px] font-black tracking-widest uppercase px-1.5 py-0.5 rounded">
+                                Bestseller
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Star indicators */}
+                          <div className="absolute bottom-2.5 left-3 flex items-center gap-0.5 text-white z-10">
+                            <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current text-amber-400" />
+                            <span className="text-[10px] sm:text-xs font-black">{prod.rating || '4.8'}</span>
+                          </div>
                         </div>
 
-                        {/* Special flags */}
-                        <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
-                          {prod.isNew && (
-                            <span className="bg-purple-600 text-white text-[8px] font-black tracking-widest uppercase px-2 py-0.5 rounded-md">
-                              New
-                            </span>
-                          )}
-                          {prod.isBestseller && (
-                            <span className="bg-pink-600 text-white text-[8px] font-black tracking-widest uppercase px-2 py-0.5 rounded-md">
-                              Bestseller
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Star indicators */}
-                        <div className="absolute bottom-3 left-4 flex items-center gap-0.5 text-white z-10">
-                          <Star className="w-3.5 h-3.5 fill-current text-amber-400" />
-                          <span className="text-xs font-black">{prod.rating || '4.8'}</span>
+                        {/* Info core */}
+                        <div className="p-3 sm:p-5 space-y-1 sm:space-y-2">
+                          <h3 className="font-black text-slate-800 text-[11px] sm:text-sm group-hover:text-pink-600 transition-colors line-clamp-1 uppercase tracking-wide">{prod.name}</h3>
+                          <p className="text-slate-500 text-[10px] sm:text-[11px] leading-normal sm:leading-relaxed line-clamp-2 h-7 sm:h-8 font-medium">{prod.description}</p>
                         </div>
                       </div>
 
-                      {/* Info core */}
-                      <div className="p-5 space-y-2">
-                        <h3 className="font-black text-slate-800 text-sm group-hover:text-pink-600 transition-colors line-clamp-1">{prod.name}</h3>
-                        <p className="text-slate-500 text-[11px] leading-relaxed line-clamp-2 h-8 font-medium">{prod.description}</p>
-                        
-                        <div className="flex items-center justify-between pt-3 border-t border-slate-50">
+                      <div className="p-3 sm:p-5 pt-0">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2.5 sm:pt-3 border-t border-slate-50">
                           <div className="space-y-0.5 text-left">
-                            <span className="text-[10px] text-slate-400 block font-bold uppercase tracking-wider leading-none">Net Cost</span>
-                            <span className="text-sm font-mono font-black text-slate-900">₹{prod.price}</span>
+                            <span className="text-[8px] sm:text-[10px] text-slate-400 block font-bold uppercase tracking-wider leading-none">Net Cost</span>
+                            <span className="text-xs sm:text-sm font-mono font-black text-slate-900">₹{prod.price}</span>
                           </div>
                           
                           <button
@@ -695,7 +699,7 @@ export default function Shop() {
                               e.stopPropagation();
                               handleOpenQuickView(prod);
                             }}
-                            className="px-4 py-2 bg-pink-50 hover:bg-pink-100 border border-pink-100 text-pink-600 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all"
+                            className="w-full sm:w-auto px-2 sm:px-4 py-2 bg-pink-50 hover:bg-pink-100 border border-pink-100 text-pink-600 text-[8px] sm:text-[10px] font-black uppercase tracking-wider rounded-xl transition-all text-center"
                           >
                             <span>Quick Add</span>
                           </button>
