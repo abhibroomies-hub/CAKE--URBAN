@@ -11,6 +11,7 @@ import { Loader2 } from 'lucide-react';
 import { ThemeProvider } from './lib/theme';
 import { seedProducts } from './lib/seed';
 import { NotFoundView, ServerErrorView } from './components/FeedbackStates';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 // Lazy load all pages for peak performance
 const Home = lazy(() => import('./pages/Home'));
@@ -142,9 +143,11 @@ export default function App() {
       <Router>
         <ScrollToTop />
         <Layout>
-          <Suspense fallback={<PageLoader />}>
-            <AnimatedRoutes />
-          </Suspense>
+          <ErrorBoundary>
+            <Suspense fallback={<PageLoader />}>
+              <AnimatedRoutes />
+            </Suspense>
+          </ErrorBoundary>
         </Layout>
       </Router>
     </ThemeProvider>

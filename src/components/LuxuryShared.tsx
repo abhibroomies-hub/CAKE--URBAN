@@ -28,7 +28,7 @@ export function LuxuryConcierge() {
 
   const handleWhatsApp = () => {
     const text = encodeURIComponent("Hello CakeUrban Concierge, I would like to inquire about a luxury bespoke designer cake.");
-    window.open(`https://wa.me/919999999999?text=${text}`, '_blank');
+    window.open(`https://wa.me/917318531953?text=${text}`, '_blank');
   };
 
   return (
@@ -65,7 +65,7 @@ export function LuxuryConcierge() {
               </button>
 
               <a 
-                href="tel:+919999999999"
+                href="tel:+917318531953"
                 className="w-full bg-slate-950 hover:bg-slate-900 text-white text-xs font-bold uppercase tracking-widest py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
               >
                 <PhoneCall className="w-4 h-4" />
@@ -540,7 +540,7 @@ export function AICakeRecommendation({ category }: AIRecommendProps) {
                   <button 
                     onClick={() => {
                       const text = encodeURIComponent(`Hi, I am interested in ordering the AI generated Bespoke cake: "${recommendation.name}". Details: ${recommendation.flavorCombo}`);
-                      window.open(`https://wa.me/919999999999?text=${text}`, '_blank');
+                      window.open(`https://wa.me/917318531953?text=${text}`, '_blank');
                     }}
                     className="px-4 bg-slate-900 border border-slate-800 hover:bg-slate-850 text-slate-300 rounded-xl transition-colors flex items-center justify-center"
                     title="Discuss with Event Planner"

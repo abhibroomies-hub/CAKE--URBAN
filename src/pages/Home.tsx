@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Star, 
@@ -49,17 +49,25 @@ import flavorChocolate from '../assets/images/regenerated_image_1783601216873.pn
 // FLOATING DECORATIONS WITH PARALLAX MOUSE EFFECT
 // ---------------------------------------------------------
 function InteractiveFloatingBackground() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let frameId: number;
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20,
+      cancelAnimationFrame(frameId);
+      frameId = requestAnimationFrame(() => {
+        if (!containerRef.current) return;
+        const x = (e.clientX / window.innerWidth - 0.5) * 20;
+        const y = (e.clientY / window.innerHeight - 0.5) * 20;
+        containerRef.current.style.setProperty('--mouse-x', `${x}px`);
+        containerRef.current.style.setProperty('--mouse-y', `${y}px`);
       });
     };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
   const elements = [
@@ -70,7 +78,7 @@ function InteractiveFloatingBackground() {
   ];
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 select-none">
+    <div ref={containerRef} className="absolute inset-0 overflow-hidden pointer-events-none z-0 select-none">
       {elements.map((el) => (
         <motion.div
           key={el.id}
@@ -79,7 +87,7 @@ function InteractiveFloatingBackground() {
             top: el.top,
             left: el.left,
             fontSize: `${el.size}px`,
-            transform: `translate(${mousePos.x * el.factor}px, ${mousePos.y * el.factor}px)`,
+            transform: `translate(calc(var(--mouse-x, 0px) * ${el.factor}), calc(var(--mouse-y, 0px) * ${el.factor}))`,
           }}
           animate={{
             y: [0, 10, 0],
@@ -729,32 +737,32 @@ export default function Home() {
       {/* ---------------------------------------------------------
           SECTION 4: MIDNIGHT DELIVERY BANNER
           --------------------------------------------------------- */}
-      <section className="relative z-10 py-8 px-6 max-w-[1280px] mx-auto select-none">
-        <div className="rounded-[32px] md:rounded-[40px] bg-gradient-to-r from-[#4E148C] via-[#6130B0] to-[#8C34C0] text-white p-8 md:p-12 overflow-hidden relative flex flex-col lg:flex-row justify-between items-center gap-8 shadow-xl">
+      <section className="relative z-10 py-4 sm:py-8 px-4 md:px-8 max-w-[1280px] mx-auto select-none">
+        <div className="rounded-[28px] md:rounded-[40px] bg-gradient-to-r from-[#4E148C] via-[#6130B0] to-[#8C34C0] text-white p-5 sm:p-8 md:p-12 overflow-hidden relative flex flex-row justify-between items-center gap-3 sm:gap-6 md:gap-12 shadow-xl">
           {/* Sparkles, clock decor background */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.12)_0%,transparent_75%)] opacity-30 pointer-events-none" />
 
-          <div className="max-w-[480px] text-center lg:text-left space-y-4 relative z-10">
-            <h2 className="text-3xl md:text-4xl font-black leading-tight tracking-tight text-white">
+          <div className="w-[58%] text-left space-y-2 md:space-y-4 relative z-10">
+            <h2 className="text-[14px] min-[360px]:text-[16px] min-[400px]:text-[18px] sm:text-2xl md:text-3xl lg:text-4xl font-black leading-tight tracking-tight text-white">
               Surprise Your Loved Ones with <br className="hidden md:inline" />
               Midnight Delivery
             </h2>
-            <div className="pt-2 flex justify-center lg:justify-start">
+            <div className="pt-1 flex justify-start">
               <button 
                 onClick={() => { playBtnTap(); navigate('/shop'); }}
-                className="h-12 px-8 rounded-full bg-[#FFC72C] hover:bg-[#E2B120] text-slate-900 font-extrabold text-[14px] tracking-wider uppercase shadow-[0_8px_20px_rgba(255,199,44,0.3)] active:scale-95 transition-all duration-200"
+                className="h-7 sm:h-11 md:h-13 px-3 sm:px-8 rounded-full bg-[#FFC72C] hover:bg-[#E2B120] text-slate-900 font-extrabold text-[8px] sm:text-[11px] md:text-xs tracking-wider uppercase shadow-[0_8px_20px_rgba(255,199,44,0.3)] active:scale-95 transition-all duration-200 cursor-pointer"
               >
                 Order Now
               </button>
             </div>
           </div>
 
-          <div className="relative z-10 w-full lg:w-auto shrink-0 flex justify-center items-center">
+          <div className="w-[38%] relative z-10 shrink-0 flex justify-center items-center">
             {/* Elegant surprise cake on white tray / plate */}
             <img 
               src={midnightImage} 
               alt="Midnight surprise" 
-              className="w-52 h-52 md:w-64 md:h-64 object-cover rounded-[24px] shadow-2xl scale-103 -rotate-2 hover:rotate-0 transition-transform duration-500"
+              className="w-full max-w-[240px] aspect-square object-cover rounded-[14px] sm:rounded-[24px] shadow-2xl scale-103 -rotate-2 hover:rotate-0 transition-transform duration-500"
             />
           </div>
         </div>

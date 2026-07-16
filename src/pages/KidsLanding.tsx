@@ -574,7 +574,7 @@ export default function KidsLanding() {
                 <button 
                   onClick={() => {
                     const text = encodeURIComponent(`Hi, I am interested in ordering the custom Kid's character package: "${activeChar.title}". Character: ${selectedCharacter}, Color Theme: ${selectedColor}`);
-                    window.open(`https://wa.me/919999999999?text=${text}`, '_blank');
+                    window.open(`https://wa.me/917318531953?text=${text}`, '_blank');
                   }}
                   className="px-5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl transition-colors flex items-center justify-center"
                 >

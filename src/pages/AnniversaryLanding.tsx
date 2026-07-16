@@ -677,7 +677,7 @@ export default function AnniversaryLanding() {
                       <button 
                         onClick={() => {
                           const text = encodeURIComponent(`Hi, I am interested in ordering the custom Love Story cake generated in the atelier for ${partner1} & ${partner2}. Details: ${generatedStoryCake.flavorCombo}`);
-                          window.open(`https://wa.me/919999999999?text=${text}`, '_blank');
+                          window.open(`https://wa.me/917318531953?text=${text}`, '_blank');
                         }}
                         className="px-4.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 rounded-xl transition-colors flex items-center justify-center"
                       >
