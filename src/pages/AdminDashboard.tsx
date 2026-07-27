@@ -1863,7 +1863,164 @@ export default function AdminDashboard() {
   const CurrentTabIcon = currentTabInfo.icon;
 
   return (
-    <div className="container mx-auto px-6 md:px-10 py-12 md:py-24 min-h-screen bg-transparent text-white font-sans selection:bg-[#DFB15B]/30 select-none">
+    <div className="admin-dashboard-container container mx-auto px-6 md:px-10 py-12 md:py-24 min-h-screen bg-transparent font-sans selection:bg-[var(--theme-accent-light)] select-none">
+      <style>{`
+        /* Dynamic Atelier Curator Theme Engine - Modern Luxury SaaS */
+        .admin-dashboard-container {
+          --dash-bg: ${activeTheme.bg};
+          --dash-card: ${activeTheme.card};
+          --dash-card-hover: ${activeTheme.cardHover};
+          --dash-border: ${activeTheme.border};
+          --dash-text: ${activeTheme.text};
+          --dash-text-muted: ${activeTheme.textMuted};
+          --dash-accent: ${activeTheme.accent};
+          --dash-accent-light: ${activeTheme.accentLight};
+          --dash-contrast: ${activeTheme.contrast};
+          --dash-glass: ${activeTheme.glass};
+        }
+
+        .admin-dashboard-container,
+        .admin-dashboard-container div,
+        .admin-dashboard-container p,
+        .admin-dashboard-container h1,
+        .admin-dashboard-container h2,
+        .admin-dashboard-container h3,
+        .admin-dashboard-container h4,
+        .admin-dashboard-container h5,
+        .admin-dashboard-container h6,
+        .admin-dashboard-container label,
+        .admin-dashboard-container span {
+          color: var(--dash-text) !important;
+        }
+
+        .admin-dashboard-container .text-\\[\\#DFB15B\\],
+        .admin-dashboard-container .text-amber-500,
+        .admin-dashboard-container .text-pink-500,
+        .admin-dashboard-container .text-[#DFB15B],
+        .admin-dashboard-container .text-[#DFB15B]\\/80,
+        .admin-dashboard-container .text-[#DFB15B]\\/75 {
+          color: var(--dash-accent) !important;
+        }
+
+        .admin-dashboard-container .text-white\\/70,
+        .admin-dashboard-container .text-[#FFFDFB]\\/60,
+        .admin-dashboard-container .text-white\\/60,
+        .admin-dashboard-container .text-white\\/50,
+        .admin-dashboard-container .text-white\\/40,
+        .admin-dashboard-container .text-[#FFFDFB]\\/40,
+        .admin-dashboard-container .text-white\\/30,
+        .admin-dashboard-container .text-white\\/35 {
+          color: var(--dash-text-muted) !important;
+        }
+
+        /* Card backgrounds */
+        .admin-dashboard-container .bg-\\[\\#2C130E\\]\\/95,
+        .admin-dashboard-container .bg-\\[\\#140603\\]\\/80,
+        .admin-dashboard-container .bg-\\[\\#26130F\\]\\/45,
+        .admin-dashboard-container .bg-\\[\\#2d150f\\],
+        .admin-dashboard-container .bg-\\[\\#140603\\],
+        .admin-dashboard-container .bg-\\[\\#140603\\]\\/60,
+        .admin-dashboard-container .bg-\\[\\#140603\\]\\/40,
+        .admin-dashboard-container .bg-\\[\\#26130F\\]\\/90,
+        .admin-dashboard-container .bg-black\\/40,
+        .admin-dashboard-container .bg-[#26130F]\\/45,
+        .admin-dashboard-container .bg-slate-900,
+        .admin-dashboard-container .bg-emerald-950\\/10,
+        .admin-dashboard-container .bg-[#140603]\\/80,
+        .admin-dashboard-container .bg-[#2d150f],
+        .admin-dashboard-container .bg-[#26130F],
+        .admin-dashboard-container .bg-[#26130F]\\/90 {
+          background: var(--dash-glass) !important;
+          background-color: var(--dash-card) !important;
+          backdrop-filter: blur(20px) !important;
+          -webkit-backdrop-filter: blur(20px) !important;
+        }
+
+        /* Borders override */
+        .admin-dashboard-container .border-\\[\\#DFB15B\\]\\/20,
+        .admin-dashboard-container .border-\\[\\#DFB15B\\]\\/15,
+        .admin-dashboard-container .border-\\[\\#DFB15B\\]\\/30,
+        .admin-dashboard-container .border-\\[\\#DFB15B\\]\\/10,
+        .admin-dashboard-container .border-white\\/10,
+        .admin-dashboard-container .border-white\\/5,
+        .admin-dashboard-container .border-pink-100 {
+          border-color: var(--dash-border) !important;
+        }
+
+        /* Buttons override */
+        .admin-dashboard-container .bg-\\[\\#DFB15B\\],
+        .admin-dashboard-container .bg-[#DFB15B] {
+          background-color: var(--dash-accent) !important;
+          color: var(--dash-contrast) !important;
+          border: none !important;
+        }
+
+        .admin-dashboard-container .bg-\\[\\#DFB15B\\]:hover,
+        .admin-dashboard-container .bg-[#DFB15B]:hover {
+          background-color: var(--dash-accent) !important;
+          opacity: 0.9 !important;
+          color: var(--dash-contrast) !important;
+        }
+
+        /* SVGs trace color */
+        .admin-dashboard-container svg path[stroke="#DFB15B"] {
+          stroke: var(--dash-accent) !important;
+        }
+        .admin-dashboard-container svg circle[stroke="#DFB15B"] {
+          stroke: var(--dash-accent) !important;
+        }
+        .admin-dashboard-container svg circle[fill="#140603"] {
+          fill: var(--dash-card) !important;
+        }
+        .admin-dashboard-container svg defs stop[stopColor="#DFB15B"] {
+          stop-color: var(--dash-accent) !important;
+        }
+
+        /* Badges & custom elements */
+        .admin-dashboard-container .bg-\\[\\#DFB15B\\]\\/10 {
+          background-color: var(--dash-accent-light) !important;
+          color: var(--dash-accent) !important;
+          border-color: var(--dash-border) !important;
+        }
+
+        /* Text inside golden buttons */
+        .admin-dashboard-container .text-\\[\\#140603\\],
+        .admin-dashboard-container .text-[#140603] {
+          color: var(--dash-contrast) !important;
+        }
+
+        .admin-dashboard-container .border-white\\/10 {
+          border-color: var(--dash-border) !important;
+        }
+
+        /* Input fields */
+        .admin-dashboard-container input,
+        .admin-dashboard-container textarea,
+        .admin-dashboard-container select {
+          background-color: var(--dash-card) !important;
+          border-color: var(--dash-border) !important;
+          color: var(--dash-text) !important;
+        }
+        .admin-dashboard-container input::placeholder,
+        .admin-dashboard-container textarea::placeholder {
+          color: var(--dash-text-muted) !important;
+          opacity: 0.5;
+        }
+
+        /* Active Sidebar button */
+        .admin-dashboard-container button.bg-\\[\\#DFB15B\\],
+        .admin-dashboard-container button.bg-[#DFB15B] {
+          background-color: var(--dash-accent) !important;
+          color: var(--dash-contrast) !important;
+          box-shadow: 0 8px 30px var(--dash-accent-light) !important;
+        }
+
+        /* Testimonials and customer reviews ratings */
+        .admin-dashboard-container .text-yellow-400,
+        .admin-dashboard-container .text-amber-400 {
+          color: var(--dash-accent) !important;
+        }
+      `}</style>
       
       <SEO 
         title="Admin Atelier Panel - Cake Urban"
@@ -1873,13 +2030,13 @@ export default function AdminDashboard() {
       {/* HEADER BANNER */}
       <div className="flex flex-col lg:flex-row items-center lg:items-end justify-between gap-10 mb-16 md:mb-20">
         <div className="space-y-4 text-center lg:text-left w-full lg:w-auto">
-            <div className="inline-block bg-[#DFB15B]/10 text-[#DFB15B] px-4 py-1.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase mb-1 border border-[#DFB15B]/20">
+            <div className="inline-block px-4 py-1.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase mb-1" style={{ backgroundColor: 'var(--theme-accent-light)', color: 'var(--theme-accent)', border: '1px solid var(--theme-border)' }}>
               Curator Station
             </div>
-            <h1 className="text-4xl md:text-6xl font-display font-black text-white tracking-tighter leading-none">
-              Artisan <span className="italic font-serif font-light text-[#DFB15B]">Control Panel.</span>
+            <h1 className="text-4xl md:text-6xl font-display font-black tracking-tighter leading-none" style={{ color: 'var(--theme-text)' }}>
+              Artisan <span className="italic font-serif font-light" style={{ color: 'var(--theme-accent)' }}>Control Panel.</span>
             </h1>
-            <p className="text-xs text-[#FFFDFB]/60 max-w-xl font-medium italic mt-1 leading-relaxed">
+            <p className="text-xs max-w-xl font-medium italic mt-1 leading-relaxed" style={{ color: 'var(--theme-text-muted)' }}>
               Boutique Supervisor portal. Manage active baking queues, moderate feedback, and utilize the advanced Gemini AI Text Spec Builder to instant draft creations.
             </p>
         </div>
@@ -1887,9 +2044,10 @@ export default function AdminDashboard() {
         {activeTab !== 'add-product' && activeTab !== 'edit-product' ? (
           <Button 
             onClick={() => setActiveTab('add-product')}
-            className="w-full lg:w-auto rounded-[20px] h-14 px-8 bg-[#DFB15B] hover:bg-white text-[#140603] text-[10px] font-black uppercase tracking-[0.2em] gap-3 shadow-[0_4px_25px_rgba(223,177,91,0.25)] transition-all cursor-pointer grow-0 shrink-0"
+            className="w-full lg:w-auto rounded-[20px] h-14 px-8 text-[10px] font-black uppercase tracking-[0.2em] gap-3 transition-all cursor-pointer grow-0 shrink-0 shadow-lg"
+            style={{ backgroundColor: 'var(--theme-accent)', color: 'var(--theme-contrast)' }}
           >
-            <Sparkles className="w-4 h-4 animate-pulse text-[#140603]" /> Add New Cake
+            <Sparkles className="w-4 h-4 animate-pulse" style={{ color: 'var(--theme-contrast)' }} /> Add New Cake
           </Button>
         ) : (
           <Button 
@@ -1898,7 +2056,8 @@ export default function AdminDashboard() {
               setActiveTab('products');
             }}
             variant="outline"
-            className="w-full lg:w-auto rounded-[20px] h-14 px-8 border-white/10 text-white hover:bg-white/5 text-[10px] font-black uppercase tracking-[0.2em] gap-2 cursor-pointer grow-0 shrink-0"
+            className="w-full lg:w-auto rounded-[20px] h-14 px-8 text-[10px] font-black uppercase tracking-[0.2em] gap-2 cursor-pointer grow-0 shrink-0"
+            style={{ borderColor: 'var(--theme-border)', color: 'var(--theme-text)' }}
           >
             <ArrowLeft className="w-4 h-4" /> Back to Operations
           </Button>
@@ -1910,13 +2069,13 @@ export default function AdminDashboard() {
         <div className="w-full lg:grid lg:grid-cols-12 lg:gap-8 xl:gap-10 lg:items-start relative z-10">
           
           {/* DESKTOP STABLE LEFT SIDEBAR */}
-          <div className="hidden lg:flex lg:col-span-4 xl:col-span-3 flex-col gap-6 sticky top-28 bg-[#2C130E]/95 backdrop-blur-xl border border-[#DFB15B]/20 rounded-[32px] p-5 xl:p-6 shadow-2xl z-20 text-left h-auto w-full items-start">
-            <div className="space-y-1 w-full pb-3 select-none border-b border-white/10">
-              <div className="inline-block bg-[#DFB15B]/10 text-[#DFB15B] px-2.5 py-1 rounded-full text-[8.5px] font-black tracking-[0.2em] uppercase mb-1 border border-[#DFB15B]/15">
+          <div className="hidden lg:flex lg:col-span-4 xl:col-span-3 flex-col gap-6 sticky top-28 rounded-[32px] p-5 xl:p-6 shadow-2xl z-20 text-left h-auto w-full items-start" style={{ background: 'var(--theme-bg-glass)', backdropFilter: 'blur(16px)', border: '1px solid var(--theme-border)' }}>
+            <div className="space-y-1 w-full pb-3 select-none" style={{ borderBottom: '1px solid var(--theme-border)' }}>
+              <div className="inline-block px-2.5 py-1 rounded-full text-[8.5px] font-black tracking-[0.2em] uppercase mb-1" style={{ backgroundColor: 'var(--theme-accent-light)', color: 'var(--theme-accent)', border: '1px solid var(--theme-border)' }}>
                 Atelier System
               </div>
-              <h3 className="text-xl font-display font-black text-white tracking-tight leading-none pt-0.5">Control Panel</h3>
-              <p className="text-[10px] text-[#FFFDFB]/40 font-semibold italic pt-1 leading-normal">Cake Urban Boutiques</p>
+              <h3 className="text-xl font-display font-black tracking-tight leading-none pt-0.5" style={{ color: 'var(--theme-text)' }}>Control Panel</h3>
+              <p className="text-[10px] font-semibold italic pt-1 leading-normal" style={{ color: 'var(--theme-text-muted)' }}>Cake Urban Boutiques</p>
             </div>
 
             <div className="flex flex-col gap-2 w-full">
@@ -1928,13 +2087,14 @@ export default function AdminDashboard() {
                     key={tab.value}
                     type="button"
                     onClick={() => setActiveTab(tab.value)}
-                    className={`w-full justify-start rounded-2xl px-5 py-4 font-black text-[10px] uppercase tracking-wider transition-all duration-300 flex items-center gap-3 whitespace-nowrap cursor-pointer text-left border-0 ${
-                      isSelected 
-                        ? 'bg-[#DFB15B] text-[#140603] shadow-[0_8px_30px_rgba(223,177,91,0.25)] scale-[1.02]' 
-                        : 'text-white/70 hover:text-white hover:bg-white/5 bg-transparent'
-                    }`}
+                    className="w-full justify-start rounded-2xl px-5 py-4 font-black text-[10px] uppercase tracking-wider transition-all duration-300 flex items-center gap-3 whitespace-nowrap cursor-pointer text-left border-0"
+                    style={{
+                      backgroundColor: isSelected ? 'var(--theme-accent)' : 'transparent',
+                      color: isSelected ? 'var(--theme-contrast)' : 'var(--theme-text-muted)',
+                      boxShadow: isSelected ? '0 8px 30px var(--theme-accent-light)' : 'none'
+                    }}
                   >
-                    <TabIcon className={`w-4 h-4 shrink-0 transition-colors ${isSelected ? 'text-[#140603]' : 'text-[#DFB15B]'}`} />
+                    <TabIcon className="w-4 h-4 shrink-0 transition-colors" style={{ color: isSelected ? 'var(--theme-contrast)' : 'var(--theme-accent)' }} />
                     <span className="truncate">{tab.label}</span>
                   </button>
                 );
@@ -1947,14 +2107,14 @@ export default function AdminDashboard() {
             
             {/* MOBILE COMPACT 3-DOT DROPDOWN SWITCHER BAR */}
             <div className="lg:hidden w-full relative mb-10 select-none z-30">
-              <div className="bg-[#26130F]/90 backdrop-blur-md border border-[#DFB15B]/20 px-5 py-4 rounded-[24px] flex items-center justify-between shadow-xl">
+              <div className="px-5 py-4 rounded-[24px] flex items-center justify-between shadow-xl" style={{ background: 'var(--theme-bg-glass)', backdropFilter: 'blur(16px)', border: '1px solid var(--theme-border)' }}>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#DFB15B]/15 border border-[#DFB15B]/25 flex items-center justify-center text-[#DFB15B] shrink-0">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: 'var(--theme-accent-light)', border: '1px solid var(--theme-border)', color: 'var(--theme-accent)' }}>
                     <CurrentTabIcon className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="text-[8px] font-black uppercase tracking-widest text-[#DFB15B]/75 block">Viewing Stage</span>
-                    <h3 className="font-display font-black text-sm text-[#FFFDFB] leading-tight mt-0.5">
+                    <span className="text-[8px] font-black uppercase tracking-widest block" style={{ color: 'var(--theme-accent)' }}>Viewing Stage</span>
+                    <h3 className="font-display font-black text-sm leading-tight mt-0.5" style={{ color: 'var(--theme-text)' }}>
                       {currentTabInfo.label}
                     </h3>
                   </div>
@@ -1963,10 +2123,11 @@ export default function AdminDashboard() {
                 <Button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                   variant="ghost"
-                  className="w-10 h-10 p-0 rounded-full border border-white/10 hover:bg-white/5 text-[#DFB15B] flex items-center justify-center shrink-0 active:scale-95 transition-all"
+                  className="w-10 h-10 p-0 rounded-full flex items-center justify-center shrink-0 active:scale-95 transition-all"
+                  style={{ border: '1px solid var(--theme-border)', color: 'var(--theme-accent)' }}
                   id="mobile-3dot-trigger"
                 >
-                  <MoreVertical className="w-5 h-5 text-[#DFB15B]" />
+                  <MoreVertical className="w-5 h-5" />
                 </Button>
               </div>
 
@@ -1974,17 +2135,18 @@ export default function AdminDashboard() {
               <AnimatePresence>
                 {mobileMenuOpen && (
                   <>
-                    <div className="fixed inset-0 bg-[#140603]/40 backdrop-blur-sm z-30" onClick={() => setMobileMenuOpen(false)} />
+                    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-30" onClick={() => setMobileMenuOpen(false)} />
                     
                     <motion.div
                       initial={{ opacity: 0, y: 12, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 12, scale: 0.95 }}
                       transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="absolute right-0 top-[68px] w-72 bg-[#2d150f] border border-[#DFB15B]/30 rounded-[28px] p-3 shadow-[0_25px_60px_rgba(0,0,0,0.8)] z-40 text-left space-y-1.5"
+                      className="absolute right-0 top-[68px] w-72 rounded-[28px] p-3 shadow-[0_25px_60px_rgba(0,0,0,0.4)] z-40 text-left space-y-1.5"
+                      style={{ background: 'var(--theme-card)', border: '1px solid var(--theme-border)' }}
                     >
-                      <div className="px-4 py-2.5 border-b border-white/10">
-                        <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[#DFB15B] block">Atelier Modules</span>
+                      <div className="px-4 py-2.5" style={{ borderBottom: '1px solid var(--theme-border)' }}>
+                        <span className="text-[9px] font-black uppercase tracking-[0.2em] block" style={{ color: 'var(--theme-accent)' }}>Atelier Modules</span>
                       </div>
                       
                       <div className="py-1 space-y-1 max-h-[360px] overflow-y-auto no-scrollbar">
@@ -1998,13 +2160,13 @@ export default function AdminDashboard() {
                                 setActiveTab(tab.value);
                                 setMobileMenuOpen(false);
                               }}
-                              className={`w-full text-left rounded-xl px-4 py-3.5 transition-all duration-200 flex items-center gap-3 font-bold text-[11px] uppercase tracking-wider ${
-                                isSelected 
-                                  ? 'bg-[#DFB15B] text-[#140603] font-black shadow-md' 
-                                  : 'text-white/80 hover:bg-white/5 hover:text-white bg-transparent'
-                              }`}
+                              className="w-full text-left rounded-xl px-4 py-3.5 transition-all duration-200 flex items-center gap-3 font-bold text-[11px] uppercase tracking-wider"
+                              style={{
+                                backgroundColor: isSelected ? 'var(--theme-accent)' : 'transparent',
+                                color: isSelected ? 'var(--theme-contrast)' : 'var(--theme-text-muted)'
+                              }}
                             >
-                              <TabIcon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-[#140603]' : 'text-[#DFB15B]'}`} />
+                              <TabIcon className="w-4 h-4 shrink-0" style={{ color: isSelected ? 'var(--theme-contrast)' : 'var(--theme-accent)' }} />
                               <span className="truncate">{tab.label}</span>
                             </button>
                           );

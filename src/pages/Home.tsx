@@ -21,29 +21,29 @@ import { toast } from 'sonner';
 import { playSuccessChime, playBtnTap } from '../lib/sound';
 import { useNavigate } from 'react-router-dom';
 
-import instagramImage1 from '../assets/images/regenerated_image_1783517220364.png';
-import instagramImage2 from '../assets/images/regenerated_image_1783517209820.png';
-import instagramImage3 from '../assets/images/regenerated_image_1783517212420.png';
-import instagramImage4 from '../assets/images/regenerated_image_1783517215080.png';
-import instagramImage5 from '../assets/images/regenerated_image_1783517217853.png';
+import instagramImage1 from '../assets/images/regenerated_image_1783517220364.webp';
+import instagramImage2 from '../assets/images/regenerated_image_1783517209820.webp';
+import instagramImage3 from '../assets/images/regenerated_image_1783517212420.webp';
+import instagramImage4 from '../assets/images/regenerated_image_1783517215080.webp';
+import instagramImage5 from '../assets/images/regenerated_image_1783517217853.webp';
 
-import heroImage from '../assets/images/regenerated_image_1783519200304.png';
-import heroBgImage from '../assets/images/regenerated_image_1783519203025.png';
-import flavorStrawberry from '../assets/images/regenerated_image_1783519206969.png';
-import flavorPistachio from '../assets/images/regenerated_image_1783519209426.png';
-import flavorMango from '../assets/images/regenerated_image_1783519211943.png';
-import flavorBlueberry from '../assets/images/regenerated_image_1783519214755.png';
-import flavorBlackForest from '../assets/images/regenerated_image_1783519217409.png';
-import midnightImage from '../assets/images/regenerated_image_1783520153768.png';
+import heroImage from '../assets/images/regenerated_image_1783519200304.webp';
+import heroBgImage from '../assets/images/regenerated_image_1783519203025.webp';
+import flavorStrawberry from '../assets/images/regenerated_image_1783519206969.webp';
+import flavorPistachio from '../assets/images/regenerated_image_1783519209426.webp';
+import flavorMango from '../assets/images/regenerated_image_1783519211943.webp';
+import flavorBlueberry from '../assets/images/regenerated_image_1783519214755.webp';
+import flavorBlackForest from '../assets/images/regenerated_image_1783519217409.webp';
+import midnightImage from '../assets/images/regenerated_image_1783520153768.webp';
 
 // Newly regenerated category and flavor images
-import categoryBirthday from '../assets/images/regenerated_image_1783601219648.png';
-import categoryAnniversary from '../assets/images/regenerated_image_1783601222157.png';
-import categoryPhoto from '../assets/images/regenerated_image_1783601224998.png';
-import categoryCustom from '../assets/images/regenerated_image_1783601227410.png';
-import categoryDessert from '../assets/images/regenerated_image_1783601230131.png';
-import categoryCupcakes from '../assets/images/regenerated_image_1783601232735.png';
-import flavorChocolate from '../assets/images/regenerated_image_1783601216873.png';
+import categoryBirthday from '../assets/images/regenerated_image_1783601219648.webp';
+import categoryAnniversary from '../assets/images/regenerated_image_1783601222157.webp';
+import categoryPhoto from '../assets/images/regenerated_image_1783601224998.webp';
+import categoryCustom from '../assets/images/regenerated_image_1783601227410.webp';
+import categoryDessert from '../assets/images/regenerated_image_1783601230131.webp';
+import categoryCupcakes from '../assets/images/regenerated_image_1783601232735.webp';
+import flavorChocolate from '../assets/images/regenerated_image_1783601216873.webp';
 
 // ---------------------------------------------------------
 // FLOATING DECORATIONS WITH PARALLAX MOUSE EFFECT
@@ -169,6 +169,12 @@ export default function Home() {
   ];
 
   useEffect(() => {
+    // Preload slide images for seamless transitions
+    slides.forEach((slide) => {
+      const img = new Image();
+      img.src = slide.img;
+    });
+
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 6000);
@@ -507,7 +513,7 @@ export default function Home() {
             >
               <div className={`relative w-20 h-20 min-[400px]:w-24 min-[400px]:h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full flex items-center justify-center ${flav.bgGrad} p-1 md:p-1.5 shadow-[0_8px_25px_rgba(0,0,0,0.06)] ring-1 ring-slate-100 transition-all duration-300 group-hover:shadow-[0_12px_35px_rgba(0,0,0,0.12)] group-hover:scale-105`}>
                 <div className="w-[88%] h-[88%] rounded-full overflow-hidden shadow-inner relative z-10 bg-white">
-                  <img src={flav.img} alt={flav.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" referrerPolicy="no-referrer" />
+                  <img src={flav.img} alt={flav.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" referrerPolicy="no-referrer" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/30 pointer-events-none rounded-full" />
                 </div>
                 
@@ -610,7 +616,7 @@ export default function Home() {
             >
               <div className={`relative w-20 h-20 min-[400px]:w-24 min-[400px]:h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full flex items-center justify-center ${cat.bgGrad} p-1 md:p-1.5 shadow-[0_8px_25px_rgba(0,0,0,0.06)] ring-1 ring-slate-100 transition-all duration-300 group-hover:shadow-[0_12px_35px_rgba(0,0,0,0.12)] group-hover:scale-105`}>
                 <div className="w-[88%] h-[88%] rounded-full overflow-hidden shadow-inner relative z-10 bg-white">
-                  <img src={cat.img} alt={cat.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" referrerPolicy="no-referrer" />
+                  <img src={cat.img} alt={cat.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" referrerPolicy="no-referrer" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/30 pointer-events-none rounded-full" />
                 </div>
                 
@@ -708,7 +714,7 @@ export default function Home() {
                       {prod.tag}
                     </span>
                   )}
-                  <img src={prod.img} alt={prod.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                  <img src={prod.img} alt={prod.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy" />
                 </div>
 
                 <div className="px-1">
@@ -844,7 +850,7 @@ export default function Home() {
             >
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
-                  <img src={item.avatar} alt={item.name} className="w-11 h-11 rounded-full object-cover border-2 border-pink-100" />
+                  <img src={item.avatar} alt={item.name} className="w-11 h-11 rounded-full object-cover border-2 border-pink-100" loading="lazy" />
                   <h4 className="text-[15px] font-black text-slate-800 tracking-tight">{item.name}</h4>
                 </div>
                 <p className="text-sm text-slate-500 font-semibold leading-relaxed">
@@ -888,7 +894,7 @@ export default function Home() {
               whileHover={{ scale: 1.03 }}
               className="rounded-2xl overflow-hidden aspect-square shadow-sm bg-slate-50 border border-slate-100 cursor-pointer"
             >
-              <img src={url} alt={`Instagram cake ${idx}`} className="w-full h-full object-cover" />
+              <img src={url} alt={`Instagram cake ${idx}`} className="w-full h-full object-cover" loading="lazy" />
             </motion.div>
           ))}
         </div>
