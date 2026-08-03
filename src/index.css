@@ -245,3 +245,22 @@
 .animate-laser-scan {
   animation: laserScan 2.5s ease-in-out infinite;
 }
+
+/* Superfast performance optimizations & GPU acceleration */
+.gpu-fast {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform, opacity;
+}
+
+.fast-transition {
+  transition-duration: 120ms !important;
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1) !important;
+}
+
+/* Content visibility auto for offscreen rendering speed */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}

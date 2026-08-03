@@ -1,0 +1,21 @@
+{
+  "name": "Cake Urban — Luxury Boutique & 3D Studio",
+  "short_name": "Cake Urban",
+  "description": "Custom Gourmet Cakes, 3D Interactive Atelier & Instant Fast Delivery",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#140603",
+  "theme_color": "#DFB15B",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

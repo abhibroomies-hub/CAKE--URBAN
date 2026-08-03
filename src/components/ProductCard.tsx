@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { playSuccessChime, playSlidePop, playBtnTap } from '../lib/sound';
 import { toast } from 'sonner';
 import { handleImageError } from '../lib/utils';
+import { Interactive3DTilt } from './Interactive3DTilt';
 
 export function ProductCard({ product, onEdit }: { product: Product; onEdit?: () => void }) {
   const { addItem } = useCart();
@@ -100,10 +101,19 @@ export function ProductCard({ product, onEdit }: { product: Product; onEdit?: ()
         Shadow: 0 25px 80px rgba(0,0,0,0.08)
         Hover: Lift 12px, Shadow increase, Buttons slide up, everything animated smoothly
       */}
+    <Interactive3DTilt
+      id={`product-card-${product.id}`}
+      maxTilt={14}
+      scaleHover={1.03}
+      glare={true}
+      glareOpacity={0.2}
+      className="w-[320px] h-[540px] shrink-0 cursor-pointer"
+      onClick={() => { playSlidePop(); navigate(`/product/${product.id}`); }}
+    >
       <div 
-        id={`product-card-${product.id}`}
-        onClick={() => { playSlidePop(); navigate(`/product/${product.id}`); }}
-        className="group relative w-[320px] h-[540px] rounded-[32px] bg-white border border-white/50 shadow-[0_25px_80px_rgba(0,0,0,0.08)] hover:shadow-[0_40px_90px_rgba(0,0,0,0.12)] p-6 overflow-hidden flex flex-col justify-between transition-all duration-300 ease-out hover:-translate-y-3 cursor-pointer select-none"
+        onClick={(e) => { e.stopPropagation(); playSlidePop(); navigate(`/product/${product.id}`); }}
+        className="group relative w-full h-full rounded-[32px] bg-white border border-white/50 shadow-[0_25px_80px_rgba(0,0,0,0.08)] hover:shadow-[0_40px_90px_rgba(0,0,0,0.15)] p-6 overflow-hidden flex flex-col justify-between transition-all duration-300 ease-out cursor-pointer select-none"
+        style={{ transformStyle: 'preserve-3d' }}
       >
         {/* Subtle, luxurious background visual details */}
         <div className="absolute inset-0 bg-gradient-to-br from-white via-pink-50/20 to-blue-50/25 z-0 pointer-events-none" />
@@ -119,8 +129,8 @@ export function ProductCard({ product, onEdit }: { product: Product; onEdit?: ()
           <div className="absolute bottom-24 right-[15%] w-1 h-1 bg-cyan-400" />
         </div>
 
-        {/* TOP ROW: BADGES & WISHLIST ACTION */}
-        <div className="relative z-20 flex justify-between items-center h-[48px] w-full">
+        {/* TOP ROW: BADGES & WISHLIST ACTION (3D Depth Z = 25px) */}
+        <div className="relative z-20 flex justify-between items-center h-[48px] w-full" style={{ transform: 'translateZ(25px)' }}>
           {/* Top Left Gradient Capsule Badge */}
           <div className={`h-[34px] px-[18px] rounded-full bg-gradient-to-r ${badge.grad} text-[10px] font-black text-white uppercase tracking-wider flex items-center justify-center shadow-md shadow-pink-500/10 group-hover:shadow-[0_0_15px_rgba(236,72,153,0.5)] transition-all duration-300`}>
             {badge.text}
@@ -160,8 +170,8 @@ export function ProductCard({ product, onEdit }: { product: Product; onEdit?: ()
           </div>
         </div>
 
-        {/* MID PORTION: PRODUCT FLOATING IMAGE */}
-        <div className="relative h-[220px] w-full flex items-center justify-center z-10 overflow-visible mt-2">
+        {/* MID PORTION: PRODUCT FLOATING IMAGE (3D Depth Z = 45px) */}
+        <div className="relative h-[220px] w-full flex items-center justify-center z-10 overflow-visible mt-2" style={{ transform: 'translateZ(45px)', transformStyle: 'preserve-3d' }}>
           {/* Glow behind cake */}
           <div className="absolute w-44 h-44 rounded-full bg-pink-200/40 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           
@@ -173,6 +183,7 @@ export function ProductCard({ product, onEdit }: { product: Product; onEdit?: ()
             animate={{ y: [0, -6, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             className="relative"
+            style={{ transformStyle: 'preserve-3d' }}
           >
             <img 
               src={imgUrl} 
@@ -183,15 +194,14 @@ export function ProductCard({ product, onEdit }: { product: Product; onEdit?: ()
           </motion.div>
 
           {/* Quick View Button (Appears on Image Hover) */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20" style={{ transform: 'translateZ(15px)' }}>
             <button 
               onClick={(e) => {
                 e.stopPropagation();
                 playSlidePop();
-                // Simulates details trigger or direct details page routing
                 navigate(`/product/${product.id}`);
               }}
-              className="px-4 py-2.5 rounded-full bg-white/60 backdrop-blur-md border border-white/80 shadow-lg text-slate-800 font-extrabold text-[12px] uppercase tracking-wider flex items-center gap-1.5 hover:scale-105 hover:bg-white/85 transition-all"
+              className="px-4 py-2.5 rounded-full bg-white/70 backdrop-blur-md border border-white/80 shadow-lg text-slate-800 font-extrabold text-[12px] uppercase tracking-wider flex items-center gap-1.5 hover:scale-105 hover:bg-white/90 transition-all"
             >
               <Eye className="w-4 h-4 text-pink-500" />
               Quick View
@@ -199,8 +209,8 @@ export function ProductCard({ product, onEdit }: { product: Product; onEdit?: ()
           </div>
         </div>
 
-        {/* BOTTOM PORTION: PRODUCT INFO & ACTION SLIDE */}
-        <div className="relative z-20 flex-1 flex flex-col justify-between pt-2">
+        {/* BOTTOM PORTION: PRODUCT INFO & ACTION SLIDE (3D Depth Z = 20px) */}
+        <div className="relative z-20 flex-1 flex flex-col justify-between pt-2" style={{ transform: 'translateZ(20px)' }}>
           
           {/* Name & Short Description */}
           <div className="space-y-1">
@@ -263,7 +273,7 @@ export function ProductCard({ product, onEdit }: { product: Product; onEdit?: ()
             {/* 2. Hover Actions View: Slides up from bottom of card */}
             <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 translate-y-full group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto">
               
-              {/* Primary: Add To Cart Button (Height 58px, Gradient Pink->Purple, Rounded-full, Glow) */}
+              {/* Primary: Add To Cart Button */}
               <button 
                 onClick={(e) => {
                   e.stopPropagation();
@@ -276,7 +286,7 @@ export function ProductCard({ product, onEdit }: { product: Product; onEdit?: ()
                 Add to Cart
               </button>
               
-              {/* Secondary: Buy Now (White, Border 2px, Hover Pink Border, Pink Text) */}
+              {/* Secondary: Buy Now */}
               <button 
                 onClick={(e) => {
                   e.stopPropagation();
@@ -294,6 +304,7 @@ export function ProductCard({ product, onEdit }: { product: Product; onEdit?: ()
         </div>
 
       </div>
+    </Interactive3DTilt>
 
       {/* DETAILED INTERACTIVE WEIGHT SELECTION PANEL OVERLAY */}
       <AnimatePresence>

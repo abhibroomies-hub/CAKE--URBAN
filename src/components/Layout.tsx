@@ -8,6 +8,7 @@ import { MobileNav } from './MobileNav';
 import { AIPersonalShopper } from './AIPersonalShopper';
 import { GlobalFloatingActions } from './GlobalFloatingActions';
 import { LiveToastAndExitPopup } from './LiveToastAndExitPopup';
+import { OfflineBanner } from './OfflineBanner';
 import { motion, useMotionValue, useSpring } from 'motion/react';
 import { useTheme } from '../lib/theme';
 import { useLocation } from 'react-router-dom';
@@ -69,6 +70,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   if (isHomePage) {
     return (
       <div className="min-h-screen bg-white relative overflow-hidden text-slate-900 font-sans flex flex-col">
+        <OfflineBanner />
         <Header />
         <main className="flex-grow flex-1 flex flex-col relative z-10">
           {children}
@@ -189,6 +191,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         />
       </div>
 
+      <OfflineBanner />
       <AnnouncementBar />
       <MobileNav />
       <FloatingElements />

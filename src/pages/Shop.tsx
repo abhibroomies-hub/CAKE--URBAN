@@ -624,7 +624,7 @@ export default function Shop() {
                     <motion.div
                       layout
                       key={prod.id}
-                      onClick={() => handleOpenQuickView(prod)}
+                      onClick={() => { playSlidePop(); navigate(`/product/${prod.id}`); }}
                       className="bg-white/50 backdrop-blur-md border border-white/80 rounded-[20px] sm:rounded-[30px] overflow-hidden group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative cursor-pointer text-left flex flex-col justify-between"
                     >
                       <div>
@@ -639,6 +639,15 @@ export default function Shop() {
 
                           {/* Top corner actions */}
                           <div className="absolute top-2.5 right-2.5 flex flex-col gap-1.5 z-10">
+                            {/* Eye Quick View button */}
+                            <button
+                              onClick={(e) => { e.stopPropagation(); handleOpenQuickView(prod); }}
+                              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center text-slate-500 hover:text-pink-600 transition-transform active:scale-95"
+                              title="Quick View Preview"
+                            >
+                              <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                            </button>
+
                             {/* Heart wishlist */}
                             <button
                               onClick={(e) => handleToggleWishlist(prod, e)}

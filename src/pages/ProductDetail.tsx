@@ -39,6 +39,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import SEO from '../components/SEO';
 import { playSuccessChime, playBtnTap, playSlidePop } from '../lib/sound';
 import { handleImageError } from '../lib/utils';
+import { PREMIUM_PRODUCTS_POOL } from '../lib/shopData';
 
 // =========================================================
 // FALLBACK STATIC MASTERPIECE PRODUCT (IF FIRESTORE IS EMPTY)
@@ -212,11 +213,24 @@ export default function ProductDetail() {
       try {
         let loadedProduct = DEFAULT_LUXURY_CAKE;
         
-        if (id && id !== 'belgian-chocolate-supreme') {
-          const docRef = doc(db, 'products', id);
-          const snap = await getDoc(docRef);
-          if (snap.exists()) {
-            loadedProduct = { id: snap.id, ...snap.data() } as Product;
+        if (id) {
+          // 1. Check local static pool first for instant loading
+          const foundPoolItem = PREMIUM_PRODUCTS_POOL.find(
+            p => p.id === id || String(p.id) === String(id) || (p.id && id.includes(p.id)) || (p.id && p.id.includes(id))
+          );
+          if (foundPoolItem) {
+            loadedProduct = foundPoolItem;
+          }
+
+          // 2. Check Firestore in case custom/dynamic item exists
+          try {
+            const docRef = doc(db, 'products', id);
+            const snap = await getDoc(docRef);
+            if (snap.exists()) {
+              loadedProduct = { id: snap.id, ...snap.data() } as Product;
+            }
+          } catch (fsErr) {
+            console.log("Firestore lookup skipped/using pool:", fsErr);
           }
         }
 

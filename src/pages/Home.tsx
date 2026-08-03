@@ -20,6 +20,7 @@ import {
 import { toast } from 'sonner';
 import { playSuccessChime, playBtnTap } from '../lib/sound';
 import { useNavigate } from 'react-router-dom';
+import { Interactive3DTilt } from '../components/Interactive3DTilt';
 
 import instagramImage1 from '../assets/images/regenerated_image_1783517220364.webp';
 import instagramImage2 from '../assets/images/regenerated_image_1783517209820.webp';
@@ -241,7 +242,7 @@ export default function Home() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
                 className="flex flex-row items-center justify-between gap-3 sm:gap-6 lg:gap-12"
               >
                 {/* Left Side Content */}
@@ -292,29 +293,42 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Right Side Visuals (Gourmet Image with White Border Glow) */}
+                {/* Right Side Visuals (Gourmet Image with 3D Interactive Tilt & Depth Glow) */}
                 <div className="w-[38%] lg:w-[46%] relative flex justify-center z-10 shrink-0">
-                  <div className="relative w-full max-w-[420px] aspect-square rounded-xl min-[400px]:rounded-2xl md:rounded-3xl overflow-hidden border-2 md:border-4 border-white shadow-[0_10px_30px_rgba(0,0,0,0.1)] bg-slate-50">
-                    <img 
-                      src={slides[currentSlide].img} 
-                      alt={slides[currentSlide].titleLine1} 
-                      className="w-full h-full object-cover relative z-10 hover:scale-105 transition-transform duration-700"
-                      referrerPolicy="no-referrer"
-                    />
+                  <Interactive3DTilt maxTilt={18} scaleHover={1.04} glare={true} glareOpacity={0.3} className="w-full max-w-[420px]">
+                    <div className="relative w-full aspect-square rounded-xl min-[400px]:rounded-2xl md:rounded-3xl overflow-hidden border-2 md:border-4 border-white shadow-[0_20px_50px_rgba(0,0,0,0.15)] bg-slate-50" style={{ transformStyle: 'preserve-3d' }}>
+                      <img 
+                        src={slides[currentSlide].img} 
+                        alt={slides[currentSlide].titleLine1} 
+                        className="w-full h-full object-cover relative z-10 hover:scale-105 transition-transform duration-700"
+                        referrerPolicy="no-referrer"
+                      />
 
-                    {/* Dotted rotate badge */}
-                    <motion.div 
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                      className="absolute right-1 bottom-1 sm:right-4 sm:bottom-4 w-7 h-7 sm:w-16 md:w-20 sm:h-16 md:h-20 rounded-full bg-white/95 backdrop-blur-md border border-dashed border-pink-200 shadow-md flex items-center justify-center p-0.5 z-20 scale-75 sm:scale-100"
-                    >
-                      <div className="text-center">
-                        <p className="text-[5px] sm:text-[7px] md:text-[8px] font-black uppercase text-pink-500 tracking-wider leading-none">Custom</p>
-                        <p className="text-[5px] sm:text-[7px] md:text-[8px] font-black uppercase text-slate-700 tracking-wider leading-none mt-0.5">Cakes</p>
-                        <p className="text-[4px] sm:text-[6px] md:text-[7px] font-bold text-slate-400 uppercase mt-1 leading-none">Available</p>
-                      </div>
-                    </motion.div>
-                  </div>
+                      {/* 3D Floating Gold Sparkles pop-out */}
+                      <motion.div 
+                        animate={{ y: [-5, 5, -5], rotate: [0, 10, 0] }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute top-3 left-3 bg-gradient-to-r from-amber-400 to-amber-600 text-slate-950 font-black text-[9px] sm:text-[11px] px-2.5 py-1 rounded-full shadow-lg border border-amber-200 z-30"
+                        style={{ transform: 'translateZ(45px)' }}
+                      >
+                        ✦ 3D Artisan Bake
+                      </motion.div>
+
+                      {/* Dotted rotate badge in 3D perspective */}
+                      <motion.div 
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                        className="absolute right-1 bottom-1 sm:right-4 sm:bottom-4 w-7 h-7 sm:w-16 md:w-20 sm:h-16 md:h-20 rounded-full bg-white/95 backdrop-blur-md border border-dashed border-pink-200 shadow-md flex items-center justify-center p-0.5 z-20 scale-75 sm:scale-100"
+                        style={{ transform: 'translateZ(35px)' }}
+                      >
+                        <div className="text-center">
+                          <p className="text-[5px] sm:text-[7px] md:text-[8px] font-black uppercase text-pink-500 tracking-wider leading-none">Custom</p>
+                          <p className="text-[5px] sm:text-[7px] md:text-[8px] font-black uppercase text-slate-700 tracking-wider leading-none mt-0.5">Cakes</p>
+                          <p className="text-[4px] sm:text-[6px] md:text-[7px] font-bold text-slate-400 uppercase mt-1 leading-none">Available</p>
+                        </div>
+                      </motion.div>
+                    </div>
+                  </Interactive3DTilt>
                 </div>
               </motion.div>
             </AnimatePresence>
@@ -406,23 +420,27 @@ export default function Home() {
           ].map((item, idx) => {
             const IconComponent = item.icon;
             return (
-              <motion.div
-                key={idx}
-                whileHover={{ y: -4, scale: 1.02 }}
-                className={`flex flex-col md:flex-row items-center text-center md:text-left gap-1.5 sm:gap-3 md:gap-4 p-2.5 sm:p-4 md:px-6 md:py-5 rounded-[18px] sm:rounded-[24px] bg-white border ${item.border} shadow-[0_8px_25px_rgba(0,0,0,0.02)] hover:shadow-xl ${item.shadow} transition-all duration-300`}
-              >
-                <div className={`w-9 h-9 min-[380px]:w-10 min-[380px]:h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl ${item.bg} flex items-center justify-center ${item.text} shrink-0 shadow-inner transition-colors duration-300`}>
-                  <IconComponent className="w-4.5 h-4.5 sm:w-6 sm:h-6 stroke-[2.5]" />
+              <Interactive3DTilt key={idx} maxTilt={10} scaleHover={1.03} glare={true} glareOpacity={0.15}>
+                <div
+                  className={`flex flex-col md:flex-row items-center text-center md:text-left gap-1.5 sm:gap-3 md:gap-4 p-2.5 sm:p-4 md:px-6 md:py-5 rounded-[18px] sm:rounded-[24px] bg-white border ${item.border} shadow-[0_8px_25px_rgba(0,0,0,0.02)] hover:shadow-xl ${item.shadow} transition-all duration-300 w-full h-full`}
+                  style={{ transformStyle: 'preserve-3d' }}
+                >
+                  <div 
+                    className={`w-9 h-9 min-[380px]:w-10 min-[380px]:h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl ${item.bg} flex items-center justify-center ${item.text} shrink-0 shadow-inner transition-colors duration-300`}
+                    style={{ transform: 'translateZ(25px)' }}
+                  >
+                    <IconComponent className="w-4.5 h-4.5 sm:w-6 sm:h-6 stroke-[2.5]" />
+                  </div>
+                  <div className="min-w-0" style={{ transform: 'translateZ(15px)' }}>
+                    <h4 className="text-[9px] min-[360px]:text-[10px] min-[400px]:text-[11px] sm:text-[13px] md:text-[14px] font-black text-slate-800 leading-tight tracking-tight">
+                      {item.title}
+                    </h4>
+                    <p className="text-[7.5px] min-[360px]:text-[8.5px] sm:text-[10px] md:text-[11px] text-slate-400 font-extrabold mt-0.5 leading-none sm:leading-normal line-clamp-1">
+                      {item.desc}
+                    </p>
+                  </div>
                 </div>
-                <div className="min-w-0">
-                  <h4 className="text-[9px] min-[360px]:text-[10px] min-[400px]:text-[11px] sm:text-[13px] md:text-[14px] font-black text-slate-800 leading-tight tracking-tight">
-                    {item.title}
-                  </h4>
-                  <p className="text-[7.5px] min-[360px]:text-[8.5px] sm:text-[10px] md:text-[11px] text-slate-400 font-extrabold mt-0.5 leading-none sm:leading-normal line-clamp-1">
-                    {item.desc}
-                  </p>
-                </div>
-              </motion.div>
+              </Interactive3DTilt>
             );
           })}
         </div>
@@ -705,7 +723,8 @@ export default function Home() {
             <motion.div
               key={prod.id}
               whileHover={{ y: -8 }}
-              className={`w-full ${prod.bg} border border-slate-100 rounded-[20px] sm:rounded-[28px] overflow-hidden p-2.5 sm:p-3 shadow-sm hover:shadow-lg transition-all duration-300 text-left flex flex-col justify-between`}
+              onClick={() => { playBtnTap(); navigate(`/product/${prod.id}`); }}
+              className={`w-full ${prod.bg} border border-slate-100 rounded-[20px] sm:rounded-[28px] overflow-hidden p-2.5 sm:p-3 shadow-sm hover:shadow-lg transition-all duration-300 text-left flex flex-col justify-between cursor-pointer`}
             >
               <div>
                 <div className="relative aspect-square rounded-[16px] sm:rounded-[22px] overflow-hidden mb-2.5 sm:mb-3.5 bg-slate-100">
