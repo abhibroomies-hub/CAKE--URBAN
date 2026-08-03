@@ -278,6 +278,105 @@ const LOCATION_DATA_MAP: Record<string, LocationDetails> = {
       { q: "Where closest is your oven located to Greenfield Colony?", a: "We operate our major oven facility extremely close by, enabling super-fast, warm, fresh product handovers with no transport damages." },
       { q: "Can we get custom shapes, photos, or message plaques in Greenfields?", a: "Absolutely! You can use our customized studio or share ideas directly with our Head Chef to get high-resolution edible photos and beautiful sugar models made fresh." }
     ]
+  },
+  'midnight-cake-delivery-faridabad': {
+    city: 'Faridabad Midnight Surprise Hub',
+    title: 'Guaranteed Midnight Cake Delivery in Faridabad (11:30 PM - 12:15 AM)',
+    description: 'Surprise your loved ones right when the clock strikes 12! Order 100% Eggless Midnight Cakes in Faridabad. Guaranteed delivery between 11:30 PM & 12:15 AM across all sectors.',
+    keywords: 'midnight cake delivery faridabad, 12 am cake delivery faridabad, midnight surprise cake faridabad, eggless midnight cake faridabad, birthday midnight delivery faridabad',
+    heroText: 'Faridabad\'s #1 Rated Midnight Cake Delivery Service',
+    subText: 'We deliver fresh, temperature-controlled 100% eggless cakes at midnight across Sector 14, 15, 16, 21, 31, Greenfield, Greater Faridabad, and NIT.',
+    deliveryTime: '11:30 PM to 12:15 AM Guaranteed Midnight Slot',
+    charge: 'Special Midnight Dispatch Charge applicable',
+    faqs: [
+      { q: "How late can I place an order for midnight cake delivery in Faridabad?", a: "You can place your order up to 9:00 PM for same-night guaranteed midnight delivery!" },
+      { q: "Will the delivery executive call before arriving at midnight?", a: "Yes, our delivery executive calls 10 minutes prior to arrival to ensure a smooth, silent surprise!" },
+      { q: "Are midnight cakes 100% eggless and fresh?", a: "Yes, all midnight cakes are baked fresh in the evening in our 100% eggless certified oven." }
+    ]
+  },
+  'eggless-cake-delivery-faridabad': {
+    city: 'Faridabad 100% Eggless Bakery',
+    title: '100% Eggless Cake Shop in Faridabad | Pure Vegetarian Cake Delivery',
+    description: 'Order 100% Eggless Designer Cakes in Faridabad starting @ ₹499. Certified pure vegetarian bakery with zero cross-contamination. Express 2-Hour Home Delivery.',
+    keywords: 'eggless cake faridabad, pure veg cake shop faridabad, 100 eggless cake delivery faridabad, eggless birthday cake faridabad, eggless chocolate truffle cake faridabad',
+    heroText: 'Faridabad\'s Premier 100% Eggless Cake Boutique',
+    subText: 'Baked with pure butter, real Belgian cocoa, and organic vanilla in our strictly vegetarian kitchen enclaves across Faridabad.',
+    deliveryTime: '30-45 minutes express delivery',
+    charge: 'Free delivery above ₹499',
+    faqs: [
+      { q: "Is CakeUrban 100% pure vegetarian?", a: "Yes! Our entire facility, ingredients, and baking tools are 100% eggless and pure vegetarian." },
+      { q: "Do eggless cakes taste as soft and fresh as regular cakes?", a: "Even softer! Our proprietary buttermilk and real dairy cream recipes create cloud-soft, ultra-moist cakes." }
+    ]
+  },
+  'pinata-cakes-faridabad': {
+    city: 'Faridabad Pinata Studio',
+    title: 'Trending Pinata Cakes in Faridabad with Wooden Hammer',
+    description: 'Smash your way to celebration! Order trending 3D Pinata Cakes in Faridabad with a complimentary wooden hammer. Heart pinata, spherical chocolate pinata & custom designs.',
+    keywords: 'pinata cake faridabad, hammer cake faridabad, smash cake faridabad, chocolate pinata cake faridabad, heart pinata cake price faridabad',
+    heroText: 'Faridabad\'s Original Hammer Smash Pinata Cakes',
+    subText: 'Encased in rich Belgian chocolate shells, filled with soft eggless cake layers, choco-lava gems, and surprise birthday notes.',
+    deliveryTime: 'Same-day 2-hour delivery',
+    charge: 'Free delivery above ₹499',
+    faqs: [
+      { q: "Does the Pinata Cake come with a wooden hammer?", a: "Yes! Every Pinata cake order includes a custom wooden hammer and gift box." },
+      { q: "Can I hide a small gift or secret note inside the pinata shell?", a: "Yes, you can request us to place secret birthday notes, ring boxes, or greeting cards inside before sealing!" }
+    ]
+  },
+  'photo-cakes-faridabad': {
+    city: 'Faridabad Edible Print Studio',
+    title: 'Custom Photo Cakes in Faridabad | High-Res Edible Picture Printing',
+    description: 'Turn memories into sweet treats! Order custom photo printed cakes in Faridabad with 100% safe, edible starch sheets and food-grade organic coloring.',
+    keywords: 'photo cake faridabad, edible picture cake faridabad, custom photo cake online faridabad, birthday photo cake faridabad',
+    heroText: 'High-Resolution Edible Photo Printing in Faridabad',
+    subText: 'Upload any photo or design – our chefs print it in vibrant, edible food color on top of your favorite flavor cake.',
+    deliveryTime: 'Same-day 2-hour delivery',
+    charge: 'Free delivery above ₹499',
+    faqs: [
+      { q: "Is the photo on the cake safe to eat?", a: "100% safe! We print using certified food-grade starch sheets and organic edible ink." },
+      { q: "How do I send my photo for printing?", a: "You can upload your photo directly on the product page or send it via WhatsApp after placing your order." }
+    ]
+  },
+  'greater-faridabad-cake-delivery': {
+    city: 'Greater Faridabad (Neharpar Sector 75-89)',
+    title: 'Express Cake Delivery in Greater Faridabad (Neharpar Sectors 75 to 89)',
+    description: 'Looking for cake delivery in Greater Faridabad? Order eggless designer cakes, cupcakes & pastries for rapid home delivery across Sector 75, 76, 77, 78, 81, 82, 85, 86, 88, 89.',
+    keywords: 'cake delivery greater faridabad, cake shop neharpar faridabad, bakery sector 82 faridabad, cake delivery sector 86 faridabad, eggless cake neharpar',
+    heroText: 'Serving All High-Rise Enclaves in Greater Faridabad',
+    subText: 'Dedicated delivery vans serving Puri Amanvilas, BPTP Parklands, Omaxe Heights, RPS City, and all Neharpar residential sectors.',
+    deliveryTime: '30-45 minutes express delivery',
+    charge: 'Free delivery above ₹499',
+    faqs: [
+      { q: "Do you deliver to high-rise societies in Greater Faridabad?", a: "Yes, our delivery executives bring your cake right to your apartment tower doorstep in all Greater Faridabad sectors." },
+      { q: "Is same-day delivery available in Neharpar?", a: "Yes, all signature cakes are available for same-day delivery within 45 minutes!" }
+    ]
+  },
+  'nit-faridabad-cake-delivery': {
+    city: 'NIT Faridabad (1, 2, 3, 4, 5)',
+    title: 'Best Cake Shop in NIT Faridabad | 100% Eggless Fresh Delivery',
+    description: 'Order fresh cakes in NIT Faridabad (NIT 1, NIT 2, NIT 3, NIT 4, NIT 5, KC Road, Neelam Flyover). Fast 30-minute delivery & 100% vegetarian certified.',
+    keywords: 'cake shop nit faridabad, cake delivery nit faridabad, best bakery nit 5 faridabad, eggless cake order nit faridabad, neelam flyover cake shop',
+    heroText: 'NIT Faridabad\'s Favorite Fresh Cake Destination',
+    subText: 'Delivering fresh black forest, pineapple deluxe, Belgian chocolate, and customized theme cakes across all NIT zones.',
+    deliveryTime: 'Fast 30-minute delivery',
+    charge: 'Free delivery above ₹499',
+    faqs: [
+      { q: "Do you deliver to NIT 1, 2, 3, 4, and 5?", a: "Yes, we cover all NIT sectors with superfast 30-minute delivery!" },
+      { q: "Can I order custom birthday cakes in NIT Faridabad?", a: "Yes, choose from over 100+ designer templates or upload your own reference." }
+    ]
+  },
+  'bento-mini-cakes-faridabad': {
+    city: 'Faridabad Bento Box Studio',
+    title: 'Cute Korean Bento Mini Cakes in Faridabad starting @ ₹299',
+    description: 'Order adorable Korean Bento Mini Cakes in Faridabad. Perfect 250g mini cakes with cute lunchbox packaging, customizable pastel messages & mini candles.',
+    keywords: 'bento cake faridabad, mini cake faridabad, korean bento cake faridabad, lunchbox cake faridabad, small birthday cake faridabad',
+    heroText: 'Faridabad\'s Trending Korean Bento Box Cakes',
+    subText: 'Compact, aesthetic, and delicious! Ideal for intimate birthday wishes, anniversaries, or sweet surprises.',
+    deliveryTime: 'Same-day 30-45 minutes delivery',
+    charge: 'Free delivery above ₹499',
+    faqs: [
+      { q: "What is the weight and size of a Bento Cake?", a: "Our Bento mini cakes weigh approximately 250g-300g (4 inches), perfect for 1 to 2 people." },
+      { q: "Does the Bento Cake come in a lunchbox with a candle?", a: "Yes! It comes in an eco-friendly bio-degradable sugarcane lunchbox with a tiny fork and pastel candle." }
+    ]
   }
 };
 

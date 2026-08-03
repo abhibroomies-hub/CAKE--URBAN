@@ -301,7 +301,7 @@ export function Header() {
           DESKTOP HEADER (Apple, Stripe & Tesla design language)
           ========================================================= */}
       <header className="sticky top-0 z-[80] w-full bg-white/70 backdrop-blur-[24px] border-b border-white/20 shadow-[0_10px_40px_rgba(0,0,0,0.06)] h-[88px] transition-all duration-300">
-        <div className="max-w-[1280px] mx-auto h-full px-4 md:px-8 xl:px-0 flex items-center justify-between relative">
+        <div className="max-w-[1720px] mx-auto h-full px-4 md:px-8 xl:px-12 2xl:px-16 flex items-center justify-between relative">
           
           {/* 1. BRAND LOGO (Left) */}
           <Link 

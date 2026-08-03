@@ -20,6 +20,7 @@ import {
 import { toast } from 'sonner';
 import { playSuccessChime, playBtnTap } from '../lib/sound';
 import { useNavigate } from 'react-router-dom';
+import SEO from '../components/SEO';
 import { Interactive3DTilt } from '../components/Interactive3DTilt';
 
 import instagramImage1 from '../assets/images/regenerated_image_1783517220364.webp';
@@ -121,34 +122,36 @@ export default function Home() {
   const slides = [
     {
       id: 0,
-      badge: "100% Eggless",
+      badge: "100% Eggless Artisan",
       titleLine1: "Every Cake",
       titleLine2: "Tells a",
       highlight: "Sweet",
       titleLine3: "Story",
       desc: "Handcrafted with love, baked with absolute perfection. Every slice is a premium masterpiece tailored for your special moments.",
       img: heroImage,
+      bannerBg: heroBgImage,
       ctaText: "Order Now",
       ctaLink: "/shop",
-      bgGrad: "from-white via-[#FFF3F7] to-[#FFF9FC]",
-      accentText: "text-pink-500",
-      highlightGrad: "from-pink-500 to-rose-500",
-      isDark: false,
+      bgGrad: "from-slate-950 via-[#1E0905] to-slate-900",
+      accentText: "text-amber-400",
+      highlightGrad: "from-[#DFB15B] to-amber-300",
+      isDark: true,
     },
     {
       id: 1,
-      badge: "Midnight surprise",
+      badge: "Midnight Surprise",
       titleLine1: "Midnight",
       titleLine2: "Cake",
       highlight: "Surprise",
       titleLine3: "Delivery",
       desc: "Create unforgettable memories! We deliver fresh gourmet cakes right when the clock strikes 12, securely and silently.",
       img: midnightImage,
+      bannerBg: midnightImage,
       ctaText: "Explore Midnight Cakes",
       ctaLink: "/shop",
-      bgGrad: "from-slate-900 via-purple-950 to-slate-950",
-      accentText: "text-purple-400",
-      highlightGrad: "from-purple-400 to-fuchsia-400",
+      bgGrad: "from-[#0F051D] via-[#1D0A35] to-[#0A0314]",
+      accentText: "text-purple-300",
+      highlightGrad: "from-purple-300 to-fuchsia-300",
       isDark: true,
     },
     {
@@ -160,12 +163,13 @@ export default function Home() {
       titleLine3: "",
       desc: "Unleash your culinary creativity! Choose shapes, flavors, toppings, and multi-tier adjustments in real-time.",
       img: categoryCustom,
+      bannerBg: heroBgImage,
       ctaText: "Launch 3D Configurator",
       ctaLink: "/ai-designer",
-      bgGrad: "from-white via-[#FFF7ED] to-[#FFFBF7]",
-      accentText: "text-amber-500",
-      highlightGrad: "from-amber-500 to-orange-500",
-      isDark: false,
+      bgGrad: "from-[#190C05] via-[#2D1609] to-[#120803]",
+      accentText: "text-amber-400",
+      highlightGrad: "from-amber-400 to-yellow-300",
+      isDark: true,
     }
   ];
 
@@ -197,6 +201,41 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-[#FFF9FC] overflow-hidden font-sans">
+      <SEO 
+        title="CakeUrban | 100% Eggless Cake Delivery in Faridabad | Express 2-Hr & Midnight Delivery"
+        description="⚡ Order 100% Eggless Designer Cakes in Faridabad starting @ ₹499. Midnight Delivery & Express 2-Hour Delivery. 24K Gold Flake, Belgian Chocolate, Custom Photo Cakes. Get 10% OFF today!"
+        keywords="cake delivery faridabad, eggless cake faridabad, midnight cake delivery faridabad, best cake shop faridabad, designer cake faridabad, birthday cake faridabad, photo cake faridabad, cake urban faridabad"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Are all cakes at CakeUrban 100% eggless?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes! All cakes and desserts at CakeUrban Faridabad are 100% pure vegetarian and eggless, baked with premium imported ingredients and pure butter."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do you offer midnight cake delivery in Faridabad?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, CakeUrban provides guaranteed midnight cake delivery across all sectors of Faridabad between 11:30 PM and 12:15 AM."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How fast is express cake delivery in Faridabad?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "CakeUrban offers express delivery within 2 hours across Faridabad for select fresh designer cakes and pastries."
+              }
+            }
+          ]
+        }}
+      />
       
       {/* Background Interactive Elements */}
       <InteractiveFloatingBackground />
@@ -222,20 +261,27 @@ export default function Home() {
       {/* ---------------------------------------------------------
           SECTION 1: HERO BANNER (Dynamic Interactive Carousel)
           --------------------------------------------------------- */}
-      <section className="relative z-10 pt-4 pb-6 px-4 md:px-8 max-w-[1280px] mx-auto select-none">
-        <div className={`rounded-[32px] md:rounded-[40px] overflow-hidden relative border border-pink-100/20 shadow-[0_20px_50px_rgba(255,79,163,0.05)] transition-all duration-700 bg-gradient-to-br ${slides[currentSlide].bgGrad} ${slides[currentSlide].isDark ? 'text-white' : 'text-slate-800'}`}>
+      <section className="relative z-10 pt-4 pb-6 px-4 md:px-8 xl:px-12 2xl:px-16 max-w-[1720px] mx-auto select-none">
+        <div className="rounded-[32px] md:rounded-[40px] overflow-hidden relative border border-[#DFB15B]/30 shadow-[0_25px_60px_rgba(0,0,0,0.4)] transition-all duration-700 bg-slate-950 text-white min-h-[380px] sm:min-h-[440px]">
           
+          {/* Background Banner Image with Dark Translucent Backdrop Filter */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center transition-all duration-700 scale-105" 
+            style={{ backgroundImage: `url(${slides[currentSlide].bannerBg})` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/85 to-slate-900/70 backdrop-blur-[3px]" />
+
           {/* Confetti & Sprinkle background decorations */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
-            <div className="absolute top-[15%] left-[25%] w-4 h-4 rounded-full bg-yellow-300 animate-bounce" />
-            <div className="absolute top-[65%] left-[10%] w-3 h-3 rounded-full bg-blue-300 animate-pulse" />
-            <div className="absolute top-[35%] left-[85%] w-5 h-5 rounded-full bg-pink-100/60" />
+          <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30 z-10">
+            <div className="absolute top-[15%] left-[25%] w-4 h-4 rounded-full bg-amber-300 animate-bounce" />
+            <div className="absolute top-[65%] left-[10%] w-3 h-3 rounded-full bg-pink-300 animate-pulse" />
+            <div className="absolute top-[35%] left-[85%] w-5 h-5 rounded-full bg-amber-100/60" />
             <div className="absolute top-[75%] left-[65%] w-3.5 h-3.5 rounded-full bg-purple-200" />
             <div className="absolute top-[10%] left-[80%] w-6 h-6 rounded-full bg-yellow-100/50" />
           </div>
 
           {/* Carousel Slide Wrapper */}
-          <div className="p-3 min-[360px]:p-4 min-[400px]:p-6 md:p-10 lg:p-14 xl:p-16 relative z-10">
+          <div className="p-3 min-[360px]:p-4 min-[400px]:p-6 md:p-10 lg:p-14 xl:p-16 relative z-20">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentSlide}
@@ -249,44 +295,36 @@ export default function Home() {
                 <div className="w-[58%] lg:w-[50%] space-y-2 sm:space-y-4 md:space-y-6 text-left relative z-10">
                   {/* Category Badge Sticker */}
                   <div className="inline-flex">
-                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 sm:px-3.5 sm:py-1.5 rounded-full text-[8px] sm:text-[10px] md:text-xs font-black tracking-wider uppercase shadow-sm border ${
-                      slides[currentSlide].isDark 
-                        ? 'bg-white/10 border-white/20 text-pink-300' 
-                        : 'bg-amber-50/90 border-amber-100 text-amber-800'
-                    }`}>
-                      <Star className="w-2.5 sm:w-3 md:w-3.5 h-2.5 sm:h-3 md:h-3.5 fill-current" />
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[9px] sm:text-[11px] md:text-xs font-black tracking-wider uppercase shadow-md bg-white/10 backdrop-blur-md border border-amber-400/30 text-amber-300">
+                      <Star className="w-2.5 sm:w-3 md:w-3.5 h-2.5 sm:h-3 md:h-3.5 fill-amber-300 text-amber-300" />
                       <span>{slides[currentSlide].badge}</span>
                     </span>
                   </div>
 
-                  <h1 className="text-[14px] min-[360px]:text-[16px] min-[400px]:text-[18px] sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-black leading-[1.15] sm:leading-[1.1] tracking-tight">
+                  <h1 className="text-[14px] min-[360px]:text-[16px] min-[400px]:text-[18px] sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-black leading-[1.15] sm:leading-[1.1] tracking-tight !text-white drop-shadow-md" style={{ color: '#FFFFFF' }}>
                     {slides[currentSlide].titleLine1} <br />
                     {slides[currentSlide].titleLine2} <span className={`bg-gradient-to-r ${slides[currentSlide].highlightGrad} bg-clip-text text-transparent`}>{slides[currentSlide].highlight}</span> <br />
                     {slides[currentSlide].titleLine3 && (
                       <>
-                        <span className="font-display italic text-pink-500 font-normal tracking-wide text-xs min-[360px]:text-sm sm:text-xl md:text-3xl lg:text-4xl xl:text-5xl">{slides[currentSlide].titleLine3}</span>
+                        <span className="font-display italic text-amber-300 font-normal tracking-wide text-xs min-[360px]:text-sm sm:text-xl md:text-3xl lg:text-4xl xl:text-5xl">{slides[currentSlide].titleLine3}</span>
                       </>
                     )}
                   </h1>
 
-                  <p className={`text-[9px] min-[360px]:text-[10px] sm:text-xs md:text-sm lg:text-base font-semibold max-w-[460px] leading-relaxed line-clamp-2 sm:line-clamp-none ${slides[currentSlide].isDark ? 'text-purple-150/80' : 'text-slate-500'}`}>
+                  <p className="text-[9px] min-[360px]:text-[10px] sm:text-xs md:text-sm lg:text-base font-medium max-w-[460px] leading-relaxed line-clamp-2 sm:line-clamp-none !text-slate-100 drop-shadow-sm" style={{ color: '#F1F5F9' }}>
                     {slides[currentSlide].desc}
                   </p>
 
                   <div className="pt-1 flex flex-row items-center gap-1.5 sm:gap-3">
                     <button 
                       onClick={() => { playBtnTap(); navigate(slides[currentSlide].ctaLink); }}
-                      className="h-7 sm:h-11 md:h-13 px-2.5 sm:px-6 md:px-8 rounded-full bg-pink-500 hover:bg-pink-600 text-white font-black text-[8px] sm:text-[10px] md:text-xs uppercase tracking-wider shadow-[0_10px_25px_rgba(236,72,153,0.3)] hover:scale-103 active:scale-95 transition-all duration-300 cursor-pointer"
+                      className="h-7 sm:h-11 md:h-13 px-3 sm:px-6 md:px-8 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-[8px] sm:text-[10px] md:text-xs uppercase tracking-wider shadow-[0_10px_30px_rgba(223,177,91,0.4)] hover:scale-103 active:scale-95 transition-all duration-300 cursor-pointer"
                     >
                       {slides[currentSlide].ctaText}
                     </button>
                     <button 
                       onClick={() => { playBtnTap(); navigate('/shop'); }}
-                      className={`hidden sm:inline-flex h-11 md:h-13 px-6 md:px-8 rounded-full border font-black text-[10px] md:text-xs uppercase tracking-wider hover:scale-103 active:scale-95 transition-all duration-300 cursor-pointer ${
-                        slides[currentSlide].isDark 
-                          ? 'border-white/20 bg-white/5 hover:bg-white/10 text-white' 
-                          : 'border-slate-200 bg-white hover:text-pink-600 hover:border-pink-300 text-slate-700'
-                      }`}
+                      className="hidden sm:inline-flex h-11 md:h-13 px-6 md:px-8 rounded-full border border-white/25 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white font-black text-[10px] md:text-xs uppercase tracking-wider hover:scale-103 active:scale-95 transition-all duration-300 cursor-pointer"
                     >
                       Explore Cakes
                     </button>
@@ -387,7 +425,7 @@ export default function Home() {
       {/* ---------------------------------------------------------
           SECTION 2: HORIZONTAL FEATURE CAPSULES (Mockup Styling)
           --------------------------------------------------------- */}
-      <section className="relative z-20 max-w-[1280px] mx-auto px-3 min-[380px]:px-4 md:px-8 mb-8 select-none">
+      <section className="relative z-20 max-w-[1720px] mx-auto px-3 min-[380px]:px-4 md:px-8 xl:px-12 2xl:px-16 mb-8 select-none">
         <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6">
           {[
             {
@@ -449,7 +487,7 @@ export default function Home() {
       {/* ---------------------------------------------------------
           SECTION 2.3: TRENDING FLAVORS (Mockup High-Fidelity)
           --------------------------------------------------------- */}
-      <section className="relative z-10 py-10 px-4 md:px-8 max-w-[1280px] mx-auto select-none">
+      <section className="relative z-10 py-10 px-4 md:px-8 xl:px-12 2xl:px-16 max-w-[1720px] mx-auto select-none">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-2">
             <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight">
@@ -552,7 +590,7 @@ export default function Home() {
       {/* ---------------------------------------------------------
           SECTION 2.5: SHOP BY CATEGORIES (Mockup High-Fidelity)
           --------------------------------------------------------- */}
-      <section className="relative z-10 py-10 px-4 md:px-8 max-w-[1280px] mx-auto select-none">
+      <section className="relative z-10 py-10 px-4 md:px-8 xl:px-12 2xl:px-16 max-w-[1720px] mx-auto select-none">
         <div className="flex flex-col items-start mb-8 text-left">
           <div className="flex items-center gap-2">
             <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight">
@@ -655,7 +693,7 @@ export default function Home() {
       {/* ---------------------------------------------------------
           SECTION 2.6: BEST SELLERS (Mockup High-Fidelity)
           --------------------------------------------------------- */}
-      <section className="relative z-10 py-10 px-4 md:px-8 max-w-[1280px] mx-auto select-none">
+      <section className="relative z-10 py-10 px-4 md:px-8 xl:px-12 2xl:px-16 max-w-[1720px] mx-auto select-none">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-2">
             <h2 className="text-2xl md:text-3xl font-black text-slate-800 tracking-tight">
@@ -762,20 +800,31 @@ export default function Home() {
       {/* ---------------------------------------------------------
           SECTION 4: MIDNIGHT DELIVERY BANNER
           --------------------------------------------------------- */}
-      <section className="relative z-10 py-4 sm:py-8 px-4 md:px-8 max-w-[1280px] mx-auto select-none">
-        <div className="rounded-[28px] md:rounded-[40px] bg-gradient-to-r from-[#4E148C] via-[#6130B0] to-[#8C34C0] text-white p-5 sm:p-8 md:p-12 overflow-hidden relative flex flex-row justify-between items-center gap-3 sm:gap-6 md:gap-12 shadow-xl">
-          {/* Sparkles, clock decor background */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.12)_0%,transparent_75%)] opacity-30 pointer-events-none" />
+      <section className="relative z-10 py-4 sm:py-8 px-4 md:px-8 xl:px-12 2xl:px-16 max-w-[1720px] mx-auto select-none">
+        <div className="rounded-[28px] md:rounded-[40px] text-white p-5 sm:p-8 md:p-12 overflow-hidden relative flex flex-row justify-between items-center gap-3 sm:gap-6 md:gap-12 shadow-2xl border border-purple-500/30">
+          
+          {/* Background Banner Image with Glass Overlay */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-700 scale-105"
+            style={{ backgroundImage: `url(${midnightImage})` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#17052C]/95 via-[#230A42]/90 to-[#100320]/80 backdrop-blur-[4px]" />
 
-          <div className="w-[58%] text-left space-y-2 md:space-y-4 relative z-10">
-            <h2 className="text-[14px] min-[360px]:text-[16px] min-[400px]:text-[18px] sm:text-2xl md:text-3xl lg:text-4xl font-black leading-tight tracking-tight text-white">
+          {/* Sparkles, clock decor background */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.12)_0%,transparent_75%)] opacity-30 pointer-events-none z-10" />
+
+          <div className="w-[58%] text-left space-y-2 md:space-y-4 relative z-20">
+            <h2 className="text-[14px] min-[360px]:text-[16px] min-[400px]:text-[18px] sm:text-2xl md:text-3xl lg:text-4xl font-black leading-tight tracking-tight !text-white drop-shadow-md" style={{ color: '#FFFFFF' }}>
               Surprise Your Loved Ones with <br className="hidden md:inline" />
               Midnight Delivery
             </h2>
+            <p className="text-[9px] min-[360px]:text-[10px] sm:text-xs md:text-sm font-medium !text-purple-100 leading-relaxed max-w-md drop-shadow-sm" style={{ color: '#F3E8FF' }}>
+              Create unforgettable memories! Fresh gourmet cakes delivered right when the clock strikes 12.
+            </p>
             <div className="pt-1 flex justify-start">
               <button 
                 onClick={() => { playBtnTap(); navigate('/shop'); }}
-                className="h-7 sm:h-11 md:h-13 px-3 sm:px-8 rounded-full bg-[#FFC72C] hover:bg-[#E2B120] text-slate-900 font-extrabold text-[8px] sm:text-[11px] md:text-xs tracking-wider uppercase shadow-[0_8px_20px_rgba(255,199,44,0.3)] active:scale-95 transition-all duration-200 cursor-pointer"
+                className="h-7 sm:h-11 md:h-13 px-3 sm:px-8 rounded-full bg-gradient-to-r from-[#DFB15B] to-amber-400 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-extrabold text-[8px] sm:text-[11px] md:text-xs tracking-wider uppercase shadow-[0_8px_25px_rgba(223,177,91,0.4)] active:scale-95 transition-all duration-200 cursor-pointer"
               >
                 Order Now
               </button>
@@ -796,7 +845,7 @@ export default function Home() {
       {/* ---------------------------------------------------------
           SECTION 5: WHY CAKEURBAN? (Metrics with wavy decorator)
           --------------------------------------------------------- */}
-      <section className="relative z-10 py-12 px-6 max-w-[1280px] mx-auto select-none">
+      <section className="relative z-10 py-12 px-6 xl:px-12 2xl:px-16 max-w-[1720px] mx-auto select-none">
         <div className="flex flex-col items-center space-y-2 mb-12">
           <div className="flex items-center gap-2.5">
             <h2 className="text-3xl md:text-4xl font-black text-[#111111] tracking-tight">
@@ -837,7 +886,7 @@ export default function Home() {
       {/* ---------------------------------------------------------
           SECTION 6: WHAT OUR CUSTOMERS SAY (Testimonials)
           --------------------------------------------------------- */}
-      <section className="relative z-10 py-12 px-6 max-w-[1280px] mx-auto select-none">
+      <section className="relative z-10 py-12 px-6 xl:px-12 2xl:px-16 max-w-[1720px] mx-auto select-none">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-black text-[#111111] tracking-tight">
             What Our Customers Say
@@ -890,7 +939,7 @@ export default function Home() {
       {/* ---------------------------------------------------------
           SECTION 7: FOLLOW US ON INSTAGRAM
           --------------------------------------------------------- */}
-      <section className="relative z-10 py-12 px-6 max-w-[1280px] mx-auto select-none">
+      <section className="relative z-10 py-12 px-6 xl:px-12 2xl:px-16 max-w-[1720px] mx-auto select-none">
         <div className="text-center mb-8 space-y-1.5">
           <h2 className="text-3xl md:text-4xl font-black text-[#111111] tracking-tight">
             Follow Us On Instagram
@@ -922,22 +971,30 @@ export default function Home() {
       {/* ---------------------------------------------------------
           SECTION 8: SUBSCRIBE & GET 10% OFF (Drip Container Layout)
           --------------------------------------------------------- */}
-      <section className="relative z-10 py-12 px-6 max-w-[1280px] mx-auto select-none">
-        <div className="rounded-[40px] bg-[#EED4FC] border border-[#E5B7F8] p-8 md:p-12 relative overflow-hidden">
-          {/* Subtle melting icing drip effect on the top border (we can simulate this elegantly with simple round elements or a stylish gradient overlay) */}
-          <div className="absolute top-0 left-0 right-0 h-4 bg-purple-200/40 rounded-b-full flex justify-between px-10 pointer-events-none">
+      <section className="relative z-10 py-12 px-6 xl:px-12 2xl:px-16 max-w-[1720px] mx-auto select-none">
+        <div className="rounded-[40px] p-8 md:p-12 relative overflow-hidden shadow-2xl border border-amber-500/30 text-white">
+          
+          {/* Background Banner Image with Glass Dark Overlay */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-700 scale-105"
+            style={{ backgroundImage: `url(${heroBgImage})` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-purple-950/90 to-slate-950/85 backdrop-blur-[5px]" />
+
+          {/* Subtle melting icing drip effect on the top border */}
+          <div className="absolute top-0 left-0 right-0 h-4 bg-purple-200/20 rounded-b-full flex justify-between px-10 pointer-events-none z-10">
             {[...Array(12)].map((_, i) => (
-              <div key={i} className="w-6 h-6 bg-[#FFF9FC] rounded-full mt-[-12px]" />
+              <div key={i} className="w-6 h-6 bg-[#DFB15B]/30 rounded-full mt-[-12px]" />
             ))}
           </div>
 
-          <div className="flex flex-col lg:flex-row justify-between items-center gap-8 relative z-10">
-            <div className="text-center lg:text-left space-y-1">
-              <h2 className="text-3xl md:text-4xl font-black text-purple-950 tracking-tight">
-                Subscribe & Get 10% OFF
+          <div className="flex flex-col lg:flex-row justify-between items-center gap-8 relative z-20">
+            <div className="text-center lg:text-left space-y-2">
+              <h2 className="text-3xl md:text-5xl font-black !text-white tracking-tight drop-shadow-md" style={{ color: '#FFFFFF' }}>
+                Subscribe & Get <span className="text-[#DFB15B]" style={{ color: '#DFB15B' }}>10% OFF</span>
               </h2>
-              <p className="text-sm md:text-base font-black text-purple-800/80">
-                on your first order
+              <p className="text-sm md:text-base font-semibold !text-purple-200" style={{ color: '#E9D5FF' }}>
+                Join our VIP Atelier Club for exclusive secret recipes & discounts on your first order
               </p>
             </div>
 
@@ -946,14 +1003,14 @@ export default function Home() {
                 type="email" 
                 value={emailInput}
                 onChange={(e) => setEmailInput(e.target.value)}
-                placeholder="Enter your email" 
-                className="w-full h-14 pl-6 pr-16 rounded-full bg-white text-slate-800 font-medium border border-[#E5B7F8] placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#FF4FA3]/30 transition-all shadow-sm"
+                placeholder="Enter your email address" 
+                className="w-full h-14 pl-6 pr-16 rounded-full bg-white/10 backdrop-blur-md text-white font-medium border border-white/20 placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#DFB15B]/50 transition-all shadow-inner"
               />
               <button 
                 type="submit"
-                className="absolute right-1.5 top-1.5 w-11 h-11 rounded-full bg-[#FFA17A] hover:bg-[#FF8A5E] text-white flex items-center justify-center transition-all shadow-md active:scale-90"
+                className="absolute right-1.5 top-1.5 w-11 h-11 rounded-full bg-gradient-to-r from-[#DFB15B] to-amber-400 hover:from-amber-300 hover:to-amber-400 text-slate-950 flex items-center justify-center transition-all shadow-lg active:scale-90 font-black"
               >
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5 stroke-[2.5]" />
               </button>
             </form>
           </div>
@@ -964,7 +1021,7 @@ export default function Home() {
           SECTION 9: LIGHT GOURMET FOOTER
           --------------------------------------------------------- */}
       <footer className="relative bg-[#FAF6F8] text-slate-700 border-t border-pink-100 pt-16 pb-12 overflow-hidden font-sans z-20">
-        <div className="max-w-[1280px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-12 border-b border-pink-100/50">
+        <div className="max-w-[1720px] mx-auto px-6 xl:px-12 2xl:px-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-12 border-b border-pink-100/50">
           
           {/* Column 1: Brand details */}
           <div className="space-y-5 text-left">
@@ -1033,7 +1090,7 @@ export default function Home() {
         </div>
 
         {/* Footer Sub bottom with Pay brands logos */}
-        <div className="max-w-[1280px] mx-auto px-6 pt-8 flex flex-col md:flex-row justify-between items-center text-slate-400 text-[11px] font-black gap-4">
+        <div className="max-w-[1720px] mx-auto px-6 xl:px-12 2xl:px-16 pt-8 flex flex-col md:flex-row justify-between items-center text-slate-400 text-[11px] font-black gap-4">
           <span>&copy; 2024 CakeUrban. All Rights Reserved.</span>
           <div className="flex items-center gap-3">
             {/* Simplified inline visual representations of payment badges matching the mockup */}

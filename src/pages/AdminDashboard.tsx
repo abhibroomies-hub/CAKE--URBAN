@@ -23,6 +23,7 @@ import { ScrollArea } from '../components/ui/scroll-area';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'motion/react';
 import SEO from '../components/SEO';
+import heroBgImage from '../assets/images/regenerated_image_1783519203025.webp';
 import SeoAnalyticsDashboard from '../components/SeoAnalyticsDashboard';
 import { useTheme, THEME_PRESETS } from '../lib/theme';
 
@@ -894,6 +895,54 @@ export default function AdminDashboard() {
     } finally {
       setCampaignPublishingIdx(null);
     }
+  };
+
+  // Automated Real-Time SEO Helper Functions
+  const calculateSeoScore = () => {
+    let score = 0;
+    const title = prodSeoTitle || prodName;
+    const desc = prodSeoMetaDescription || prodDescription;
+    const slug = prodSeoSlug;
+
+    if (title && title.length >= 25) score += 25;
+    if (title && (title.toLowerCase().includes('faridabad') || title.toLowerCase().includes('eggless'))) score += 15;
+    if (desc && desc.length >= 60) score += 20;
+    if (slug && slug.length >= 5 && !slug.includes(' ')) score += 20;
+    if (prodPrice && Number(prodPrice) > 0) score += 10;
+    if (newProductImage || pastedImageUrl) score += 10;
+
+    return Math.min(100, score);
+  };
+
+  const autoGenerateSeoForProduct = () => {
+    const name = prodName.trim() || 'Designer Cake';
+    const price = prodPrice || '499';
+    const cakeType = selectedCakeType === 'Eggless' ? '100% Eggless' : selectedCakeType;
+    
+    const generatedTitle = `⚡ ${cakeType} ${name} in Faridabad | Express 2-Hr & Midnight Delivery`;
+    const cleanSlug = `${selectedCakeType === 'Eggless' ? 'eggless-' : ''}${name}`
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    const generatedSlug = `${cleanSlug}-faridabad`;
+    const generatedMeta = `Order 100% Eggless ${name} online in Faridabad starting @ ₹${price}. Freshly baked with pure butter & organic ingredients. Guaranteed 2-Hour Express Delivery & Midnight delivery across Faridabad & NCR!`;
+    const generatedKeywords = [
+      `${name.toLowerCase()} faridabad`,
+      `eggless ${name.toLowerCase()} faridabad`,
+      `midnight cake delivery faridabad`,
+      `best cake shop faridabad sector 15`,
+      `online cake order faridabad`,
+      `cakeurban ${name.toLowerCase()}`
+    ];
+    const generatedAlt = `Freshly baked ${cakeType} ${name} by CakeUrban Faridabad`;
+
+    setProdSeoTitle(generatedTitle);
+    setProdSeoSlug(generatedSlug);
+    setProdSeoMetaDescription(generatedMeta);
+    setProdSeoKeywords(generatedKeywords);
+    setProdSeoAlt(generatedAlt);
+
+    toast.success("🚀 High-Ranking SEO Metatags, Slug & Keywords generated automatically!");
   };
 
   const hasAdminAccess = isAdmin || isBypassAdmin;
@@ -1863,162 +1912,87 @@ export default function AdminDashboard() {
   const CurrentTabIcon = currentTabInfo.icon;
 
   return (
-    <div className="admin-dashboard-container container mx-auto px-6 md:px-10 py-12 md:py-24 min-h-screen bg-transparent font-sans selection:bg-[var(--theme-accent-light)] select-none">
+    <div className="admin-dashboard-container max-w-[1720px] mx-auto px-4 md:px-8 xl:px-12 2xl:px-16 py-12 md:py-24 min-h-screen bg-transparent font-sans selection:bg-[var(--theme-accent-light)] select-none">
       <style>{`
-        /* Dynamic Atelier Curator Theme Engine - Modern Luxury SaaS */
+        /* Luxury Dark Slate Admin Theme - High Contrast & Modern Precision */
         .admin-dashboard-container {
-          --dash-bg: ${activeTheme.bg};
-          --dash-card: ${activeTheme.card};
-          --dash-card-hover: ${activeTheme.cardHover};
-          --dash-border: ${activeTheme.border};
-          --dash-text: ${activeTheme.text};
-          --dash-text-muted: ${activeTheme.textMuted};
-          --dash-accent: ${activeTheme.accent};
-          --dash-accent-light: ${activeTheme.accentLight};
-          --dash-contrast: ${activeTheme.contrast};
-          --dash-glass: ${activeTheme.glass};
+          color: #F8FAFC;
         }
 
-        .admin-dashboard-container,
-        .admin-dashboard-container div,
-        .admin-dashboard-container p,
-        .admin-dashboard-container h1,
-        .admin-dashboard-container h2,
-        .admin-dashboard-container h3,
-        .admin-dashboard-container h4,
-        .admin-dashboard-container h5,
-        .admin-dashboard-container h6,
-        .admin-dashboard-container label,
-        .admin-dashboard-container span {
-          color: var(--dash-text) !important;
-        }
-
-        .admin-dashboard-container .text-\\[\\#DFB15B\\],
-        .admin-dashboard-container .text-amber-500,
-        .admin-dashboard-container .text-pink-500,
-        .admin-dashboard-container .text-[#DFB15B],
-        .admin-dashboard-container .text-[#DFB15B]\\/80,
-        .admin-dashboard-container .text-[#DFB15B]\\/75 {
-          color: var(--dash-accent) !important;
-        }
-
-        .admin-dashboard-container .text-white\\/70,
-        .admin-dashboard-container .text-[#FFFDFB]\\/60,
-        .admin-dashboard-container .text-white\\/60,
-        .admin-dashboard-container .text-white\\/50,
-        .admin-dashboard-container .text-white\\/40,
-        .admin-dashboard-container .text-[#FFFDFB]\\/40,
-        .admin-dashboard-container .text-white\\/30,
-        .admin-dashboard-container .text-white\\/35 {
-          color: var(--dash-text-muted) !important;
-        }
-
-        /* Card backgrounds */
-        .admin-dashboard-container .bg-\\[\\#2C130E\\]\\/95,
-        .admin-dashboard-container .bg-\\[\\#140603\\]\\/80,
+        /* High-contrast cards */
         .admin-dashboard-container .bg-\\[\\#26130F\\]\\/45,
-        .admin-dashboard-container .bg-\\[\\#2d150f\\],
-        .admin-dashboard-container .bg-\\[\\#140603\\],
-        .admin-dashboard-container .bg-\\[\\#140603\\]\\/60,
-        .admin-dashboard-container .bg-\\[\\#140603\\]\\/40,
-        .admin-dashboard-container .bg-\\[\\#26130F\\]\\/90,
-        .admin-dashboard-container .bg-black\\/40,
-        .admin-dashboard-container .bg-[#26130F]\\/45,
-        .admin-dashboard-container .bg-slate-900,
-        .admin-dashboard-container .bg-emerald-950\\/10,
-        .admin-dashboard-container .bg-[#140603]\\/80,
-        .admin-dashboard-container .bg-[#2d150f],
-        .admin-dashboard-container .bg-[#26130F],
-        .admin-dashboard-container .bg-[#26130F]\\/90 {
-          background: var(--dash-glass) !important;
-          background-color: var(--dash-card) !important;
-          backdrop-filter: blur(20px) !important;
-          -webkit-backdrop-filter: blur(20px) !important;
+        .admin-dashboard-container .bg-\\[\\#26130F\\]\\/55,
+        .admin-dashboard-container .bg-\\[\\#26130F\\],
+        .admin-dashboard-container .bg-\\[\\#2D150F\\],
+        .admin-dashboard-container .bg-slate-900 {
+          background-color: #111827 !important;
+          border-color: rgba(223, 177, 91, 0.2) !important;
+          box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5) !important;
         }
 
-        /* Borders override */
-        .admin-dashboard-container .border-\\[\\#DFB15B\\]\\/20,
-        .admin-dashboard-container .border-\\[\\#DFB15B\\]\\/15,
-        .admin-dashboard-container .border-\\[\\#DFB15B\\]\\/30,
-        .admin-dashboard-container .border-\\[\\#DFB15B\\]\\/10,
-        .admin-dashboard-container .border-white\\/10,
-        .admin-dashboard-container .border-white\\/5,
-        .admin-dashboard-container .border-pink-100 {
-          border-color: var(--dash-border) !important;
-        }
-
-        /* Buttons override */
-        .admin-dashboard-container .bg-\\[\\#DFB15B\\],
-        .admin-dashboard-container .bg-[#DFB15B] {
-          background-color: var(--dash-accent) !important;
-          color: var(--dash-contrast) !important;
-          border: none !important;
-        }
-
-        .admin-dashboard-container .bg-\\[\\#DFB15B\\]:hover,
-        .admin-dashboard-container .bg-[#DFB15B]:hover {
-          background-color: var(--dash-accent) !important;
-          opacity: 0.9 !important;
-          color: var(--dash-contrast) !important;
-        }
-
-        /* SVGs trace color */
-        .admin-dashboard-container svg path[stroke="#DFB15B"] {
-          stroke: var(--dash-accent) !important;
-        }
-        .admin-dashboard-container svg circle[stroke="#DFB15B"] {
-          stroke: var(--dash-accent) !important;
-        }
-        .admin-dashboard-container svg circle[fill="#140603"] {
-          fill: var(--dash-card) !important;
-        }
-        .admin-dashboard-container svg defs stop[stopColor="#DFB15B"] {
-          stop-color: var(--dash-accent) !important;
-        }
-
-        /* Badges & custom elements */
-        .admin-dashboard-container .bg-\\[\\#DFB15B\\]\\/10 {
-          background-color: var(--dash-accent-light) !important;
-          color: var(--dash-accent) !important;
-          border-color: var(--dash-border) !important;
-        }
-
-        /* Text inside golden buttons */
-        .admin-dashboard-container .text-\\[\\#140603\\],
-        .admin-dashboard-container .text-[#140603] {
-          color: var(--dash-contrast) !important;
-        }
-
-        .admin-dashboard-container .border-white\\/10 {
-          border-color: var(--dash-border) !important;
-        }
-
-        /* Input fields */
+        /* High-contrast inputs & select fields */
         .admin-dashboard-container input,
         .admin-dashboard-container textarea,
         .admin-dashboard-container select {
-          background-color: var(--dash-card) !important;
-          border-color: var(--dash-border) !important;
-          color: var(--dash-text) !important;
+          background-color: #030712 !important;
+          border: 1px solid #374151 !important;
+          color: #FFFFFF !important;
+          font-weight: 600 !important;
         }
+
+        .admin-dashboard-container input:focus,
+        .admin-dashboard-container textarea:focus,
+        .admin-dashboard-container select:focus {
+          border-color: #DFB15B !important;
+          box-shadow: 0 0 0 2px rgba(223, 177, 91, 0.25) !important;
+        }
+
         .admin-dashboard-container input::placeholder,
         .admin-dashboard-container textarea::placeholder {
-          color: var(--dash-text-muted) !important;
-          opacity: 0.5;
+          color: #9CA3AF !important;
+          opacity: 1 !important;
         }
 
-        /* Active Sidebar button */
-        .admin-dashboard-container button.bg-\\[\\#DFB15B\\],
-        .admin-dashboard-container button.bg-[#DFB15B] {
-          background-color: var(--dash-accent) !important;
-          color: var(--dash-contrast) !important;
-          box-shadow: 0 8px 30px var(--dash-accent-light) !important;
+        /* High contrast labels */
+        .admin-dashboard-container label {
+          color: #E2E8F0 !important;
+          font-weight: 800 !important;
+          font-size: 11px !important;
+          letter-spacing: 0.08em !important;
+          text-transform: uppercase !important;
         }
 
-        /* Testimonials and customer reviews ratings */
-        .admin-dashboard-container .text-yellow-400,
-        .admin-dashboard-container .text-amber-400 {
-          color: var(--dash-accent) !important;
+        /* High contrast text overrides */
+        .admin-dashboard-container .text-white\\/50,
+        .admin-dashboard-container .text-white\\/60,
+        .admin-dashboard-container .text-white\\/70,
+        .admin-dashboard-container .text-[#FFFDFB]\\/60,
+        .admin-dashboard-container .text-[#FFFDFB]\\/70 {
+          color: #CBD5E1 !important;
+        }
+
+        /* Gold headlines and badges */
+        .admin-dashboard-container .text-\\[\\#DFB15B\\],
+        .admin-dashboard-container .text-[#DFB15B] {
+          color: #DFB15B !important;
+        }
+
+        /* Primary action buttons */
+        .admin-dashboard-container .bg-\\[\\#DFB15B\\],
+        .admin-dashboard-container .bg-[#DFB15B] {
+          background-color: #DFB15B !important;
+          color: #030712 !important;
+          font-weight: 800 !important;
+        }
+
+        /* Dark inner sub-boxes */
+        .admin-dashboard-container .bg-\\[\\#140603\\]\\/80,
+        .admin-dashboard-container .bg-\\[\\#140603\\]\\/85,
+        .admin-dashboard-container .bg-\\[\\#140603\\]\\/60,
+        .admin-dashboard-container .bg-\\[\\#140603\\]\\/50,
+        .admin-dashboard-container .bg-\\[\\#140603\\] {
+          background-color: #030712 !important;
+          border-color: #1F2937 !important;
         }
       `}</style>
       
@@ -2028,40 +2002,47 @@ export default function AdminDashboard() {
       />
 
       {/* HEADER BANNER */}
-      <div className="flex flex-col lg:flex-row items-center lg:items-end justify-between gap-10 mb-16 md:mb-20">
-        <div className="space-y-4 text-center lg:text-left w-full lg:w-auto">
-            <div className="inline-block px-4 py-1.5 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase mb-1" style={{ backgroundColor: 'var(--theme-accent-light)', color: 'var(--theme-accent)', border: '1px solid var(--theme-border)' }}>
-              Curator Station
+      <div className="rounded-[36px] overflow-hidden relative border border-[#DFB15B]/30 p-8 md:p-10 mb-12 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-8 z-10">
+        {/* Real Bakery Banner Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-700 scale-105"
+          style={{ backgroundImage: `url(${heroBgImage})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-[#190906]/90 to-slate-950/95 backdrop-blur-[5px]" />
+
+        <div className="space-y-3 text-center lg:text-left w-full lg:w-auto relative z-10 max-w-2xl">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase bg-white/10 backdrop-blur-md border border-[#DFB15B]/40 text-[#DFB15B]">
+              <Sparkles className="w-3 h-3 text-[#DFB15B]" /> Curator Station
             </div>
-            <h1 className="text-4xl md:text-6xl font-display font-black tracking-tighter leading-none" style={{ color: 'var(--theme-text)' }}>
-              Artisan <span className="italic font-serif font-light" style={{ color: 'var(--theme-accent)' }}>Control Panel.</span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-black tracking-tighter leading-none text-white drop-shadow-md">
+              Artisan <span className="italic font-serif font-light text-[#DFB15B]">Control Panel.</span>
             </h1>
-            <p className="text-xs max-w-xl font-medium italic mt-1 leading-relaxed" style={{ color: 'var(--theme-text-muted)' }}>
+            <p className="text-xs md:text-sm font-medium italic leading-relaxed text-slate-200 drop-shadow-sm">
               Boutique Supervisor portal. Manage active baking queues, moderate feedback, and utilize the advanced Gemini AI Text Spec Builder to instant draft creations.
             </p>
         </div>
 
-        {activeTab !== 'add-product' && activeTab !== 'edit-product' ? (
-          <Button 
-            onClick={() => setActiveTab('add-product')}
-            className="w-full lg:w-auto rounded-[20px] h-14 px-8 text-[10px] font-black uppercase tracking-[0.2em] gap-3 transition-all cursor-pointer grow-0 shrink-0 shadow-lg"
-            style={{ backgroundColor: 'var(--theme-accent)', color: 'var(--theme-contrast)' }}
-          >
-            <Sparkles className="w-4 h-4 animate-pulse" style={{ color: 'var(--theme-contrast)' }} /> Add New Cake
-          </Button>
-        ) : (
-          <Button 
-            onClick={() => {
-              setEditingProduct(null);
-              setActiveTab('products');
-            }}
-            variant="outline"
-            className="w-full lg:w-auto rounded-[20px] h-14 px-8 text-[10px] font-black uppercase tracking-[0.2em] gap-2 cursor-pointer grow-0 shrink-0"
-            style={{ borderColor: 'var(--theme-border)', color: 'var(--theme-text)' }}
-          >
-            <ArrowLeft className="w-4 h-4" /> Back to Operations
-          </Button>
-        )}
+        <div className="relative z-10 shrink-0 w-full lg:w-auto">
+          {activeTab !== 'add-product' && activeTab !== 'edit-product' ? (
+            <Button 
+              onClick={() => setActiveTab('add-product')}
+              className="w-full lg:w-auto rounded-[20px] h-14 px-8 text-[10px] font-black uppercase tracking-[0.2em] gap-3 transition-all cursor-pointer shadow-[0_10px_25px_rgba(223,177,91,0.35)] bg-gradient-to-r from-[#DFB15B] to-amber-400 hover:from-amber-300 hover:to-amber-400 text-slate-950 border-0"
+            >
+              <Sparkles className="w-4 h-4 animate-pulse text-slate-950" /> Add New Cake
+            </Button>
+          ) : (
+            <Button 
+              onClick={() => {
+                setEditingProduct(null);
+                setActiveTab('products');
+              }}
+              variant="outline"
+              className="w-full lg:w-auto rounded-[20px] h-14 px-8 text-[10px] font-black uppercase tracking-[0.2em] gap-2 cursor-pointer border-white/30 bg-white/10 text-white hover:bg-white/20"
+            >
+              <ArrowLeft className="w-4 h-4" /> Back to Operations
+            </Button>
+          )}
+        </div>
       </div>
 
       <AnimatePresence mode="wait">
@@ -3734,46 +3715,142 @@ export default function AdminDashboard() {
                     />
                   </div>
 
-                  {/* Google Search simulator & Path slug */}
-                  <div className="border-t border-white/10 pt-6 space-y-5">
-                    <h4 className="text-xs font-black uppercase tracking-[0.25em] text-[#DFB15B] flex items-center gap-1.5">
-                      <FileText className="w-4.5 h-4.5" /> Metatags & Rich Schema specifications
-                    </h4>
+                  {/* Real-Time Automated SEO Engine & Google SERP Simulator */}
+                  <div className="border-t border-[#DFB15B]/20 pt-6 space-y-6 bg-gradient-to-br from-[#140603] to-[#1E0B07] p-6 rounded-[28px] border">
+                    
+                    {/* Header with Live SEO Score Meter */}
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+                      <div>
+                        <h4 className="text-xs font-black uppercase tracking-[0.2em] text-[#DFB15B] flex items-center gap-2">
+                          <Sparkles className="w-4 h-4 text-[#DFB15B]" /> Real-Time Auto-SEO Optimizer
+                        </h4>
+                        <p className="text-[10px] text-white/50 italic mt-0.5">
+                          Ensures high ranking on Google Search when products are listed
+                        </p>
+                      </div>
+
+                      {/* SEO Score Gauge */}
+                      <div className="flex items-center gap-3 bg-black/40 px-4 py-2 rounded-2xl border border-white/10 shrink-0">
+                        <div className="text-right">
+                          <span className="text-[9px] uppercase font-black tracking-widest text-white/50 block">SEO Health</span>
+                          <span className={`text-xs font-black font-mono ${
+                            calculateSeoScore() >= 80 ? 'text-emerald-400' :
+                            calculateSeoScore() >= 50 ? 'text-amber-400' : 'text-rose-400'
+                          }`}>
+                            {calculateSeoScore()}% - {calculateSeoScore() >= 80 ? 'Excellent' : calculateSeoScore() >= 50 ? 'Good' : 'Needs Optimization'}
+                          </span>
+                        </div>
+                        <div className="w-10 h-10 rounded-full border-2 flex items-center justify-center font-black text-xs font-mono shrink-0 shadow-lg"
+                             style={{
+                               borderColor: calculateSeoScore() >= 80 ? '#34D399' : calculateSeoScore() >= 50 ? '#FBBF24' : '#F87171',
+                               backgroundColor: calculateSeoScore() >= 80 ? 'rgba(52,211,153,0.1)' : 'rgba(251,191,36,0.1)'
+                             }}>
+                          {calculateSeoScore()}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 1-Click Auto-SEO Generator Button */}
+                    <Button
+                      type="button"
+                      onClick={autoGenerateSeoForProduct}
+                      className="w-full h-12 rounded-xl bg-[#DFB15B] hover:bg-white text-[#140603] text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2 shadow-lg cursor-pointer transition-all active:scale-95 font-bold"
+                    >
+                      <Sparkles className="w-4 h-4 text-[#140603]" />
+                      <span>⚡ 1-Click Auto-Generate High-Ranking SEO Metatags & Slug</span>
+                    </Button>
 
                     <div className="grid grid-cols-1 gap-4">
                       {/* SEO Title */}
                       <div className="space-y-1.5">
-                        <label className="text-[9px] uppercase font-black tracking-widest text-white/40 block">Google Search SEO Title Tag</label>
+                        <div className="flex justify-between items-center">
+                          <label className="text-[9px] uppercase font-black tracking-widest text-[#DFB15B] block">
+                            Google Search SEO Title Tag
+                          </label>
+                          <span className="text-[9px] font-mono text-white/40">
+                            {(prodSeoTitle || prodName).length} / 60 chars
+                          </span>
+                        </div>
                         <Input 
-                          placeholder="Ex. 24K Gold Flake Truffle Tower | Cake Urban South Delhi"
+                          placeholder="Ex. ⚡ 100% Eggless Belgian Chocolate Cake in Faridabad | Express 2-Hr Delivery"
                           value={prodSeoTitle}
                           onChange={e => setProdSeoTitle(e.target.value)}
-                          className="h-11 rounded-lg bg-[#140603]/50 border-white/10 p-3 text-xs text-[#FFFDFB]"
+                          className="h-11 rounded-lg bg-[#030712] border-white/10 p-3 text-xs text-[#FFFDFB] focus:border-[#DFB15B]"
                         />
                       </div>
 
                       {/* Path slug */}
                       <div className="space-y-1.5">
-                        <label className="text-[9px] uppercase font-black tracking-widest text-white/40 block">URL Path Slug</label>
+                        <label className="text-[9px] uppercase font-black tracking-widest text-[#DFB15B] block">
+                          URL Path Slug (Indexed by Google)
+                        </label>
                         <Input 
-                          placeholder="Ex. 24k-gold-flake-truffle-tower"
+                          placeholder="Ex. eggless-belgian-chocolate-truffle-cake-faridabad"
                           value={prodSeoSlug}
                           onChange={e => setProdSeoSlug(e.target.value)}
-                          className="h-11 rounded-lg bg-[#140603]/50 border-white/10 p-3 text-xs font-mono text-[#FFFDFB]"
+                          className="h-11 rounded-lg bg-[#030712] border-white/10 p-3 text-xs font-mono text-[#FFFDFB] focus:border-[#DFB15B]"
                         />
                       </div>
 
                       {/* Meta Description */}
                       <div className="space-y-1.5">
-                        <label className="text-[9px] uppercase font-black tracking-widest text-white/40 block">Google Meta Description Tag</label>
+                        <div className="flex justify-between items-center">
+                          <label className="text-[9px] uppercase font-black tracking-widest text-[#DFB15B] block">
+                            Google Meta Description Tag
+                          </label>
+                          <span className="text-[9px] font-mono text-white/40">
+                            {(prodSeoMetaDescription || prodDescription).length} / 160 chars
+                          </span>
+                        </div>
                         <Input 
-                          placeholder="Ex. Buy Gold Flake Truffle Tower Cake online..."
+                          placeholder="Ex. Order 100% Eggless Belgian Chocolate Cake online in Faridabad starting @ ₹499. Freshly baked..."
                           value={prodSeoMetaDescription}
                           onChange={e => setProdSeoMetaDescription(e.target.value)}
-                          className="h-11 rounded-lg bg-[#140603]/50 border-white/10 p-3 text-xs text-[#FFFDFB]"
+                          className="h-11 rounded-lg bg-[#030712] border-white/10 p-3 text-xs text-[#FFFDFB] focus:border-[#DFB15B]"
                         />
                       </div>
                     </div>
+
+                    {/* LIVE GOOGLE SEARCH SERP PREVIEW BOX */}
+                    <div className="bg-[#030712] border border-slate-800 rounded-2xl p-5 space-y-3 shadow-inner">
+                      <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                        <span className="text-[9px] uppercase font-black tracking-widest text-slate-400 flex items-center gap-1.5">
+                          <Eye className="w-3.5 h-3.5 text-blue-400" /> Live Google Search Result Preview
+                        </span>
+                        <span className="text-[8px] uppercase font-black tracking-widest text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/20">
+                          Index-Ready
+                        </span>
+                      </div>
+
+                      <div className="space-y-1 text-left font-sans">
+                        <div className="flex items-center gap-2 text-xs text-slate-300 font-normal">
+                          <div className="w-4 h-4 rounded-full bg-[#DFB15B] text-[#140603] flex items-center justify-center font-serif font-black text-[9px] shrink-0">
+                            C
+                          </div>
+                          <span className="text-slate-300 font-medium">CakeUrban</span>
+                          <span className="text-slate-500">https://www.cakeurban.com › product › {prodSeoSlug || 'product-slug'}</span>
+                        </div>
+
+                        <h5 className="text-base font-semibold text-[#8AB4F8] hover:underline cursor-pointer leading-snug">
+                          {prodSeoTitle || `${prodName || 'Designer Cake'} in Faridabad | CakeUrban`}
+                        </h5>
+
+                        <p className="text-xs text-slate-300 leading-relaxed font-normal">
+                          {prodSeoMetaDescription || prodDescription || 'Order 100% Eggless designer cakes online in Faridabad with express 2-hour home delivery and midnight delivery across Faridabad & Delhi NCR.'}
+                        </p>
+
+                        <div className="flex items-center gap-3 pt-1 text-[11px] text-slate-400">
+                          <span className="text-amber-400 font-bold">⭐⭐⭐⭐⭐ 4.9 (128)</span>
+                          <span>·</span>
+                          <span className="text-emerald-400 font-bold">₹{prodPrice || '499'}</span>
+                          <span>·</span>
+                          <span className="text-slate-300">In stock</span>
+                          <span>·</span>
+                          <span className="text-purple-300 font-semibold">100% Eggless</span>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
 
                   {/* FORM ACTIONS */}

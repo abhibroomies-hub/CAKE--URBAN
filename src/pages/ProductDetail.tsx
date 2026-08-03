@@ -643,7 +643,7 @@ export default function ProductDetail() {
       {/* =========================================================
           TOP SECTION: BREADCRUMBS
           ========================================================= */}
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 pt-8">
+      <div className="max-w-[1720px] mx-auto px-4 sm:px-8 xl:px-12 2xl:px-16 pt-8">
         <nav className="flex items-center gap-2 text-xs font-semibold text-slate-400 select-none">
           <Link to="/" onClick={triggerBtnSound} className="hover:text-pink-600 transition-colors">Home</Link>
           <ChevronRight className="w-3 h-3" />
@@ -658,7 +658,7 @@ export default function ProductDetail() {
       {/* =========================================================
           MAIN CONTAINER: 55% LEFT | 45% RIGHT
           ========================================================= */}
-      <main className="max-w-[1280px] mx-auto px-4 sm:px-8 py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-14">
+      <main className="max-w-[1720px] mx-auto px-4 sm:px-8 xl:px-12 2xl:px-16 py-8 lg:py-12 grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-14">
         
         {/* =========================================================
             LEFT SIDE: GALLERY ENGINE (55% Width / 7 columns)
@@ -1498,7 +1498,7 @@ export default function ProductDetail() {
             : 'relative border-y border-pink-100/40 py-3 bg-white/40'
         }`}
       >
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-8 flex items-center justify-start gap-4 sm:gap-8 overflow-x-auto no-scrollbar">
+        <div className="max-w-[1720px] mx-auto px-4 sm:px-8 xl:px-12 2xl:px-16 flex items-center justify-start gap-4 sm:gap-8 overflow-x-auto no-scrollbar">
           {[
             { id: 'description', label: 'Curation Story', ref: descRef },
             { id: 'ingredients', label: 'Premium Ingredients', ref: ingredientsRef },
@@ -1525,7 +1525,7 @@ export default function ProductDetail() {
       {/* =========================================================
           SCROLLING PAGES: CONTENT SEGMENTS
           ========================================================= */}
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 space-y-24 py-16">
+      <div className="max-w-[1720px] mx-auto px-4 sm:px-8 xl:px-12 2xl:px-16 space-y-24 py-16">
 
         {/* 1. CURATION DESCRIPTION (Luxury Editorial Design) */}
         <div ref={descRef} className="scroll-mt-36">
@@ -1927,7 +1927,7 @@ export default function ProductDetail() {
       {/* =========================================================
           BOTTOM CTA: NEED SOMETHING TRULY UNIQUE BANNER
           ========================================================= */}
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 pb-16">
+      <div className="max-w-[1720px] mx-auto px-4 sm:px-8 xl:px-12 2xl:px-16 pb-16">
         <div className="relative rounded-[50px] overflow-hidden bg-gradient-to-tr from-pink-500 via-rose-500 to-purple-600 p-8 sm:p-16 text-center text-white shadow-2xl shadow-pink-500/10">
           
           {/* Floating vector background decorations */}

@@ -339,109 +339,16 @@ export const injectThemeCSS = (theme: ThemePreset) => {
       backdrop-filter: blur(12px) !important;
     }
 
-    /* Complex Card Background structures */
-    .bg-\\[\\#26130F\\],
-    .bg-\\[\\#2D150F\\],
-    .bg-\\[\\#1C0A05\\],
-    .bg-\\[\\#26130F\\]\\/45,
-    .bg-\\[\\#26130F\\]\\/70,
-    .bg-\\[\\#26130F\\]\\/80,
-    .bg-\\[\\#26130F\\]\\/85,
-    .bg-\\[\\#2D150F\\]\\/20,
-    .bg-\\[\\#2D150F\\]\\/45,
-    .bg-[#26130F]\\/45,
-    .bg-zinc-900\\/50,
-    .bg-white\\/5 {
-      background-color: var(--theme-card) !important;
-      transition: background-color 0.5s ease-in-out !important;
-    }
-
-    /* Hover states on cards */
-    .hover\\:bg-\\[\\#2D150F\\]\\/45:hover,
-    .group:hover .bg-\\[\\#26130F\\]\\/85 {
-      background-color: var(--theme-card-hover) !important;
-    }
-
-    /* Content/Input texts */
-    .text-\\[\\#FFFDFB\\],
-    .text-\\[\\#FFFDFB\\]\\/80,
-    .text-\\[\\#FFFDFB\\]\\/70,
-    .text-\\[\\#FFFDFB\\]\\/60,
-    .text-\\[\\#FFFDFB\\]\\/50,
-    .text-\\[\\#FFFDFB\\]\\/40,
-    .text-\\[\\#FFFDFB\\]\\/30,
-    .text-zinc-300,
-    .text-stone-300,
-    .text-white\\/70,
-    .text-white\\/80 {
-      color: var(--theme-text) !important;
-    }
-
-    .text-\\[\\#FFFDFB\\]\\/50,
-    .text-zinc-400,
-    .text-stone-400,
-    .text-white\\/40 {
-      color: var(--theme-text-muted) !important;
-    }
-
-    /* Standard accent triggers */
-    .text-\\[\\#DFB15B\\],
-    .text-amber-500,
-    .text-\\[\\#cc7a74\\],
-    .text-emerald-400 {
-      color: var(--theme-accent) !important;
-    }
-
-    .bg-\\[\\#DFB15B\\],
-    .bg-amber-500,
-    .bg-\\[\\#DFB15B\\]\\/90 {
-      background-color: var(--theme-accent) !important;
-      color: var(--theme-contrast) !important;
-    }
-
-    /* Hover effects for primary actions */
-    .hover\\:bg-white:hover,
-    .hover\\:text-\\[\\#140603\\\]:hover {
-      background-color: var(--theme-accent-hover) !important;
-      color: var(--theme-contrast-hover) !important;
-    }
-
-    /* Custom borders and outlines */
-    .border-\\[\\#DFB15B\\]\\/15, 
-    .border-\\[\\#DFB15B\\]\\/20, 
-    .border-\\[\\#DFB15B\\]\\/25, 
-    .border-\\[\\#DFB15B\\]\\/30, 
-    .border-\\[\\#DFB15B\\]\\/50, 
-    .border-white\\/10,
-    .border-white\\/5 {
-      border-color: var(--theme-border) !important;
-    }
-
-    .border-\\[\\#DFB15B\\] {
-      border-color: var(--theme-accent) !important;
-    }
-
-    .bg-\\[\\#DFB15B\\\]\\/10,
-    .bg-\\[\\#DE9088\\]\\/5 {
-      background-color: var(--theme-accent-light) !important;
-    }
-
-    /* Interactive inputs/select outline highlights */
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--theme-accent) !important;
-      box-shadow: 0 0 0 2px var(--theme-accent-light) !important;
-    }
-
-    /* Skeletons */
-    .animate-pulse {
-      background-color: var(--theme-card) !important;
-      opacity: 0.65 !important;
+    /* Option background fix for native selects */
+    option {
+      background-color: #0F172A;
+      color: #FFFFFF;
     }
 
     /* Custom Selection Styling */
     ::selection {
-      background-color: var(--theme-accent-light) !important;
-      color: var(--theme-accent) !important;
+      background-color: rgba(223, 177, 91, 0.3);
+      color: #DFB15B;
     }
 
     /* Adjust the standard 4D glass sphere overlays if theme is light */

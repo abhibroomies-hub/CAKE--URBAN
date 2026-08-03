@@ -35,6 +35,7 @@ import {
   SlidersHorizontal
 } from 'lucide-react';
 import SEO from '../components/SEO';
+import heroBgImage from '../assets/images/regenerated_image_1783519203025.webp';
 import { toast } from 'sonner';
 import { playSuccessChime, playSlidePop, playBtnTap } from '../lib/sound';
 
@@ -464,28 +465,37 @@ export default function Shop() {
         <div className="absolute top-[15%] right-[-10%] w-[45%] h-[55%] bg-purple-300/10 rounded-full blur-3xl" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 relative z-10 space-y-16">
+      <div className="max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 pt-12 relative z-10 space-y-16">
         
         {/* =========================================================
-            HEADER TITLE SUITE (Luxury Editorial)
+            HEADER TITLE SUITE (Luxury Editorial Banner)
             ========================================================= */}
-        <div className="text-center space-y-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-1.5 bg-pink-500/5 border border-pink-500/10 px-4 py-1.5 rounded-full"
-          >
-            <Sparkle className="w-3.5 h-3.5 text-pink-500 fill-pink-100" />
-            <span className="text-[10px] font-black uppercase tracking-wider text-pink-700 font-sans">Faridabad Atelier De Patisserie</span>
-          </motion.div>
-          
-          <div className="max-w-2xl mx-auto space-y-2">
-            <h1 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-none font-sans">
-              Boutique Confection Suite
-            </h1>
-            <p className="text-xs md:text-sm text-slate-500 leading-relaxed max-w-xl mx-auto font-medium">
-              Formulated by world-class pastry chefs, hand-gilded in 24K gold leaf, and baked 100% eggless. Refined for your milestones.
-            </p>
+        <div className="rounded-[36px] overflow-hidden relative border border-[#DFB15B]/30 p-8 md:p-12 shadow-2xl text-center select-none">
+          {/* Real Bakery Banner Image Background */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center transition-transform duration-700 scale-105"
+            style={{ backgroundImage: `url(${heroBgImage})` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-900/90 to-slate-950/95 backdrop-blur-[4px]" />
+
+          <div className="relative z-10 space-y-4 max-w-3xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-[#DFB15B]/40 px-4 py-1.5 rounded-full"
+            >
+              <Sparkle className="w-3.5 h-3.5 text-[#DFB15B] fill-[#DFB15B]" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#DFB15B]">Faridabad Atelier De Patisserie</span>
+            </motion.div>
+            
+            <div className="space-y-3">
+              <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-none drop-shadow-md">
+                Boutique <span className="text-[#DFB15B] italic font-serif font-light">Confection Suite</span>
+              </h1>
+              <p className="text-xs md:text-sm text-slate-200 leading-relaxed max-w-2xl mx-auto font-medium drop-shadow-sm">
+                Formulated by world-class pastry chefs, hand-gilded in 24K gold leaf, and baked 100% eggless. Refined for your milestones.
+              </p>
+            </div>
           </div>
         </div>
 
