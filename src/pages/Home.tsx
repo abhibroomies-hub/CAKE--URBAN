@@ -34,21 +34,21 @@ import instagramImage5 from '../assets/images/regenerated_image_1783517217853.we
 
 import heroImage from '../assets/images/regenerated_image_1783519200304.webp';
 import heroBgImage from '../assets/images/regenerated_image_1783519203025.webp';
-import flavorStrawberry from '../assets/images/regenerated_image_1783519206969.webp';
-import flavorPistachio from '../assets/images/regenerated_image_1783519209426.webp';
-import flavorMango from '../assets/images/regenerated_image_1783519211943.webp';
-import flavorBlueberry from '../assets/images/regenerated_image_1783519214755.webp';
-import flavorBlackForest from '../assets/images/regenerated_image_1783519217409.webp';
+import flavorChocolate from '../assets/images/regenerated_image_1788086166531.png';
+import flavorStrawberry from '../assets/images/regenerated_image_1788086170422.png';
+import flavorPistachio from '../assets/images/regenerated_image_1788086173650.png';
+import flavorMango from '../assets/images/regenerated_image_1788086176809.png';
+import flavorBlueberry from '../assets/images/regenerated_image_1788086179379.png';
+import flavorBlackForest from '../assets/images/regenerated_image_1788086182460.png';
 import midnightImage from '../assets/images/regenerated_image_1783520153768.webp';
 
 // Newly regenerated category and flavor images
-import categoryBirthday from '../assets/images/regenerated_image_1783601219648.webp';
-import categoryAnniversary from '../assets/images/regenerated_image_1783601222157.webp';
-import categoryPhoto from '../assets/images/regenerated_image_1783601224998.webp';
-import categoryCustom from '../assets/images/regenerated_image_1783601227410.webp';
-import categoryDessert from '../assets/images/regenerated_image_1783601230131.webp';
-import categoryCupcakes from '../assets/images/regenerated_image_1783601232735.webp';
-import flavorChocolate from '../assets/images/regenerated_image_1783601216873.webp';
+import categoryBirthday from '../assets/images/regenerated_image_1788086185992.png';
+import categoryAnniversary from '../assets/images/regenerated_image_1788086188653.png';
+import categoryPhoto from '../assets/images/regenerated_image_1788086191498.png';
+import categoryCustom from '../assets/images/regenerated_image_1788086194036.png';
+import categoryDessert from '../assets/images/regenerated_image_1788086196717.png';
+import categoryCupcakes from '../assets/images/regenerated_image_1788086199869.png';
 
 // ---------------------------------------------------------
 // FLOATING DECORATIONS WITH PARALLAX MOUSE EFFECT
