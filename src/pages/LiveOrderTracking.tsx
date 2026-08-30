@@ -27,6 +27,8 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import SEO from '../components/SEO';
 import { playBtnTap, playSuccessChime, playSlidePop } from '../lib/sound';
+import { db } from '../lib/firebase';
+import { collection, query, where, onSnapshot, getDocs } from 'firebase/firestore';
 
 // Steps list for Live progress timeline
 const TRACKING_STEPS = [
@@ -66,25 +68,40 @@ export default function LiveOrderTracking() {
     }
   };
 
-  // 2. Simulate order steps and scooter position movement over time
+  // 2. Real-time Firestore order tracking listener
   useEffect(() => {
-    // Increment tracker steps dynamically every 20 seconds for interactive feel
-    const stepInterval = setInterval(() => {
-      setCurrentStepIndex((prev) => {
-        if (prev < TRACKING_STEPS.length - 1) {
-          const next = prev + 1;
-          toast.success(`Order Status Updated: ${TRACKING_STEPS[next].label}!`, {
-            description: TRACKING_STEPS[next].desc,
-            icon: <Bell className="w-5 h-5 text-[#DFB15B] fill-[#DFB15B]/10" />
-          });
-          playSound('success');
-          return next;
-        }
-        return prev;
-      });
-    }, 25000);
+    if (!orderId) return;
 
-    // Progress delivery scooter on map
+    const q = query(collection(db, 'orders'), where('id', '==', orderId));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      if (!snapshot.empty) {
+        const orderData = snapshot.docs[0].data();
+        const status = orderData.status;
+        if (status === 'new') {
+          setCurrentStepIndex(0);
+        } else if (status === 'baking' || status === 'processing') {
+          setCurrentStepIndex(1);
+        } else if (status === 'quality_check') {
+          setCurrentStepIndex(2);
+        } else if (status === 'packed') {
+          setCurrentStepIndex(3);
+        } else if (status === 'shipped' || status === 'out_for_delivery') {
+          setCurrentStepIndex(4);
+          setScooterProgress(0.7);
+        } else if (status === 'delivered') {
+          setCurrentStepIndex(5);
+          setScooterProgress(1);
+        }
+      }
+    }, (error) => {
+      console.warn("Live order tracking Firestore snapshot warning:", error);
+    });
+
+    return () => unsubscribe();
+  }, [orderId]);
+
+  // 3. Ambient progress delivery scooter on map
+  useEffect(() => {
     const scooterInterval = setInterval(() => {
       setScooterProgress((prev) => {
         if (prev < 0.95) {
@@ -95,10 +112,9 @@ export default function LiveOrderTracking() {
     }, 4000);
 
     return () => {
-      clearInterval(stepInterval);
       clearInterval(scooterInterval);
     };
-  }, [isMuted]);
+  }, []);
 
   // Handle live chat sending
   const handleSendMessage = (e: React.FormEvent) => {

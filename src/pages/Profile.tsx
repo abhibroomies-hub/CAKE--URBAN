@@ -37,6 +37,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../co
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 import SEO from '../components/SEO';
+import { PatisserieDashboardCards } from '../components/PatisserieDashboardCards';
 
 const AVATAR_OPTIONS = [
   { id: 'emblem-gold', emoji: '🎂', label: 'Gold Royal' },
@@ -419,6 +420,18 @@ export default function Profile() {
             <span>Sign Out</span>
           </Button>
         </div>
+      </div>
+
+      {/* HAUTE PATISSERIE MEMBER DASHBOARD CARDS - FROSTED GLASS & GOLD WIREFRAME ROW */}
+      <div className="relative z-10 mb-8">
+        <PatisserieDashboardCards
+          activeCard={activeTab}
+          onSelectCard={(cardId) => setActiveTab(cardId)}
+          ordersCount={activeOrdersList.length}
+          unreadAlertsCount={notifications.filter(n => n.unread).length}
+          rewardsPoints={(profile as any)?.loyaltyPoints || 450}
+          savedAddressesCount={addresses.length}
+        />
       </div>
 
       {/* DASHBOARD GRID CONTAINER */}

@@ -327,7 +327,7 @@ export default function WeddingLanding() {
       </section>
 
       {/* =========================================================
-          WEDDING COLLECTIONS GALLERY
+          WEDDING COLLECTIONS GALLERY (LIVE FIRESTORE)
           ========================================================= */}
       <section id="wedding-collections-sec" className="py-24 bg-slate-50/50 border-y border-slate-100">
         <div className="max-w-[1320px] mx-auto px-4 md:px-8 xl:px-0 space-y-16">
@@ -338,65 +338,7 @@ export default function WeddingLanding() {
               Royal Wedding Cake Collections
             </h2>
             <p className="text-xs text-slate-400 font-semibold max-w-sm mx-auto">
-              Breathtaking multi-tiered architectures custom crafted by our lead event pâtissiers in Delhi.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {weddingCollections.map((cake, idx) => (
-              <motion.div
-                key={cake.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="bg-white border border-slate-200/40 rounded-[36px] overflow-hidden shadow-sm hover:shadow-[0_25px_60px_rgba(223,177,91,0.06)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between text-left group"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img src={cake.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={cake.name} referrerPolicy="no-referrer" />
-                  <span className="absolute top-4 left-4 bg-slate-950 text-white font-black text-[8px] uppercase tracking-widest px-3 py-1 rounded-full shadow-md">
-                    {cake.tiers}
-                  </span>
-                </div>
-
-                <div className="p-6.5 space-y-4">
-                  <div className="space-y-1.5">
-                    <span className="text-[10px] font-black text-[#DFB15B] uppercase tracking-widest block">{cake.subtitle}</span>
-                    <h3 className="text-lg font-black text-slate-900 uppercase tracking-wider">{cake.name}</h3>
-                    <p className="text-xs text-slate-500 leading-relaxed font-semibold">{cake.desc}</p>
-                  </div>
-
-                  <div className="flex items-center justify-between border-t border-slate-100 pt-4 mt-2">
-                    <div>
-                      <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block">COUTURE DEPOSIT</span>
-                      <span className="text-sm font-black text-slate-950">₹{cake.price.toLocaleString()}</span>
-                    </div>
-                    
-                    <button 
-                      onClick={() => handleOrderWedding(cake)}
-                      className="bg-slate-950 hover:bg-slate-900 text-[#DFB15B] text-[10px] font-black uppercase tracking-widest py-3 px-5 rounded-xl transition-all active:scale-95"
-                    >
-                      TAILOR & BOOK
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* Dynamic Wedding Cakes from Bakery */}
-      <section className="py-20 bg-slate-50 border-b border-slate-200/30">
-        <div className="max-w-[1320px] mx-auto px-4 md:px-8 xl:px-0 space-y-12">
-          <div className="text-center md:text-left">
-            <span className="text-[10px] font-black text-[#DFB15B] tracking-[0.3em] uppercase block mb-1">ONLINE PATISSERIE ARCHIVE</span>
-            <h2 className="text-3xl md:text-4xl font-black text-slate-950 tracking-tight">
-              Gourmet Wedding Cakes & Silhouettes
-            </h2>
-            <p className="text-xs text-slate-500 font-semibold max-w-sm mt-1">
-              Freshly crafted by our master artists, custom tailored to your guest headcount and floral preferences.
+              Breathtaking multi-tiered architectures custom crafted by our lead event pâtissiers.
             </p>
           </div>
 
@@ -405,18 +347,21 @@ export default function WeddingLanding() {
               <Loader2 className="w-8 h-8 text-[#DFB15B] animate-spin" />
             </div>
           ) : dbProducts.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-3xl border border-slate-100 p-8">
+            <div className="text-center py-16 bg-white rounded-3xl border border-slate-200/60 p-8">
               <Sparkles className="w-8 h-8 text-[#DFB15B] mx-auto mb-2 animate-bounce" />
-              <p className="text-sm font-black text-slate-700">No wedding database cakes yet.</p>
-              <p className="text-xs text-slate-400 mt-1">Schedule a custom tasting to manifest your visual masterpiece!</p>
+              <p className="text-base font-serif font-bold text-slate-800">No Wedding Cakes Added Yet</p>
+              <p className="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+                Aapne abhi tak koi wedding cake add nahi kiya hai. Admin Dashboard se naye cakes add karein, wo yahan live show honge!
+              </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {dbProducts.slice(0, 12).map((product) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {dbProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
           )}
+
         </div>
       </section>
 

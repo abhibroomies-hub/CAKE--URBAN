@@ -88,64 +88,6 @@ export default function BirthdayLanding() {
     { type: 'macaron', text: '🧁', top: '75%', left: '84%', delay: 2.2 }
   ];
 
-  // Birthday Collections
-  const collections = [
-    {
-      id: 'bday-kids',
-      name: "Chéris Enfants",
-      subtitle: "Kids Fantasy Collection",
-      desc: "Whimsical pastel fantasy tiers featuring custom sculpted organic sugar clouds, soft rainbows, and chocolate characters.",
-      image: "https://images.unsplash.com/photo-1558961309-dbdf079115fd?auto=format&fit=crop&q=80&w=600",
-      price: 2499,
-      tag: "KIDS FAVORITE"
-    },
-    {
-      id: 'bday-adults',
-      name: "L’Adulte Moderne",
-      subtitle: "Sophisticated Adult Collection",
-      desc: "Avant-garde visual palettes dressed in dark velvet sprays, organic botanicals, and hand-painted metallic edges.",
-      image: "https://images.unsplash.com/photo-1535141192574-5d4897c13636?auto=format&fit=crop&q=80&w=600",
-      price: 3499,
-      tag: "TRENDING NOW"
-    },
-    {
-      id: 'bday-luxury',
-      name: "Or Gilded Imperial",
-      subtitle: "Ultra Luxury Collection",
-      desc: "Spectacular multi-tiered architectures gilded with pure 24K edible gold leaf, spun sugar filaments, and fresh orchids.",
-      image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600",
-      price: 6999,
-      tag: "COUTURE CLASS"
-    },
-    {
-      id: 'bday-minimal',
-      name: "Bento Pureté",
-      subtitle: "Minimalist Pastel Bento",
-      desc: "Clean Swiss-modern circular silhouettes featuring hand-brushed lettering and sleek buttercream borders.",
-      image: "https://images.unsplash.com/photo-1621303837174-89787a7d4729?auto=format&fit=crop&q=80&w=600",
-      price: 1299,
-      tag: "MINIMALIST"
-    },
-    {
-      id: 'bday-photo',
-      name: "Studio Impressionist",
-      subtitle: "High-Definition Photo Cakes",
-      desc: "Your treasured memories printed on premium Madagascan sugar paper with organic vegetable dyes on Belgian truffle.",
-      image: "https://images.unsplash.com/photo-1562266563-fa14c7ec83df?auto=format&fit=crop&q=80&w=600",
-      price: 1899,
-      tag: "CUSTOM PRINT"
-    },
-    {
-      id: 'bday-trending',
-      name: "Le Splash Cascade",
-      subtitle: "Trending Cream Splash",
-      desc: "Dynamic whipped cream splashes paired with gourmet chocolate shards, fresh berries, and neon glow accents.",
-      image: "https://images.unsplash.com/photo-1511018556340-d16986a1c194?auto=format&fit=crop&q=80&w=600",
-      price: 2199,
-      tag: "POPULAR NOW"
-    }
-  ];
-
   // Offers
   const offers = [
     {
@@ -343,7 +285,7 @@ export default function BirthdayLanding() {
         </div>
       </section>
 
-      {/* COLLECTIONS GALLERY */}
+      {/* LIVE COLLECTIONS GALLERY FROM FIRESTORE */}
       <section className="py-20 bg-transparent border-y border-white/10">
         <div className="max-w-[1320px] mx-auto px-4 md:px-8 xl:px-0 space-y-12">
           
@@ -354,7 +296,7 @@ export default function BirthdayLanding() {
                 Curated Birthday Collections
               </h2>
               <p className="text-xs text-slate-300 font-medium max-w-sm">
-                Each category represents a completely unique aesthetic philosophy, custom designed for discerning hosts.
+                Custom baked artisan cakes for birthdays, crafted for discerning celebrations.
               </p>
             </div>
             <button 
@@ -366,64 +308,6 @@ export default function BirthdayLanding() {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {collections.map((cake, index) => (
-              <motion.div
-                key={cake.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-[#1E0B07]/80 backdrop-blur-md border border-[#DFB15B]/30 rounded-[32px] overflow-hidden shadow-2xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between text-left group"
-              >
-                <div className="relative aspect-video overflow-hidden">
-                  <img src={cake.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={cake.name} referrerPolicy="no-referrer" />
-                  <span className="absolute top-4 left-4 bg-black/80 backdrop-blur-md text-[#DFB15B] border border-[#DFB15B]/40 font-black text-[8px] uppercase tracking-widest px-3 py-1 rounded-full shadow-sm">
-                    {cake.tag}
-                  </span>
-                </div>
-
-                <div className="p-6 space-y-4">
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-black text-[#DFB15B] uppercase tracking-widest block">{cake.subtitle}</span>
-                    <h3 className="text-lg font-black text-white uppercase tracking-wider">{cake.name}</h3>
-                    <p className="text-xs text-slate-300 leading-relaxed font-normal">{cake.desc}</p>
-                  </div>
-
-                  <div className="flex items-center justify-between border-t border-white/10 pt-4 mt-2">
-                    <div>
-                      <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block">TAILORED PRICE</span>
-                      <span className="text-sm font-black text-[#DFB15B]">₹{cake.price}</span>
-                    </div>
-                    
-                    <button 
-                      onClick={() => handleOrder(cake)}
-                      className="bg-gradient-to-r from-[#DFB15B] to-[#F3C87A] text-[#0F0503] text-[10px] font-black uppercase tracking-widest py-3 px-5 rounded-xl transition-all active:scale-95 cursor-pointer shadow-md"
-                    >
-                      TAILOR & ADD
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* Dynamic Birthday Cakes from Bakery */}
-      <section className="py-20 bg-transparent border-b border-white/10">
-        <div className="max-w-[1320px] mx-auto px-4 md:px-8 xl:px-0 space-y-12">
-          <div className="text-center md:text-left">
-            <span className="text-[10px] font-black text-[#DFB15B] tracking-[0.3em] uppercase block mb-1">ONLINE BAKERY COLLECTION</span>
-            <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight">
-              Freshly Baked Birthday Masterpieces
-            </h2>
-            <p className="text-xs text-slate-300 font-medium max-w-sm mt-1">
-              Direct from our gourmet kitchens, customizable for weight, flavor, and eggless preference.
-            </p>
-          </div>
-
           {loading ? (
             <div className="flex justify-center items-center py-20">
               <Loader2 className="w-8 h-8 text-[#DFB15B] animate-spin" />
@@ -431,16 +315,19 @@ export default function BirthdayLanding() {
           ) : dbProducts.length === 0 ? (
             <div className="text-center py-16 bg-[#1E0B07]/80 rounded-3xl border border-[#DFB15B]/30 p-8">
               <Sparkles className="w-8 h-8 text-[#DFB15B] mx-auto mb-2 animate-bounce" />
-              <p className="text-sm font-black text-white">No custom database cakes yet.</p>
-              <p className="text-xs text-slate-400 mt-1">Our chefs are preparing new creative receipts!</p>
+              <p className="text-base font-serif font-bold text-white">No Birthday Cakes Added Yet</p>
+              <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
+                Aapne abhi tak koi birthday cake add nahi kiya hai. Admin Dashboard se naye cakes aur images add karein, wo turant yahan live show honge!
+              </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {dbProducts.slice(0, 12).map((product) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {dbProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
           )}
+
         </div>
       </section>
 

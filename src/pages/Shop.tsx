@@ -53,7 +53,7 @@ export default function Shop() {
   const { addItem } = useCart();
 
   // 1. DATA HOOK STATE
-  const [allProducts, setAllProducts] = useState<Product[]>(PREMIUM_PRODUCTS_POOL);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   // 2. SEARCH & FILTER PARAMS
@@ -157,37 +157,33 @@ export default function Shop() {
     const unsubscribe = onSnapshot(
       collection(db, 'products'),
       (snap) => {
-        if (!snap.empty) {
-          const prods = snap.docs.map(doc => {
-            const data = doc.data();
-            return {
-              id: doc.id,
-              name: data.name || "",
-              description: data.description || "",
-              price: Number(data.price) || 0,
-              categories: data.categories || [],
-              occasions: data.occasions || [],
-              flavors: data.flavors || [],
-              images: data.images || [],
-              stockStatus: data.stockStatus || 'in-stock',
-              isCustomizable: data.isCustomizable !== false,
-              isBestseller: !!data.isBestseller,
-              isNew: !!data.isNew,
-              weights: data.weights || [0.5, 1.0, 2.0],
-              dietary: data.dietary || ["Eggless"],
-              rating: data.rating || 4.8,
-              reviewsCount: data.reviewsCount || Math.floor(Math.random() * 80) + 20,
-            } as Product;
-          });
-          setAllProducts(prods);
-        } else {
-          setAllProducts(PREMIUM_PRODUCTS_POOL);
-        }
+        const prods = snap.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            name: data.name || "",
+            description: data.description || "",
+            price: Number(data.price) || 0,
+            categories: data.categories || [],
+            occasions: data.occasions || [],
+            flavors: data.flavors || [],
+            images: data.images || [],
+            stockStatus: data.stockStatus || 'in-stock',
+            isCustomizable: data.isCustomizable !== false,
+            isBestseller: !!data.isBestseller,
+            isNew: !!data.isNew,
+            weights: data.weights || [0.5, 1.0, 2.0],
+            dietary: data.dietary || ["Eggless"],
+            rating: data.rating || 4.8,
+            reviewsCount: data.reviewsCount || Math.floor(Math.random() * 80) + 20,
+          } as Product;
+        });
+        setAllProducts(prods);
         setLoading(false);
       },
       (error) => {
-        console.warn("Firestore subscription error. Using local backup: ", error);
-        setAllProducts(PREMIUM_PRODUCTS_POOL);
+        console.warn("Firestore subscription error: ", error);
+        setAllProducts([]);
         setLoading(false);
       }
     );
@@ -200,18 +196,14 @@ export default function Shop() {
     if (savedWish) {
       try { setWishlist(JSON.parse(savedWish)); } catch (e) {}
     } else {
-      const defaultWish = [PREMIUM_PRODUCTS_POOL[0], PREMIUM_PRODUCTS_POOL[2]];
-      setWishlist(defaultWish);
-      localStorage.setItem('cakeurban_wishlist', JSON.stringify(defaultWish));
+      setWishlist([]);
     }
 
     const savedRecent = localStorage.getItem('cakeurban_recently_viewed');
     if (savedRecent) {
       try { setRecentlyViewed(JSON.parse(savedRecent)); } catch (e) {}
     } else {
-      const defaultRecent = [PREMIUM_PRODUCTS_POOL[1], PREMIUM_PRODUCTS_POOL[3]];
-      setRecentlyViewed(defaultRecent);
-      localStorage.setItem('cakeurban_recently_viewed', JSON.stringify(defaultRecent));
+      setRecentlyViewed([]);
     }
   }, []);
 

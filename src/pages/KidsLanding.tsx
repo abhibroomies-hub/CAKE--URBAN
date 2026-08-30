@@ -326,7 +326,7 @@ export default function KidsLanding() {
       </section>
 
       {/* =========================================================
-          KIDS COLLECTIONS GALLERY
+          KIDS COLLECTIONS GALLERY (LIVE FIRESTORE)
           ========================================================= */}
       <section className="py-24 bg-white border-y border-slate-100">
         <div className="max-w-[1320px] mx-auto px-4 md:px-8 xl:px-0 space-y-16">
@@ -337,65 +337,7 @@ export default function KidsLanding() {
               Elite Children's Collections
             </h2>
             <p className="text-xs text-slate-400 font-semibold max-w-sm mx-auto">
-              Choose from six high-end thematic worlds, custom sculpted with sweet almond marzipan and organic chocolate curls.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {kidsCollections.map((cake, idx) => (
-              <motion.div
-                key={cake.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="bg-slate-50 border border-slate-200/30 rounded-[32px] p-5 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between text-left group"
-              >
-                <div className="space-y-4">
-                  <div className="aspect-square rounded-2xl overflow-hidden shadow-sm relative">
-                    <img src={cake.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={cake.name} referrerPolicy="no-referrer" />
-                    <span className="absolute bottom-3 left-3 bg-slate-950 text-white font-black text-[7px] uppercase tracking-widest px-2.5 py-1 rounded-full">
-                      {cake.theme}
-                    </span>
-                  </div>
-
-                  <div className="space-y-1">
-                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block">{cake.subtitle}</span>
-                    <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider">{cake.name}</h3>
-                    <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">{cake.desc}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between border-t border-slate-200/60 pt-4 mt-4">
-                  <div>
-                    <span className="text-[9px] font-black text-slate-400 block">COUTURE PRICE</span>
-                    <span className="text-sm font-black text-slate-950">₹{cake.price}</span>
-                  </div>
-
-                  <button 
-                    onClick={() => handleOrderKids(cake)}
-                    className="bg-slate-950 hover:bg-slate-900 text-[#DFB15B] text-[9px] font-black uppercase tracking-wider py-2.5 px-4 rounded-xl transition-all active:scale-95"
-                  >
-                    SELECT
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* Dynamic Kids Cakes from Bakery */}
-      <section className="py-20 bg-slate-50 border-b border-slate-200/30">
-        <div className="max-w-[1320px] mx-auto px-4 md:px-8 xl:px-0 space-y-12">
-          <div className="text-center md:text-left">
-            <span className="text-[10px] font-black text-sky-500 tracking-[0.3em] uppercase block mb-1">ONLINE KIDS BAKERY</span>
-            <h2 className="text-3xl md:text-4xl font-black text-slate-950 tracking-tight">
-              Freshly Baked Kids Masterpieces
-            </h2>
-            <p className="text-xs text-slate-500 font-semibold max-w-sm mt-1">
-              Fairy-tale unicorn, astronaut, and jungle safari theme cakes direct from our ovens, 100% organic colors.
+              Custom baked artisan kids cakes from our ovens, 100% organic colors and customizable themes.
             </p>
           </div>
 
@@ -404,18 +346,21 @@ export default function KidsLanding() {
               <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
             </div>
           ) : dbProducts.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-3xl border border-slate-100 p-8">
+            <div className="text-center py-16 bg-slate-50 rounded-3xl border border-slate-200/50 p-8">
               <Sparkles className="w-8 h-8 text-sky-400 mx-auto mb-2 animate-bounce" />
-              <p className="text-sm font-black text-slate-700">No kids database cakes yet.</p>
-              <p className="text-xs text-slate-400 mt-1">Try our custom package studio below to design one!</p>
+              <p className="text-base font-serif font-bold text-slate-800">No Kids Cakes Added Yet</p>
+              <p className="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+                Aapne abhi tak koi kids cake add nahi kiya hai. Admin Dashboard se cakes add karein, wo yahan live show honge!
+              </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {dbProducts.slice(0, 12).map((product) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {dbProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
           )}
+
         </div>
       </section>
 

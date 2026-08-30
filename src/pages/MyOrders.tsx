@@ -28,6 +28,9 @@ import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import SEO from '../components/SEO';
 import { playBtnTap, playSuccessChime, playSlidePop } from '../lib/sound';
+import { db } from '../lib/firebase';
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+import { useAuth } from '../hooks/useAuth';
 
 // 1. Mock Order History data mirroring the realistic schema
 const MOCK_ORDERS = [
@@ -133,17 +136,59 @@ const STATS_DATA = [
 
 export default function MyOrders() {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   // 2. Filter & Tab states
   const [activeTab, setActiveTab] = useState<'all' | 'delivered' | 'processing' | 'cancelled'>('all');
   const [activeOccasionFilter, setActiveOccasionFilter] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [isMuted, setIsMuted] = useState(false);
+  const [orders, setOrders] = useState<any[]>([]);
   
   // Rating modal simulator state
   const [ratingModalOrderId, setRatingModalOrderId] = useState<string | null>(null);
   const [selectedRating, setSelectedRating] = useState(5);
   const [ratingComment, setRatingComment] = useState('');
+
+  // Real-time listener for Firestore orders
+  useEffect(() => {
+    const q = query(collection(db, 'orders'), orderBy('createdAt', 'desc'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const liveOrders: any[] = [];
+      snapshot.docs.forEach((docSnap) => {
+        const d = docSnap.data();
+        // If logged in, filter or display all for guest preview
+        const isMatch = !user || !d.userId || d.userId === user.uid || d.guestEmail === user.email;
+        if (isMatch) {
+          liveOrders.push({
+            id: d.id || docSnap.id,
+            date: d.createdAt ? new Date(d.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'Today',
+            time: d.createdAt ? new Date(d.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '12:00 PM',
+            occasion: d.occasion || 'Celebration',
+            status: d.status === 'delivered' ? 'delivered' : (d.status === 'cancelled' ? 'cancelled' : 'processing'),
+            statusLabel: d.status === 'delivered' ? 'Delivered' : (d.status === 'cancelled' ? 'Cancelled' : 'Chef Baking Sponge'),
+            totalPrice: d.total || 1499,
+            paymentMethod: d.paymentMethod ? d.paymentMethod.toUpperCase() : 'UPI',
+            weight: d.items?.[0]?.weight || 1.0,
+            flavor: d.items?.[0]?.flavor || d.items?.[0]?.name || 'Belgian Chocolate Truffle',
+            message: d.cakeInstructions || 'Sweet Celebrations!',
+            eggless: true,
+            extras: d.upgrades || ['Sparkling Candle'],
+            instructions: d.cakeInstructions || '',
+            image: d.items?.[0]?.images?.[0] || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80',
+            address: d.shippingAddress?.line1 ? `${d.shippingAddress.line1}, ${d.shippingAddress.sector || ''}, ${d.shippingAddress.city || 'Faridabad'}` : 'Faridabad, Delhi NCR'
+          });
+        }
+      });
+
+      setOrders(liveOrders);
+    }, (error) => {
+      console.warn("Real-time my orders warning:", error);
+      setOrders([]);
+    });
+
+    return () => unsubscribe();
+  }, [user]);
 
   // Audio helper wrapper
   const playSound = (type: 'tap' | 'pop' | 'success') => {
@@ -174,7 +219,7 @@ export default function MyOrders() {
   };
 
   // 3. Filter orders based on tabs, search and tags
-  const filteredOrders = MOCK_ORDERS.filter((order) => {
+  const filteredOrders = orders.filter((order) => {
     // 1. Tab status match
     const matchesTab = activeTab === 'all' || order.status === activeTab;
     // 2. Search query match (id, flavor, message)

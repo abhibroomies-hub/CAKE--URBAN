@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { db } from '../lib/firebase';
 import { 
-  collection, getDocs, updateDoc, doc, query, orderBy, addDoc, deleteDoc, setDoc, getDoc, serverTimestamp 
+  collection, getDocs, updateDoc, doc, query, orderBy, addDoc, deleteDoc, setDoc, getDoc, serverTimestamp, onSnapshot 
 } from 'firebase/firestore';
 import { Order, Product, Review } from '../types';
 import { useAuth } from '../hooks/useAuth';
@@ -712,20 +712,17 @@ export default function AdminDashboard() {
   const fetchAllData = async () => {
     setLoading(true);
     try {
-      // 1. Fetch Orders with safe fallback
+      // 1. Fetch Orders
       let ordersList: Order[] = [];
       try {
         const ordersSnap = await getDocs(query(collection(db, 'orders'), orderBy('createdAt', 'desc')));
         ordersList = ordersSnap.docs.map(d => ({ id: d.id, ...d.data() } as Order));
       } catch (err) {
-        console.warn("Failed to fetch live orders, using fallback", err);
-      }
-      if (ordersList.length === 0) {
-        ordersList = MOCK_ORDERS;
+        console.warn("Failed to fetch live orders", err);
       }
       setOrders(ordersList);
 
-      // 2. Fetch Products with safe fallback
+      // 2. Fetch Products
       let productsList: Product[] = [];
       try {
         const productsSnap = await getDocs(collection(db, 'products'));
@@ -735,29 +732,23 @@ export default function AdminDashboard() {
       }
       setProducts(productsList);
 
-      // 3. Fetch Custom Inquiries with safe fallback
+      // 3. Fetch Custom Inquiries
       let customList: any[] = [];
       try {
         const customSnap = await getDocs(query(collection(db, 'custom_orders'), orderBy('createdAt', 'desc')));
         customList = customSnap.docs.map(d => ({ id: d.id, ...d.data() } as any));
       } catch (err) {
-        console.warn("Failed to fetch live custom orders, using fallback", err);
-      }
-      if (customList.length === 0) {
-        customList = MOCK_CUSTOM_INQUIRIES;
+        console.warn("Failed to fetch live custom orders", err);
       }
       setCustomInquiries(customList);
 
-          // 4. Fetch Reviews with safe fallback
+      // 4. Fetch Reviews
       let reviewsList: Review[] = [];
       try {
         const reviewsSnap = await getDocs(collection(db, 'reviews'));
         reviewsList = reviewsSnap.docs.map(d => ({ id: d.id, ...d.data() } as Review));
       } catch (err) {
-        console.warn("Failed to fetch live reviews, using fallback", err);
-      }
-      if (reviewsList.length === 0) {
-        reviewsList = MOCK_REVIEWS;
+        console.warn("Failed to fetch live reviews", err);
       }
       setReviews(reviewsList);
 
@@ -954,9 +945,81 @@ export default function AdminDashboard() {
   const hasAdminAccess = isAdmin || isBypassAdmin;
 
   useEffect(() => {
-    if (hasAdminAccess) {
-      fetchAllData();
-    }
+    if (!hasAdminAccess) return;
+
+    setLoading(true);
+
+    // 1. Real-time products listener
+    const unsubProducts = onSnapshot(collection(db, 'products'), (snapshot) => {
+      const items = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as Product));
+      setProducts(items);
+      setLoading(false);
+    }, (error) => {
+      console.warn("Real-time products snapshot warning:", error);
+      setLoading(false);
+    });
+
+    // 2. Real-time orders listener
+    const unsubOrders = onSnapshot(
+      query(collection(db, 'orders'), orderBy('createdAt', 'desc')),
+      (snapshot) => {
+        const items = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as Order));
+        setOrders(items);
+      },
+      (error) => {
+        console.warn("Real-time orders snapshot warning:", error);
+        setOrders([]);
+      }
+    );
+
+    // 3. Real-time custom inquiries listener
+    const unsubCustom = onSnapshot(
+      query(collection(db, 'custom_orders'), orderBy('createdAt', 'desc')),
+      (snapshot) => {
+        const items = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as any));
+        setCustomInquiries(items);
+      },
+      (error) => {
+        console.warn("Real-time custom orders snapshot warning:", error);
+        setCustomInquiries([]);
+      }
+    );
+
+    // 4. Real-time reviews listener
+    const unsubReviews = onSnapshot(
+      collection(db, 'reviews'),
+      (snapshot) => {
+        const items = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as Review));
+        setReviews(items);
+      },
+      (error) => {
+        console.warn("Real-time reviews snapshot warning:", error);
+        setReviews([]);
+      }
+    );
+
+    // 5. Real-time categories config listener
+    const unsubCategories = onSnapshot(
+      doc(db, 'settings', 'categories_config'),
+      (docSnap) => {
+        if (docSnap.exists() && docSnap.data().categories) {
+          const list = docSnap.data().categories;
+          setCategoriesList(list);
+          localStorage.setItem('cakeurban_categories_order', JSON.stringify(list));
+        }
+      },
+      (error) => {
+        console.warn("Real-time categories snapshot warning:", error);
+      }
+    );
+
+    return () => {
+      unsubProducts();
+      unsubOrders();
+      unsubCustom();
+      unsubReviews();
+      unsubCategories();
+    };
   }, [hasAdminAccess]);
 
   const handleBypassSubmit = (e: React.FormEvent) => {

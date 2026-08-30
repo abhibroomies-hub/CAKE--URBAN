@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { db } from '../lib/firebase';
+import { collection, onSnapshot, query, limit } from 'firebase/firestore';
+import { Product } from '../types';
 import { 
   Star, 
   Heart, 
@@ -118,6 +121,22 @@ export default function Home() {
   const [emailInput, setEmailInput] = useState('');
   const [screenHearts, setScreenHearts] = useState<{ id: number; x: number; y: number }[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [liveProducts, setLiveProducts] = useState<Product[]>([]);
+
+  // Real-time Firestore products listener for homepage bestsellers
+  useEffect(() => {
+    const unsub = onSnapshot(
+      query(collection(db, 'products'), limit(10)),
+      (snapshot) => {
+        const prods = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as Product));
+        setLiveProducts(prods);
+      },
+      (err) => {
+        console.warn("Home products listener warning:", err);
+      }
+    );
+    return () => unsub();
+  }, []);
 
   const slides = [
     {
@@ -664,87 +683,132 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Beautiful 2-column grid on mobile, 5-column on desktop */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6 pt-2">
-          {[
-            { 
-              id: "bestseller-1", 
-              name: "Chocolate Truffle", 
-              price: 699, 
-              rating: 4.9,
-              img: flavorChocolate, 
-              tag: "Bestseller",
-            },
-            { 
-              id: "bestseller-2", 
-              name: "Red Velvet Bliss", 
-              price: 699, 
-              rating: 4.9,
-              img: flavorStrawberry, 
-              tag: "Bestseller",
-            },
-            { 
-              id: "bestseller-3", 
-              name: "Butterscotch Crunch", 
-              price: 699, 
-              rating: 4.8,
-              img: flavorMango, 
-              tag: "Bestseller",
-            },
-            { 
-              id: "bestseller-4", 
-              name: "Blueberry Cheesecake", 
-              price: 749, 
-              rating: 4.9,
-              img: flavorBlueberry, 
-              tag: "Premium Choice",
-            },
-            { 
-              id: "bestseller-5", 
-              name: "Ferrero Rocher", 
-              price: 799, 
-              rating: 4.9,
-              img: flavorBlackForest, 
-              tag: "Chef Signature",
-            }
-          ].map((prod) => (
-            <motion.div
-              key={prod.id}
-              whileHover={{ y: -8 }}
-              onClick={() => { playBtnTap(); navigate(`/product/${prod.id}`); }}
-              className="w-full bg-[#18191e]/90 backdrop-blur-md border border-[#DFB15B]/20 rounded-[20px] sm:rounded-[28px] overflow-hidden p-2.5 sm:p-3 shadow-lg hover:shadow-2xl hover:border-[#DFB15B]/50 transition-all duration-300 text-left flex flex-col justify-between cursor-pointer text-white"
-            >
-              <div>
-                <div className="relative aspect-square rounded-[16px] sm:rounded-[22px] overflow-hidden mb-2.5 sm:mb-3.5 bg-slate-900">
-                  {prod.tag && (
+        {/* Dynamic Responsive grid for Best Sellers */}
+        {liveProducts.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6 pt-2">
+            {liveProducts.slice(0, 5).map((prod) => (
+              <motion.div
+                key={prod.id}
+                whileHover={{ y: -8 }}
+                onClick={() => { playBtnTap(); navigate(`/product/${prod.id}`); }}
+                className="w-full bg-[#18191e]/90 backdrop-blur-md border border-[#DFB15B]/20 rounded-[20px] sm:rounded-[28px] overflow-hidden p-2.5 sm:p-3 shadow-lg hover:shadow-2xl hover:border-[#DFB15B]/50 transition-all duration-300 text-left flex flex-col justify-between cursor-pointer text-white"
+              >
+                <div>
+                  <div className="relative aspect-square rounded-[16px] sm:rounded-[22px] overflow-hidden mb-2.5 sm:mb-3.5 bg-slate-900">
                     <span className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 bg-gradient-to-r from-[#DFB15B] to-amber-500 text-slate-950 font-extrabold text-[7px] sm:text-[9px] uppercase tracking-wider px-2 py-0.5 sm:px-3 sm:py-1 rounded-full shadow-md z-10">
-                      {prod.tag}
+                      {prod.isBestseller ? 'Bestseller' : 'Fresh Baked'}
                     </span>
-                  )}
-                  <img src={prod.img} alt={prod.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy" />
-                </div>
-
-                <div className="px-1">
-                  <div className="flex items-center gap-1 text-[#DFB15B] text-[10px] sm:text-[11px] font-black mb-0.5 sm:mb-1">
-                    <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current" />
-                    <span>{prod.rating}</span>
+                    <img 
+                      src={prod.images?.[0] || flavorChocolate} 
+                      alt={prod.name} 
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
+                      loading="lazy" 
+                    />
                   </div>
-                  <h3 className="font-black text-[11px] sm:text-xs text-white uppercase tracking-wide line-clamp-1">{prod.name}</h3>
-                </div>
-              </div>
 
-              <div className="flex items-center justify-between pt-2 sm:pt-3.5 px-1 mt-2 border-t border-white/10">
-                <span className="font-black text-xs sm:text-sm text-[#DFB15B]">₹{prod.price}</span>
-                <button 
-                  onClick={(e) => { e.stopPropagation(); playBtnTap(); navigate(`/product/${prod.id}`); }}
-                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#DFB15B] text-slate-950 font-bold flex items-center justify-center hover:bg-amber-300 transition-all shadow-sm active:scale-90"
-                >
-                  <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3]" />
-                </button>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                  <div className="px-1">
+                    <div className="flex items-center gap-1 text-[#DFB15B] text-[10px] sm:text-[11px] font-black mb-0.5 sm:mb-1">
+                      <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current" />
+                      <span>{prod.rating || 4.9}</span>
+                    </div>
+                    <h3 className="font-black text-[11px] sm:text-xs text-white uppercase tracking-wide line-clamp-1">{prod.name}</h3>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-2 sm:pt-3.5 px-1 mt-2 border-t border-white/10">
+                  <span className="font-black text-xs sm:text-sm text-[#DFB15B]">₹{prod.price}</span>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); playBtnTap(); navigate(`/product/${prod.id}`); }}
+                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#DFB15B] text-slate-950 font-bold flex items-center justify-center hover:bg-amber-300 transition-all shadow-sm active:scale-90"
+                  >
+                    <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3]" />
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6 pt-2">
+            {[
+              { 
+                id: "bestseller-1", 
+                name: "Chocolate Truffle", 
+                price: 699, 
+                rating: 4.9,
+                img: flavorChocolate, 
+                tag: "Bestseller",
+              },
+              { 
+                id: "bestseller-2", 
+                name: "Red Velvet Bliss", 
+                price: 699, 
+                rating: 4.9,
+                img: flavorStrawberry, 
+                tag: "Bestseller",
+              },
+              { 
+                id: "bestseller-3", 
+                name: "Butterscotch Crunch", 
+                price: 699, 
+                rating: 4.8,
+                img: flavorMango, 
+                tag: "Bestseller",
+              },
+              { 
+                id: "bestseller-4", 
+                name: "Blueberry Cheesecake", 
+                price: 749, 
+                rating: 4.9,
+                img: flavorBlueberry, 
+                tag: "Premium Choice",
+              },
+              { 
+                id: "bestseller-5", 
+                name: "Ferrero Rocher", 
+                price: 799, 
+                rating: 4.9,
+                img: flavorBlackForest, 
+                tag: "Chef Signature",
+              }
+            ].map((prod) => (
+              <motion.div
+                key={prod.id}
+                whileHover={{ y: -8 }}
+                onClick={() => { playBtnTap(); navigate(`/shop`); }}
+                className="w-full bg-[#18191e]/90 backdrop-blur-md border border-[#DFB15B]/20 rounded-[20px] sm:rounded-[28px] overflow-hidden p-2.5 sm:p-3 shadow-lg hover:shadow-2xl hover:border-[#DFB15B]/50 transition-all duration-300 text-left flex flex-col justify-between cursor-pointer text-white"
+              >
+                <div>
+                  <div className="relative aspect-square rounded-[16px] sm:rounded-[22px] overflow-hidden mb-2.5 sm:mb-3.5 bg-slate-900">
+                    {prod.tag && (
+                      <span className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 bg-gradient-to-r from-[#DFB15B] to-amber-500 text-slate-950 font-extrabold text-[7px] sm:text-[9px] uppercase tracking-wider px-2 py-0.5 sm:px-3 sm:py-1 rounded-full shadow-md z-10">
+                        {prod.tag}
+                      </span>
+                    )}
+                    <img src={prod.img} alt={prod.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy" />
+                  </div>
+
+                  <div className="px-1">
+                    <div className="flex items-center gap-1 text-[#DFB15B] text-[10px] sm:text-[11px] font-black mb-0.5 sm:mb-1">
+                      <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current" />
+                      <span>{prod.rating}</span>
+                    </div>
+                    <h3 className="font-black text-[11px] sm:text-xs text-white uppercase tracking-wide line-clamp-1">{prod.name}</h3>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-2 sm:pt-3.5 px-1 mt-2 border-t border-white/10">
+                  <span className="font-black text-xs sm:text-sm text-[#DFB15B]">₹{prod.price}</span>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); playBtnTap(); navigate(`/shop`); }}
+                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#DFB15B] text-slate-950 font-bold flex items-center justify-center hover:bg-amber-300 transition-all shadow-sm active:scale-90"
+                  >
+                    <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3]" />
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* ---------------------------------------------------------

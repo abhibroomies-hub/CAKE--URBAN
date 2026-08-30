@@ -23,7 +23,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '../hooks/useAuth';
 import { db } from '../lib/firebase';
-import { collection, addDoc, getDocs, query, orderBy, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, orderBy, serverTimestamp, onSnapshot } from 'firebase/firestore';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import SEO from '../components/SEO';
@@ -214,7 +214,7 @@ export default function ReviewsGallery() {
   const [viewMode, setViewMode] = useState<'grid' | 'masonry'>('grid');
 
   // Review list states
-  const [reviews, setReviews] = useState<ReviewItem[]>(PRESET_REVIEWS);
+  const [reviews, setReviews] = useState<ReviewItem[]>([]);
   const [loadingReviews, setLoadingReviews] = useState(false);
 
   // New review form states
@@ -236,42 +236,41 @@ export default function ReviewsGallery() {
   const [selectedReview, setSelectedReview] = useState<ReviewItem | null>(null);
   const [newCommentText, setNewCommentText] = useState('');
 
-  // Fetch submitted reviews from Firebase on mount
+  // Real-time listener for reviews from Firebase
   useEffect(() => {
-    async function fetchFirebaseReviews() {
-      setLoadingReviews(true);
-      try {
-        const q = query(collection(db, 'gallery_reviews'), orderBy('createdAt', 'desc'));
-        const querySnapshot = await getDocs(q);
-        const fbReviews: ReviewItem[] = [];
-        querySnapshot.forEach((docSnap) => {
-          const data = docSnap.data();
-          fbReviews.push({
-            id: docSnap.id,
-            userName: data.userName || 'Happy Customer',
-            location: data.location || 'Faridabad Hub',
-            rating: data.rating || 5,
-            comment: data.comment || '',
-            occasion: data.occasion || 'Birthday',
-            flavor: data.flavor || 'Belgian Chocolate',
-            imageUrl: data.imageUrl || PRESET_PHOTOS[0].url,
-            likes: data.likes || 12,
-            commentsCount: data.commentsCount || 0,
-            date: data.date || 'Today',
-            isVerified: true,
-            avatarUrl: data.avatarUrl || `https://api.dicebear.com/7.x/adventurer/svg?seed=${data.userName || 'happy'}`
-          });
+    setLoadingReviews(true);
+    const q = query(collection(db, 'gallery_reviews'), orderBy('createdAt', 'desc'));
+    
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const fbReviews: ReviewItem[] = [];
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        fbReviews.push({
+          id: docSnap.id,
+          userName: data.userName || 'Happy Customer',
+          location: data.location || 'Faridabad Hub',
+          rating: data.rating || 5,
+          comment: data.comment || '',
+          occasion: data.occasion || 'Birthday',
+          flavor: data.flavor || 'Belgian Chocolate',
+          imageUrl: data.imageUrl || PRESET_PHOTOS[0].url,
+          likes: data.likes || 12,
+          commentsCount: data.commentsCount || 0,
+          date: data.date || 'Today',
+          isVerified: true,
+          avatarUrl: data.avatarUrl || `https://api.dicebear.com/7.x/adventurer/svg?seed=${data.userName || 'happy'}`
         });
+      });
 
-        // Merge preset reviews at the end
-        setReviews([...fbReviews, ...PRESET_REVIEWS]);
-      } catch (error) {
-        console.error("Failed to load custom visual reviews: ", error);
-      } finally {
-        setLoadingReviews(false);
-      }
-    }
-    fetchFirebaseReviews();
+      setReviews(fbReviews);
+      setLoadingReviews(false);
+    }, (error) => {
+      console.warn("Real-time gallery reviews snapshot warning:", error);
+      setReviews([]);
+      setLoadingReviews(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   // Filter Reviews dynamically
