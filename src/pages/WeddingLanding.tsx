@@ -194,7 +194,7 @@ export default function WeddingLanding() {
   };
 
   return (
-    <div className="bg-white min-h-screen text-slate-800 font-sans relative select-none pb-16 md:pb-0">
+    <div className="bg-transparent min-h-screen text-[#FFFDFB] font-sans relative select-none pb-16 md:pb-0">
       
       {/* Absolute Luxury Gold/Ivory Backing Light */}
       <div className="absolute top-0 right-0 w-[60%] h-[40%] bg-gradient-to-l from-amber-100/30 via-transparent to-transparent blur-[160px] pointer-events-none" />

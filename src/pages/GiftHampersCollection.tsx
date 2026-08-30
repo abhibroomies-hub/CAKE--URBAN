@@ -235,12 +235,12 @@ export default function GiftHampersCollection() {
   };
 
   return (
-    <div className="bg-[#FFF8FB] min-h-screen text-slate-800 font-sans relative select-none pb-24 md:pb-0 overflow-x-hidden">
+    <div className="bg-transparent min-h-screen text-[#FFFDFB] font-sans relative select-none pb-24 md:pb-0 overflow-x-hidden">
       
       {/* Luxury Soft Lighting Overlays */}
       <div className="absolute top-0 left-0 w-full h-[120vh] pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-gradient-to-bl from-amber-200/20 via-[#FF4FA3]/5 to-transparent blur-[160px]" />
-        <div className="absolute top-[35%] left-[-15%] w-[55%] h-[55%] bg-gradient-to-tr from-purple-200/15 via-[#8B5CF6]/5 to-transparent blur-[140px]" />
+        <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-gradient-to-bl from-[#DFB15B]/20 via-[#FF4FA3]/10 to-transparent blur-[160px]" />
+        <div className="absolute top-[35%] left-[-15%] w-[55%] h-[55%] bg-gradient-to-tr from-purple-500/10 via-[#8B5CF6]/10 to-transparent blur-[140px]" />
       </div>
 
       {/* Floating Sparkles & Gift Boxes */}
@@ -263,16 +263,16 @@ export default function GiftHampersCollection() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="space-y-4"
             >
-              <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-md border border-amber-500/20 py-2 px-4 rounded-full shadow-sm">
-                <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
-                <span className="text-amber-600 font-black text-[10px] tracking-[0.3em] uppercase">
+              <div className="inline-flex items-center gap-2 bg-[#1E0B07]/80 backdrop-blur-md border border-[#DFB15B]/40 py-2 px-4 rounded-full shadow-sm">
+                <Sparkles className="w-3.5 h-3.5 text-[#DFB15B] animate-pulse" />
+                <span className="text-[#DFB15B] font-black text-[10px] tracking-[0.3em] uppercase">
                   LA SÉLECTION DE CADEAUX
                 </span>
               </div>
               
-              <h1 className="text-5xl sm:text-6xl xl:text-7xl font-black tracking-tighter text-slate-900 leading-[0.95] font-sans">
+              <h1 className="text-5xl sm:text-6xl xl:text-7xl font-black tracking-tighter text-white leading-[0.95] font-sans">
                 Gift Happiness <br />
-                <span className="bg-gradient-to-r from-[#FFD166] via-[#FF4FA3] to-[#8B5CF6] bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-[#DFB15B] via-pink-400 to-[#F3C87A] bg-clip-text text-transparent">
                   Beautifully Handcrafted
                 </span>
               </h1>
@@ -282,7 +282,7 @@ export default function GiftHampersCollection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
-              className="text-slate-500 font-semibold text-sm sm:text-base md:text-lg leading-relaxed max-w-xl"
+              className="text-slate-200 font-medium text-sm sm:text-base md:text-lg leading-relaxed max-w-xl"
             >
               Curate magnificent, silk-bound luxury gift hampers for birthdays, weddings, anniversaries, or corporate milestones. Completely customisable with premium cakes, fresh flowers, and imported delicacies.
             </motion.p>
@@ -298,10 +298,10 @@ export default function GiftHampersCollection() {
                   const el = document.getElementById('preconfigured-hampers-grid');
                   if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="bg-gradient-to-r from-amber-400 to-[#FF4FA3] hover:brightness-110 text-white text-xs sm:text-sm font-black uppercase tracking-[0.2em] py-5 px-10 rounded-full transition-all duration-300 hover:shadow-[0_15px_40px_rgba(255,79,163,0.35)] hover:scale-105 active:scale-95 flex items-center gap-2.5"
+                className="bg-gradient-to-r from-[#DFB15B] to-[#F3C87A] hover:brightness-110 text-[#0F0503] text-xs sm:text-sm font-black uppercase tracking-[0.2em] py-5 px-10 rounded-full transition-all duration-300 hover:shadow-[0_15px_40px_rgba(223,177,91,0.35)] hover:scale-105 active:scale-95 flex items-center gap-2.5 cursor-pointer"
               >
                 <span>Shop Hampers</span>
-                <ArrowRight className="w-4 h-4 text-white" />
+                <ArrowRight className="w-4 h-4 text-[#0F0503]" />
               </button>
               
               <button 
@@ -309,7 +309,7 @@ export default function GiftHampersCollection() {
                   const el = document.getElementById('hamper-interactive-builder');
                   if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="bg-white/85 hover:bg-white text-slate-800 border border-slate-200 text-xs sm:text-sm font-black uppercase tracking-[0.2em] py-5 px-10 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2"
+                className="bg-[#1E0B07]/80 hover:bg-[#1E0B07] text-white border border-[#DFB15B]/40 text-xs sm:text-sm font-black uppercase tracking-[0.2em] py-5 px-10 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer"
               >
                 <span>Build Your Own Hamper</span>
               </button>
@@ -320,21 +320,21 @@ export default function GiftHampersCollection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.45 }}
-              className="flex flex-wrap items-center gap-8 pt-8 border-t border-slate-200/60 max-w-lg"
+              className="flex flex-wrap items-center gap-8 pt-8 border-t border-white/20 max-w-lg"
             >
               <div>
-                <span className="text-2xl font-black text-slate-900 block">Velvet</span>
-                <span className="text-[10px] font-black tracking-widest text-slate-400 uppercase">Premium Packaging</span>
+                <span className="text-2xl font-black text-white block">Velvet</span>
+                <span className="text-[10px] font-bold tracking-widest text-[#DFB15B] uppercase">Premium Packaging</span>
               </div>
-              <div className="w-px h-10 bg-slate-200" />
+              <div className="w-px h-10 bg-white/20" />
               <div>
-                <span className="text-2xl font-black text-slate-900 block">Fresh</span>
-                <span className="text-[10px] font-black tracking-widest text-slate-400 uppercase">Dutch Flowers</span>
+                <span className="text-2xl font-black text-white block">Fresh</span>
+                <span className="text-[10px] font-bold tracking-widest text-[#DFB15B] uppercase">Dutch Flowers</span>
               </div>
-              <div className="w-px h-10 bg-slate-200" />
+              <div className="w-px h-10 bg-white/20" />
               <div>
-                <span className="text-2xl font-black text-slate-900 block">Golden</span>
-                <span className="text-[10px] font-black tracking-widest text-slate-400 uppercase">Calligraphy Notes</span>
+                <span className="text-2xl font-black text-white block">Golden</span>
+                <span className="text-[10px] font-bold tracking-widest text-[#DFB15B] uppercase">Calligraphy Notes</span>
               </div>
             </motion.div>
           </div>
@@ -345,7 +345,7 @@ export default function GiftHampersCollection() {
               initial={{ opacity: 0, scale: 0.92, rotate: 2 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-[480px] aspect-square rounded-[48px] overflow-hidden shadow-[0_40px_90px_rgba(255,79,163,0.1)] border-8 border-white bg-slate-50 group"
+              className="relative w-full max-w-[480px] aspect-square rounded-[48px] overflow-hidden shadow-2xl border-4 border-[#DFB15B]/40 bg-[#0F0503] group"
             >
               <img 
                 src="https://images.unsplash.com/photo-1545048702-79362596cdc9?auto=format&fit=crop&q=80&w=800" 
@@ -354,17 +354,17 @@ export default function GiftHampersCollection() {
                 referrerPolicy="no-referrer"
               />
               
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0F0503]/80 via-transparent to-transparent pointer-events-none" />
 
               {/* Floating Hamper Tag Card */}
-              <div className="absolute bottom-8 left-8 right-8 bg-white/95 backdrop-blur-xl rounded-3xl p-5 shadow-[0_15px_35px_rgba(0,0,0,0.06)] border border-white flex justify-between items-center text-left">
+              <div className="absolute bottom-8 left-8 right-8 bg-[#1E0B07]/90 backdrop-blur-xl rounded-3xl p-5 shadow-2xl border border-[#DFB15B]/40 flex justify-between items-center text-left">
                 <div className="space-y-1">
-                  <span className="text-[#FF4FA3] font-black text-[9px] uppercase tracking-widest block">L’ÉXQUISITE COLLECTION</span>
-                  <h4 className="text-sm font-black text-slate-900 uppercase tracking-wider">The Sovereign Velvet Hamper</h4>
-                  <p className="text-[10px] text-slate-500 font-semibold leading-normal">Premium satin box featuring red roses, chocolate box & candles.</p>
+                  <span className="text-[#DFB15B] font-black text-[9px] uppercase tracking-widest block">L’ÉXQUISITE COLLECTION</span>
+                  <h4 className="text-sm font-black text-white uppercase tracking-wider">The Sovereign Velvet Hamper</h4>
+                  <p className="text-[10px] text-slate-300 font-medium leading-normal">Premium satin box featuring red roses, chocolate box & candles.</p>
                 </div>
-                <div className="bg-[#FF4FA3]/10 text-[#FF4FA3] p-3 rounded-2xl">
-                  <Gift className="w-5 h-5 animate-pulse text-[#FF4FA3]" />
+                <div className="bg-[#DFB15B]/20 text-[#DFB15B] p-3 rounded-2xl">
+                  <Gift className="w-5 h-5 animate-pulse text-[#DFB15B]" />
                 </div>
               </div>
             </motion.div>
@@ -376,15 +376,15 @@ export default function GiftHampersCollection() {
       {/* =========================================================
           THE 8 MANDATED HAMPER CATEGORIES GRID
           ========================================================= */}
-      <section className="py-24 bg-white border-y border-slate-100/80 relative z-10">
+      <section className="py-24 bg-[#1E0B07]/60 border-y border-[#DFB15B]/20 backdrop-blur-md relative z-10">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-8 xl:px-12 space-y-16">
           
           <div className="text-center space-y-3">
-            <span className="text-[#FF4FA3] font-black text-[10px] tracking-[0.3em] uppercase block">PREMIUM DESIGN ATELIER</span>
-            <h2 className="text-4xl font-black text-slate-900 tracking-tight leading-none uppercase">
+            <span className="text-[#DFB15B] font-black text-[10px] tracking-[0.3em] uppercase block">PREMIUM DESIGN ATELIER</span>
+            <h2 className="text-4xl font-black text-white tracking-tight leading-none uppercase">
               Hamper Master Collections
             </h2>
-            <p className="text-xs sm:text-sm text-slate-400 font-semibold max-w-md mx-auto">
+            <p className="text-xs sm:text-sm text-slate-300 font-medium max-w-md mx-auto">
               Choose from our 8 signature hamper disciplines, built sequentially by luxury gifting experts and hand-delivered with white-glove courier dispatch.
             </p>
           </div>
@@ -397,7 +397,7 @@ export default function GiftHampersCollection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.05, duration: 0.5 }}
-                className="group relative h-[320px] rounded-[32px] overflow-hidden border border-slate-200/50 shadow-sm hover:shadow-xl transition-all duration-300 text-left flex flex-col justify-end p-6 cursor-pointer"
+                className="group relative h-[320px] rounded-[32px] overflow-hidden border border-[#DFB15B]/30 shadow-xl hover:shadow-2xl hover:border-[#DFB15B] transition-all duration-300 text-left flex flex-col justify-end p-6 cursor-pointer"
                 onClick={() => {
                   const builderEl = document.getElementById('hamper-interactive-builder');
                   if (builderEl) {
@@ -407,7 +407,7 @@ export default function GiftHampersCollection() {
                 }}
               >
                 <img src={cat.img} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-[3000ms]" alt={cat.name} referrerPolicy="no-referrer" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0F0503] via-[#0F0503]/50 to-transparent pointer-events-none" />
                 
                 {/* Content Overlay */}
                 <div className="relative z-10 space-y-2">
@@ -415,11 +415,11 @@ export default function GiftHampersCollection() {
                     <span className="text-2xl">{cat.emoji}</span>
                     <h3 className="text-sm font-black text-white uppercase tracking-wider">{cat.name}</h3>
                   </div>
-                  <p className="text-[10px] text-slate-300 font-semibold leading-relaxed line-clamp-3">{cat.desc}</p>
+                  <p className="text-[10px] text-slate-200 font-medium leading-relaxed line-clamp-3">{cat.desc}</p>
                   
-                  <span className="text-[9px] font-black text-[#FFD166] uppercase tracking-widest flex items-center gap-1 pt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-[9px] font-black text-[#DFB15B] uppercase tracking-widest flex items-center gap-1 pt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <span>BUILD BESPOKE NOW</span>
-                    <ArrowRight className="w-3 h-3" />
+                    <ArrowRight className="w-3 h-3 text-[#DFB15B]" />
                   </span>
                 </div>
               </motion.div>
@@ -436,11 +436,11 @@ export default function GiftHampersCollection() {
         <div className="space-y-12">
           
           <div className="space-y-3">
-            <span className="text-[#FF4FA3] font-black text-[10px] tracking-[0.3em] uppercase block">THE INTERACTIVE GIFT DESIGNER</span>
-            <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-none uppercase">
+            <span className="text-[#DFB15B] font-black text-[10px] tracking-[0.3em] uppercase block">THE INTERACTIVE GIFT DESIGNER</span>
+            <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-none uppercase">
               Bespoke Hamper Creator
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 font-semibold max-w-xl">
+            <p className="text-xs sm:text-sm text-slate-300 font-medium max-w-xl">
               Design a gorgeous custom gift suite in real-time. Pick your casket box size, add freshly baked luxury cakes, chocolates, hand-tied Dutch flower bunches, calligraphy notes, and personalized candles.
             </p>
           </div>
@@ -448,13 +448,13 @@ export default function GiftHampersCollection() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             
             {/* Left Selection Steps - Columns (8/12) */}
-            <div className="lg:col-span-8 space-y-10 bg-white border border-slate-200/50 rounded-[40px] p-6 md:p-10 shadow-sm">
+            <div className="lg:col-span-8 space-y-10 bg-[#1E0B07]/80 backdrop-blur-xl border border-[#DFB15B]/30 rounded-[40px] p-6 md:p-10 shadow-2xl">
               
               {/* Step 1: Box Size */}
               <div className="space-y-4">
-                <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <span className="w-6 h-6 rounded-full bg-[#FF4FA3]/10 text-[#FF4FA3] flex items-center justify-center font-black text-xs">1</span>
-                  <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">Select Gift Casket Packaging</h3>
+                <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+                  <span className="w-6 h-6 rounded-full bg-[#DFB15B]/20 text-[#DFB15B] flex items-center justify-center font-black text-xs">1</span>
+                  <h3 className="text-xs font-black text-white uppercase tracking-widest">Select Gift Casket Packaging</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {boxSizeOptions.map(box => (
@@ -463,15 +463,15 @@ export default function GiftHampersCollection() {
                       onClick={() => setBoxSize(box)}
                       className={`cursor-pointer rounded-2xl p-4 border flex flex-col justify-between h-[120px] transition-all ${
                         boxSize.name === box.name 
-                          ? 'border-[#FF4FA3] bg-[#FFF8FB] shadow-md'
-                          : 'border-slate-200 bg-slate-50 hover:bg-white hover:border-[#FF4FA3]/30'
+                          ? 'border-[#DFB15B] bg-[#DFB15B]/20 shadow-lg'
+                          : 'border-white/10 bg-[#0F0503]/60 hover:bg-[#0F0503] hover:border-[#DFB15B]/40'
                       }`}
                     >
                       <div className="space-y-1">
-                        <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider">{box.name}</h4>
-                        <p className="text-[10px] text-slate-400 font-semibold leading-relaxed line-clamp-2">{box.desc}</p>
+                        <h4 className="text-xs font-black text-white uppercase tracking-wider">{box.name}</h4>
+                        <p className="text-[10px] text-slate-300 font-medium leading-relaxed line-clamp-2">{box.desc}</p>
                       </div>
-                      <span className="text-xs font-black text-slate-950">₹{box.price}</span>
+                      <span className="text-xs font-black text-[#DFB15B]">₹{box.price}</span>
                     </div>
                   ))}
                 </div>
@@ -479,9 +479,9 @@ export default function GiftHampersCollection() {
 
               {/* Step 2: Fresh Cake Selection */}
               <div className="space-y-4">
-                <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <span className="w-6 h-6 rounded-full bg-[#FF4FA3]/10 text-[#FF4FA3] flex items-center justify-center font-black text-xs">2</span>
-                  <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">Add Freshly Baked Premium Cake</h3>
+                <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+                  <span className="w-6 h-6 rounded-full bg-[#DFB15B]/20 text-[#DFB15B] flex items-center justify-center font-black text-xs">2</span>
+                  <h3 className="text-xs font-black text-white uppercase tracking-widest">Add Freshly Baked Premium Cake</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {cakeOptions.map(ck => (
@@ -490,15 +490,15 @@ export default function GiftHampersCollection() {
                       onClick={() => setSelectedCake(ck)}
                       className={`cursor-pointer rounded-2xl p-4 border flex items-center justify-between transition-all ${
                         selectedCake.name === ck.name 
-                          ? 'border-[#FF4FA3] bg-[#FFF8FB] shadow-md'
-                          : 'border-slate-200 bg-slate-50 hover:bg-white hover:border-[#FF4FA3]/30'
+                          ? 'border-[#DFB15B] bg-[#DFB15B]/20 shadow-lg'
+                          : 'border-white/10 bg-[#0F0503]/60 hover:bg-[#0F0503] hover:border-[#DFB15B]/40'
                       }`}
                     >
                       <div className="space-y-1 pr-4">
-                        <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider">{ck.name}</h4>
-                        <p className="text-[10px] text-slate-400 font-semibold leading-relaxed line-clamp-1">{ck.desc}</p>
+                        <h4 className="text-xs font-black text-white uppercase tracking-wider">{ck.name}</h4>
+                        <p className="text-[10px] text-slate-300 font-medium leading-relaxed line-clamp-1">{ck.desc}</p>
                       </div>
-                      <span className="text-xs font-black text-slate-950 flex-none">₹{ck.price}</span>
+                      <span className="text-xs font-black text-[#DFB15B] flex-none">₹{ck.price}</span>
                     </div>
                   ))}
                 </div>
@@ -506,9 +506,9 @@ export default function GiftHampersCollection() {
 
               {/* Step 3: Premium Chocolates */}
               <div className="space-y-4">
-                <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <span className="w-6 h-6 rounded-full bg-[#FF4FA3]/10 text-[#FF4FA3] flex items-center justify-center font-black text-xs">3</span>
-                  <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">Add Imported Chocolates</h3>
+                <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+                  <span className="w-6 h-6 rounded-full bg-[#DFB15B]/20 text-[#DFB15B] flex items-center justify-center font-black text-xs">3</span>
+                  <h3 className="text-xs font-black text-white uppercase tracking-widest">Add Imported Chocolates</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {chocolateOptions.map(choc => (
@@ -517,15 +517,15 @@ export default function GiftHampersCollection() {
                       onClick={() => setSelectedChocolates(choc)}
                       className={`cursor-pointer rounded-2xl p-4 border flex items-center justify-between transition-all ${
                         selectedChocolates.name === choc.name 
-                          ? 'border-[#FF4FA3] bg-[#FFF8FB] shadow-md'
-                          : 'border-slate-200 bg-slate-50 hover:bg-white hover:border-[#FF4FA3]/30'
+                          ? 'border-[#DFB15B] bg-[#DFB15B]/20 shadow-lg'
+                          : 'border-white/10 bg-[#0F0503]/60 hover:bg-[#0F0503] hover:border-[#DFB15B]/40'
                       }`}
                     >
                       <div className="space-y-1 pr-4">
-                        <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider">{choc.name}</h4>
-                        <p className="text-[10px] text-slate-400 font-semibold leading-relaxed line-clamp-1">{choc.desc}</p>
+                        <h4 className="text-xs font-black text-white uppercase tracking-wider">{choc.name}</h4>
+                        <p className="text-[10px] text-slate-300 font-medium leading-relaxed line-clamp-1">{choc.desc}</p>
                       </div>
-                      <span className="text-xs font-black text-slate-950 flex-none">₹{choc.price}</span>
+                      <span className="text-xs font-black text-[#DFB15B] flex-none">₹{choc.price}</span>
                     </div>
                   ))}
                 </div>
@@ -533,9 +533,9 @@ export default function GiftHampersCollection() {
 
               {/* Step 4: Fresh Flowers */}
               <div className="space-y-4">
-                <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <span className="w-6 h-6 rounded-full bg-[#FF4FA3]/10 text-[#FF4FA3] flex items-center justify-center font-black text-xs">4</span>
-                  <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">Add Premium Fresh Flowers</h3>
+                <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+                  <span className="w-6 h-6 rounded-full bg-[#DFB15B]/20 text-[#DFB15B] flex items-center justify-center font-black text-xs">4</span>
+                  <h3 className="text-xs font-black text-white uppercase tracking-widest">Add Premium Fresh Flowers</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {flowerOptions.map(fl => (
@@ -544,15 +544,15 @@ export default function GiftHampersCollection() {
                       onClick={() => setSelectedFlowers(fl)}
                       className={`cursor-pointer rounded-2xl p-4 border flex items-center justify-between transition-all ${
                         selectedFlowers.name === fl.name 
-                          ? 'border-[#FF4FA3] bg-[#FFF8FB] shadow-md'
-                          : 'border-slate-200 bg-slate-50 hover:bg-white hover:border-[#FF4FA3]/30'
+                          ? 'border-[#DFB15B] bg-[#DFB15B]/20 shadow-lg'
+                          : 'border-white/10 bg-[#0F0503]/60 hover:bg-[#0F0503] hover:border-[#DFB15B]/40'
                       }`}
                     >
                       <div className="space-y-1 pr-4">
-                        <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider">{fl.name}</h4>
-                        <p className="text-[10px] text-slate-400 font-semibold leading-relaxed line-clamp-1">{fl.desc}</p>
+                        <h4 className="text-xs font-black text-white uppercase tracking-wider">{fl.name}</h4>
+                        <p className="text-[10px] text-slate-300 font-medium leading-relaxed line-clamp-1">{fl.desc}</p>
                       </div>
-                      <span className="text-xs font-black text-slate-950 flex-none">₹{fl.price}</span>
+                      <span className="text-xs font-black text-[#DFB15B] flex-none">₹{fl.price}</span>
                     </div>
                   ))}
                 </div>
@@ -560,9 +560,9 @@ export default function GiftHampersCollection() {
 
               {/* Step 5: Handwriting Greeting Card */}
               <div className="space-y-4">
-                <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <span className="w-6 h-6 rounded-full bg-[#FF4FA3]/10 text-[#FF4FA3] flex items-center justify-center font-black text-xs">5</span>
-                  <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">Select Handwriting Greeting Card</h3>
+                <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+                  <span className="w-6 h-6 rounded-full bg-[#DFB15B]/20 text-[#DFB15B] flex items-center justify-center font-black text-xs">5</span>
+                  <h3 className="text-xs font-black text-white uppercase tracking-widest">Select Handwriting Greeting Card</h3>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {cardOptions.map(card => (
@@ -571,27 +571,27 @@ export default function GiftHampersCollection() {
                       onClick={() => setSelectedCard(card)}
                       className={`cursor-pointer rounded-2xl p-4 border flex flex-col justify-between h-[110px] transition-all ${
                         selectedCard.name === card.name 
-                          ? 'border-[#FF4FA3] bg-[#FFF8FB] shadow-md'
-                          : 'border-slate-200 bg-slate-50 hover:bg-white hover:border-[#FF4FA3]/30'
+                          ? 'border-[#DFB15B] bg-[#DFB15B]/20 shadow-lg'
+                          : 'border-white/10 bg-[#0F0503]/60 hover:bg-[#0F0503] hover:border-[#DFB15B]/40'
                       }`}
                     >
                       <div className="space-y-1">
-                        <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider">{card.name}</h4>
-                        <p className="text-[10px] text-slate-400 font-semibold leading-relaxed">{card.desc}</p>
+                        <h4 className="text-xs font-black text-white uppercase tracking-wider">{card.name}</h4>
+                        <p className="text-[10px] text-slate-300 font-medium leading-relaxed">{card.desc}</p>
                       </div>
-                      <span className="text-xs font-black text-slate-950">₹{card.price}</span>
+                      <span className="text-xs font-black text-[#DFB15B]">₹{card.price}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Card Message Input */}
                 <div className="space-y-1.5 pt-2">
-                  <label className="text-[10px] font-black tracking-widest text-slate-400 uppercase">Write handwritten custom message:</label>
+                  <label className="text-[10px] font-black tracking-widest text-[#DFB15B] uppercase">Write handwritten custom message:</label>
                   <textarea 
                     value={selectedCard.text}
                     onChange={(e) => setSelectedCard({ ...selectedCard, text: e.target.value })}
                     placeholder="E.g., Wishing you standard luxury and sweet moments on your celebratory milestone!..."
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-[#FF4FA3] focus:bg-white rounded-2xl p-4 text-xs font-medium focus:outline-none transition-all placeholder:text-slate-400 text-slate-800 h-24 resize-none"
+                    className="w-full bg-[#0F0503]/80 border border-white/20 focus:border-[#DFB15B] rounded-2xl p-4 text-xs font-medium focus:outline-none transition-all placeholder:text-slate-500 text-white h-24 resize-none"
                   />
                 </div>
               </div>
@@ -601,14 +601,14 @@ export default function GiftHampersCollection() {
                 
                 {/* Toys */}
                 <div className="space-y-3">
-                  <label className="text-[10px] font-black tracking-widest text-slate-400 uppercase">Add Miniature Soft Toys:</label>
+                  <label className="text-[10px] font-black tracking-widest text-[#DFB15B] uppercase">Add Miniature Soft Toys:</label>
                   <select 
                     value={selectedToy.name}
                     onChange={(e) => {
                       const found = toyOptions.find(t => t.name === e.target.value);
                       if (found) setSelectedToy(found);
                     }}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-xs font-black uppercase text-slate-700 focus:outline-none"
+                    className="w-full bg-[#0F0503] border border-white/20 rounded-2xl px-4 py-3 text-xs font-black uppercase text-white focus:outline-none focus:border-[#DFB15B]"
                   >
                     {toyOptions.map(t => (
                       <option key={t.name} value={t.name}>{t.name} {t.price > 0 ? `(+₹${t.price})` : ''}</option>
@@ -618,14 +618,14 @@ export default function GiftHampersCollection() {
 
                 {/* Balloons */}
                 <div className="space-y-3">
-                  <label className="text-[10px] font-black tracking-widest text-slate-400 uppercase">Add Helium Balloons:</label>
+                  <label className="text-[10px] font-black tracking-widest text-[#DFB15B] uppercase">Add Helium Balloons:</label>
                   <select 
                     value={selectedBalloons.name}
                     onChange={(e) => {
                       const found = balloonOptions.find(b => b.name === e.target.value);
                       if (found) setSelectedBalloons(found);
                     }}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-xs font-black uppercase text-slate-700 focus:outline-none"
+                    className="w-full bg-[#0F0503] border border-white/20 rounded-2xl px-4 py-3 text-xs font-black uppercase text-white focus:outline-none focus:border-[#DFB15B]"
                   >
                     {balloonOptions.map(b => (
                       <option key={b.name} value={b.name}>{b.name} {b.price > 0 ? `(+₹${b.price})` : ''}</option>
@@ -637,7 +637,7 @@ export default function GiftHampersCollection() {
 
               {/* Step 7: Golden Add-ons */}
               <div className="space-y-3">
-                <label className="text-[10px] font-black tracking-widest text-slate-400 uppercase">Elite Add-ons & Celebration Essentials:</label>
+                <label className="text-[10px] font-black tracking-widest text-[#DFB15B] uppercase">Elite Add-ons & Celebration Essentials:</label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {addonOptions.map(ad => {
                     const isSelected = selectedAddons.some(a => a.name === ad.name);
@@ -647,8 +647,8 @@ export default function GiftHampersCollection() {
                         onClick={() => toggleAddon(ad)}
                         className={`cursor-pointer rounded-xl p-3 border flex items-center justify-between text-left transition-all ${
                           isSelected 
-                            ? 'border-[#FF4FA3] bg-[#FFF8FB] text-[#FF4FA3]'
-                            : 'border-slate-200 bg-slate-50 hover:bg-white text-slate-700'
+                            ? 'border-[#DFB15B] bg-[#DFB15B]/20 text-[#DFB15B]'
+                            : 'border-white/10 bg-[#0F0503]/60 hover:bg-[#0F0503] text-slate-300'
                         }`}
                       >
                         <span className="text-[11px] font-bold uppercase tracking-wider line-clamp-1">{ad.name}</span>
@@ -664,20 +664,20 @@ export default function GiftHampersCollection() {
             {/* Right Live Preview & Sticky Summary - Column (4/12) */}
             <div className="lg:col-span-4 space-y-8 lg:sticky lg:top-24 h-fit">
               
-              <div className="bg-gradient-to-tr from-slate-950 via-slate-900 to-slate-950 text-white rounded-[36px] border border-slate-800 p-6 md:p-8 space-y-6 shadow-xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-48 h-48 bg-[#FF4FA3]/15 blur-[60px] pointer-events-none" />
+              <div className="bg-[#1E0B07]/90 backdrop-blur-xl text-white rounded-[36px] border border-[#DFB15B]/30 p-6 md:p-8 space-y-6 shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-48 h-48 bg-[#DFB15B]/15 blur-[60px] pointer-events-none" />
                 <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#8B5CF6]/15 blur-[60px] pointer-events-none" />
 
-                <div className="flex justify-between items-center border-b border-slate-800 pb-4">
+                <div className="flex justify-between items-center border-b border-white/10 pb-4">
                   <div className="flex items-center gap-2">
-                    <Gift className="w-5 h-5 text-amber-500 animate-pulse" />
-                    <h3 className="text-xs font-black uppercase tracking-wider text-amber-500">Bespoke Summary</h3>
+                    <Gift className="w-5 h-5 text-[#DFB15B] animate-pulse" />
+                    <h3 className="text-xs font-black uppercase tracking-wider text-[#DFB15B]">Bespoke Summary</h3>
                   </div>
-                  <span className="bg-amber-500/10 border border-amber-500/20 text-amber-500 text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest">LIVE COUTURE</span>
+                  <span className="bg-[#DFB15B]/20 border border-[#DFB15B]/40 text-[#DFB15B] text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest">LIVE COUTURE</span>
                 </div>
 
                 {/* Items breakdown list */}
-                <div className="space-y-4 text-xs font-semibold text-slate-300">
+                <div className="space-y-4 text-xs font-medium text-slate-200">
                   <div className="flex justify-between">
                     <span className="text-slate-400">Box Style:</span>
                     <span className="text-white text-right max-w-[180px] line-clamp-1 uppercase tracking-wide">{boxSize.name}</span>
@@ -720,17 +720,17 @@ export default function GiftHampersCollection() {
 
                 {/* Handwritten card preview */}
                 {selectedCard.text.trim() && (
-                  <div className="bg-white/5 border border-white/10 rounded-2xl p-4 space-y-2 text-left">
-                    <span className="text-[8px] font-black text-amber-500 uppercase tracking-widest block">Envelope calligraphy preview:</span>
-                    <p className="text-[11px] text-slate-300 italic font-medium leading-relaxed">"{selectedCard.text}"</p>
+                  <div className="bg-[#0F0503]/80 border border-white/10 rounded-2xl p-4 space-y-2 text-left">
+                    <span className="text-[8px] font-black text-[#DFB15B] uppercase tracking-widest block">Envelope calligraphy preview:</span>
+                    <p className="text-[11px] text-slate-200 italic font-medium leading-relaxed">"{selectedCard.text}"</p>
                   </div>
                 )}
 
-                <div className="border-t border-slate-800 pt-5 space-y-4">
+                <div className="border-t border-white/10 pt-5 space-y-4">
                   <div className="flex justify-between items-end">
                     <div>
                       <span className="text-[8px] font-black text-slate-400 block uppercase tracking-widest">Dynamic Price Estimate</span>
-                      <span className="text-2xl font-black text-white">₹{totalPrice}</span>
+                      <span className="text-2xl font-black text-[#DFB15B]">₹{totalPrice}</span>
                     </div>
                     <span className="text-[9px] text-emerald-400 font-bold flex items-center gap-1">
                       <Truck className="w-3.5 h-3.5" />
@@ -740,7 +740,7 @@ export default function GiftHampersCollection() {
 
                   <button 
                     onClick={handleAddCustomHamperToCart}
-                    className="w-full bg-[#FF4FA3] hover:bg-[#FF4FA3]/90 text-white font-black text-xs uppercase tracking-[0.2em] py-5 px-6 rounded-2xl transition-all duration-300 hover:shadow-[0_15px_30px_rgba(255,79,163,0.3)] hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
+                    className="w-full bg-gradient-to-r from-[#DFB15B] to-[#F3C87A] text-[#0F0503] font-black text-xs uppercase tracking-[0.2em] py-5 px-6 rounded-2xl transition-all duration-300 hover:shadow-lg hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <ShoppingBag className="w-4.5 h-4.5" />
                     <span>Secure Hamper Basket</span>
@@ -762,11 +762,11 @@ export default function GiftHampersCollection() {
       <section id="preconfigured-hampers-grid" className="py-24 max-w-[1440px] mx-auto px-4 sm:px-8 xl:px-12 space-y-12 relative z-10 text-left">
         
         <div className="text-center space-y-3">
-          <span className="text-[#FF4FA3] font-black text-[10px] tracking-[0.3em] uppercase block">BEST SELLER GIFT SUITES</span>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight leading-none uppercase">
+          <span className="text-[#DFB15B] font-black text-[10px] tracking-[0.3em] uppercase block">BEST SELLER GIFT SUITES</span>
+          <h2 className="text-3xl font-black text-white tracking-tight leading-none uppercase">
             Signature Pre-configured Hampers
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 font-semibold max-w-md mx-auto">
+          <p className="text-xs sm:text-sm text-slate-300 font-medium max-w-md mx-auto">
             Browse our pre-arranged collector gift packages, decorated beautifully with matching silk ribbons and standard packaging inserts.
           </p>
         </div>
@@ -779,62 +779,62 @@ export default function GiftHampersCollection() {
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="bg-white border border-slate-200/50 rounded-[32px] p-5 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group h-[420px]"
+              className="bg-[#1E0B07]/80 border border-[#DFB15B]/30 backdrop-blur-md rounded-[32px] p-5 shadow-xl hover:shadow-2xl hover:border-[#DFB15B] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group h-[420px]"
             >
               <div className="space-y-4 relative">
-                <div className="aspect-[4/3] rounded-2xl overflow-hidden relative bg-slate-50 border border-slate-100">
+                <div className="aspect-[4/3] rounded-2xl overflow-hidden relative bg-[#0F0503] border border-white/10">
                   <img src={hamp.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={hamp.name} referrerPolicy="no-referrer" />
                   
                   {/* Heart wishlist */}
                   <button 
                     onClick={() => toggleFavorite(hamp.id, hamp.name)}
-                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center text-slate-400 hover:text-red-500 hover:scale-110 active:scale-95 transition-all shadow-sm"
+                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-[#0F0503]/80 backdrop-blur-md flex items-center justify-center text-slate-300 hover:text-red-500 hover:scale-110 active:scale-95 transition-all shadow-sm border border-white/10"
                   >
-                    <Heart className={`w-4.5 h-4.5 ${favorites.includes(hamp.id) ? 'fill-red-500 text-red-500' : 'text-slate-400'}`} />
+                    <Heart className={`w-4.5 h-4.5 ${favorites.includes(hamp.id) ? 'fill-red-500 text-red-500' : 'text-slate-300'}`} />
                   </button>
 
-                  <span className="absolute bottom-3 left-3 bg-slate-950/85 backdrop-blur-md text-[#FFD166] font-black text-[7px] uppercase tracking-widest px-2.5 py-1 rounded-full">
+                  <span className="absolute bottom-3 left-3 bg-[#0F0503]/90 backdrop-blur-md text-[#DFB15B] font-black text-[7px] uppercase tracking-widest px-2.5 py-1 rounded-full border border-[#DFB15B]/30">
                     {hamp.category}
                   </span>
 
                   {hamp.tag && (
-                    <span className="absolute top-3 left-3 bg-[#FF4FA3] text-white font-black text-[7px] uppercase tracking-widest px-2.5 py-1 rounded-full">
+                    <span className="absolute top-3 left-3 bg-[#DFB15B] text-[#0F0503] font-black text-[7px] uppercase tracking-widest px-2.5 py-1 rounded-full">
                       {hamp.tag}
                     </span>
                   )}
                 </div>
 
                 <div className="space-y-1.5">
-                  <div className="flex items-center gap-1 text-[10px] text-amber-500 font-bold">
-                    <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
+                  <div className="flex items-center gap-1 text-[10px] text-amber-300 font-bold">
+                    <Star className="w-3 h-3 fill-amber-300 text-amber-300" />
                     <span>{hamp.rating}</span>
-                    <span className="text-slate-400">({hamp.reviews} ratings)</span>
+                    <span className="text-slate-300">({hamp.reviews} ratings)</span>
                   </div>
 
-                  <h3 className="text-sm font-black text-slate-900 group-hover:text-[#FF4FA3] transition-colors leading-tight line-clamp-1 uppercase tracking-wider">{hamp.name}</h3>
-                  <p className="text-[11px] text-slate-400 font-semibold leading-relaxed line-clamp-2 h-[34px]">{hamp.desc}</p>
+                  <h3 className="text-sm font-black text-white group-hover:text-[#DFB15B] transition-colors leading-tight line-clamp-1 uppercase tracking-wider">{hamp.name}</h3>
+                  <p className="text-[11px] text-slate-300 font-medium leading-relaxed line-clamp-2 h-[34px]">{hamp.desc}</p>
                 </div>
               </div>
 
               {/* Price and Cart */}
-              <div className="border-t border-slate-100 pt-4 mt-2">
-                <div className="flex items-center justify-between text-[9px] text-slate-400 font-black uppercase tracking-widest mb-3">
+              <div className="border-t border-white/10 pt-4 mt-2">
+                <div className="flex items-center justify-between text-[9px] text-slate-300 font-black uppercase tracking-widest mb-3">
                   <span className="flex items-center gap-1">
-                    <Truck className="w-3.5 h-3.5 text-emerald-500" />
+                    <Truck className="w-3.5 h-3.5 text-emerald-400" />
                     <span>Free White-Glove Shipping</span>
                   </span>
-                  <span className="text-[#FF4FA3]">Silk Ribbon Box</span>
+                  <span className="text-[#DFB15B]">Silk Ribbon Box</span>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="text-[8px] font-black text-slate-400 block">PRICE</span>
-                    <span className="text-base font-black text-slate-950">₹{hamp.price}</span>
+                    <span className="text-base font-black text-[#DFB15B]">₹{hamp.price}</span>
                   </div>
 
                   <button 
                     onClick={() => handleAddPreconfiguredToCart(hamp)}
-                    className="bg-slate-950 hover:bg-[#FF4FA3] text-[#FFD166] hover:text-white text-[9px] font-black uppercase tracking-widest py-3 px-5 rounded-2xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-md flex items-center gap-1.5"
+                    className="bg-gradient-to-r from-[#DFB15B] to-[#F3C87A] text-[#0F0503] text-[9px] font-black uppercase tracking-widest py-3 px-5 rounded-2xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-md flex items-center gap-1.5 cursor-pointer"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>QUICK ADD</span>
@@ -851,41 +851,41 @@ export default function GiftHampersCollection() {
       {/* =========================================================
           AI GIFT CONFIGURATIONS & FOOTER
           ========================================================= */}
-      <section className="py-12 bg-[#FFF8FB]/80">
+      <section className="py-12 bg-transparent">
         <AICakeRecommendation category="Hampers & Flowers combo" />
       </section>
 
-      <section className="py-20 bg-white border-t border-slate-100">
+      <section className="py-20 bg-transparent">
         <LuxuryTestimonials />
       </section>
 
       {/* GLOBAL CTA: Ready to Surprise Someone Special? */}
-      <section className="py-12 bg-slate-50/50">
+      <section className="py-12">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-8 xl:px-12">
-          <div className="bg-gradient-to-tr from-slate-950 via-slate-900 to-slate-950 text-white rounded-[44px] p-8 md:p-14 text-center relative overflow-hidden flex flex-col items-center space-y-6 shadow-xl">
-            <div className="absolute top-0 right-0 w-80 h-80 bg-[#FF4FA3]/10 blur-[90px] pointer-events-none" />
+          <div className="bg-[#1E0B07]/90 backdrop-blur-xl border border-[#DFB15B]/30 text-white rounded-[44px] p-8 md:p-14 text-center relative overflow-hidden flex flex-col items-center space-y-6 shadow-2xl">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-[#DFB15B]/10 blur-[90px] pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#8B5CF6]/10 blur-[90px] pointer-events-none" />
             
-            <span className="text-[#FFD166] font-black text-[10px] tracking-[0.3em] uppercase block">PRE-ORDER INVITATION</span>
+            <span className="text-[#DFB15B] font-black text-[10px] tracking-[0.3em] uppercase block">PRE-ORDER INVITATION</span>
             <h3 className="text-3xl md:text-5xl font-black tracking-tight max-w-xl leading-tight font-sans">
               Ready To Surprise Someone Special?
             </h3>
-            <p className="text-xs text-slate-400 leading-relaxed font-semibold max-w-sm">
+            <p className="text-xs text-slate-200 leading-relaxed font-medium max-w-sm">
               Create unforgettable moments with our freshly baked luxury cakes, standard sweet creations, and custom gourmet hampers.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <button 
                 onClick={() => setIsQuickOrderOpen(true)}
-                className="bg-[#FF4FA3] hover:bg-[#FF4FA3]/90 text-white font-black text-xs uppercase tracking-[0.2em] py-4.5 px-10 rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg flex items-center gap-2"
+                className="bg-gradient-to-r from-[#DFB15B] to-[#F3C87A] text-[#0F0503] font-black text-xs uppercase tracking-[0.2em] py-4.5 px-10 rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg flex items-center gap-2 cursor-pointer"
               >
                 <span>ORDER NOW</span>
-                <ArrowRight className="w-4 h-4 text-white" />
+                <ArrowRight className="w-4 h-4 text-[#0F0503]" />
               </button>
               <button 
                 onClick={() => {
                   window.location.href = '/custom-order';
                 }}
-                className="bg-white/10 hover:bg-white/15 text-white border border-white/20 font-black text-xs uppercase tracking-[0.2em] py-4.5 px-10 rounded-full transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
+                className="bg-white/10 hover:bg-white/20 text-white border border-white/30 font-black text-xs uppercase tracking-[0.2em] py-4.5 px-10 rounded-full transition-all hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer"
               >
                 <span>CUSTOMIZE CAKE</span>
               </button>

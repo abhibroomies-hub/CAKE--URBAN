@@ -621,7 +621,7 @@ export default function ProductDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#FFF9FC] flex flex-col items-center justify-center space-y-6 py-20">
+      <div className="min-h-screen bg-transparent text-[#FFFDFB] flex flex-col items-center justify-center space-y-6 py-20">
         <div className="relative flex items-center justify-center">
           <div className="w-16 h-16 border-4 border-pink-500/20 border-t-pink-600 rounded-full animate-spin" />
           <Sparkle className="w-6 h-6 text-pink-500 animate-pulse absolute" />

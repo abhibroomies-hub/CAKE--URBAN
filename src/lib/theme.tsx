@@ -28,215 +28,109 @@ export interface ThemePreset {
 
 export const THEME_PRESETS: ThemePreset[] = [
   {
-    id: 'classic',
-    name: 'CakeUrban Sweet Pink',
-    icon: '🌸',
-    bgToTr: 'CakeUrban Sweet Pink Vibe',
-    bg: '#FFF9FC',
-    bgVia: '#FAF6F8',
-    bgTo: '#FFF9FC',
-    text: '#1E0E1B',
-    textMuted: 'rgba(30, 14, 27, 0.65)',
-    accent: '#FF4FA3',
-    accentLight: 'rgba(255, 79, 163, 0.12)',
-    accentHover: '#E0368B',
-    card: '#FFFFFF',
-    cardHover: '#FFFDFE',
-    border: 'rgba(255, 79, 163, 0.18)',
-    contrast: '#FFFFFF',
-    glass: 'rgba(255, 249, 252, 0.85)',
-    isDark: false,
-    description: 'Signature CakeUrban sweet light pink theme with high-contrast texts and playful details.'
+    id: 'midnight-champagne',
+    name: 'Midnight Champagne',
+    icon: '✨',
+    bgToTr: 'Midnight Champagne Luxury',
+    bg: '#0D0D0D',
+    bgVia: '#171717',
+    bgTo: '#080808',
+    text: '#F5EFE0',
+    textMuted: 'rgba(245, 239, 224, 0.68)',
+    accent: '#C9A24B',
+    accentLight: 'rgba(201, 162, 75, 0.15)',
+    accentHover: '#E5C578',
+    card: '#161616',
+    cardHover: '#222222',
+    border: 'rgba(201, 162, 75, 0.28)',
+    contrast: '#0D0D0D',
+    glass: 'rgba(13, 13, 13, 0.88)',
+    isDark: true,
+    description: 'Deep charcoal near-black background, warm champagne gold accents and highlights, subtle cream text. Elegant gold detailing, high-end patisserie feel.'
   },
   {
-    id: 'royal',
-    name: 'Royal Golden Onyx',
+    id: 'dark-emerald-luxe',
+    name: 'Dark Emerald Luxe',
     icon: '👑',
-    bgToTr: 'Royal Elegance Onyx',
-    bg: '#0a0a0a',
-    bgVia: '#1b1b1b',
-    bgTo: '#0f0f0f',
-    text: '#fdfdfd',
-    textMuted: 'rgba(253, 253, 253, 0.55)',
-    accent: '#FFD700',
-    accentLight: 'rgba(255, 215, 0, 0.15)',
-    accentHover: '#ffffff',
-    card: '#181818',
-    cardHover: '#242424',
-    border: 'rgba(255, 215, 0, 0.22)',
-    contrast: '#0a0a0a',
-    glass: 'rgba(10, 10, 10, 0.85)',
+    bgToTr: 'Royal Emerald Luxury',
+    bg: '#0B3D2E',
+    bgVia: '#082E23',
+    bgTo: '#052018',
+    text: '#F8F4E9',
+    textMuted: 'rgba(248, 244, 233, 0.68)',
+    accent: '#D4AF37',
+    accentLight: 'rgba(212, 175, 55, 0.16)',
+    accentHover: '#F3D268',
+    card: '#0E4A38',
+    cardHover: '#135E47',
+    border: 'rgba(212, 175, 55, 0.28)',
+    contrast: '#0B3D2E',
+    glass: 'rgba(11, 61, 46, 0.88)',
     isDark: true,
-    description: 'Ultimate luxury palette with deep slate black and bright metallic gold highlights.'
+    description: 'Rich deep emerald green background, elegant gold accents, soft ivory text. Sophisticated royal luxury feel.'
   },
   {
-    id: 'strawberry',
-    name: 'Strawberry Macaron',
-    icon: '🍓',
-    bgToTr: 'Strawberry Velvet Garden',
-    bg: '#FFF5F5',
-    bgVia: '#FFEAEB',
-    bgTo: '#FFF0F3',
-    text: '#4D2323',
-    textMuted: 'rgba(77, 35, 35, 0.6)',
-    accent: '#DF6B82',
-    accentLight: 'rgba(223, 107, 130, 0.12)',
-    accentHover: '#4D2323',
-    card: '#FFFFFF',
-    cardHover: '#FFF2F4',
-    border: 'rgba(223, 107, 130, 0.25)',
-    contrast: '#FFFFFF',
-    contrastHover: '#FFFFFF',
-    glass: 'rgba(255, 245, 245, 0.85)',
-    isDark: false,
-    description: 'A charming, high-contrast light theme with blooming strawberry cream tones.'
-  },
-  {
-    id: 'emerald',
-    name: 'Emerald Royale',
-    icon: '💚',
-    bgToTr: 'Royal Emerald Forest',
-    bg: '#07150C',
-    bgVia: '#12291B',
-    bgTo: '#091A10',
-    text: '#F1FAF4',
-    textMuted: 'rgba(241, 250, 244, 0.55)',
-    accent: '#E5C158',
-    accentLight: 'rgba(229, 193, 88, 0.15)',
-    accentHover: '#FFFDFB',
-    card: '#102619',
-    cardHover: '#183D27',
-    border: 'rgba(229, 193, 88, 0.2)',
-    contrast: '#07150C',
-    glass: 'rgba(7, 21, 12, 0.85)',
+    id: 'wine-rose-gold',
+    name: 'Wine & Rose Gold',
+    icon: '🍷',
+    bgToTr: 'Oxblood Wine & Rose Gold',
+    bg: '#3A0D1C',
+    bgVia: '#2C0915',
+    bgTo: '#1E050E',
+    text: '#F3E7E4',
+    textMuted: 'rgba(243, 231, 228, 0.68)',
+    accent: '#B76E79',
+    accentLight: 'rgba(183, 110, 121, 0.16)',
+    accentHover: '#D58E98',
+    card: '#4D1427',
+    cardHover: '#601B33',
+    border: 'rgba(183, 110, 121, 0.28)',
+    contrast: '#3A0D1C',
+    glass: 'rgba(58, 13, 28, 0.88)',
     isDark: true,
-    description: 'Decadent deep forest green combined with high-contrast soft brass jewelry gold.'
+    description: 'Deep oxblood wine background, rose gold accents and highlights, blush ivory text. Refined romantic luxury aesthetic.'
   },
   {
-    id: 'lavender',
-    name: 'Lavish Lavender',
-    icon: '🌌',
-    bgToTr: 'Enchanted Amethyst',
-    bg: '#0E0916',
-    bgVia: '#221731',
-    bgTo: '#150F22',
-    text: '#FDFBFF',
-    textMuted: 'rgba(253, 251, 255, 0.55)',
-    accent: '#C084FC',
-    accentLight: 'rgba(192, 132, 252, 0.15)',
-    accentHover: '#FFFFFF',
-    card: '#1C1129',
-    cardHover: '#2E1C43',
-    border: 'rgba(192, 132, 252, 0.22)',
-    contrast: '#0E0916',
-    glass: 'rgba(14, 9, 22, 0.85)',
+    id: 'midnight-navy-gold',
+    name: 'Midnight Navy & Gold',
+    icon: '⚓',
+    bgToTr: 'Midnight Navy & Metallic Gold',
+    bg: '#0A1128',
+    bgVia: '#070D20',
+    bgTo: '#040713',
+    text: '#EDEDE6',
+    textMuted: 'rgba(237, 237, 230, 0.68)',
+    accent: '#C6A15B',
+    accentLight: 'rgba(198, 161, 91, 0.16)',
+    accentHover: '#E2C284',
+    card: '#121E42',
+    cardHover: '#1B2C5E',
+    border: 'rgba(198, 161, 91, 0.28)',
+    contrast: '#0A1128',
+    glass: 'rgba(10, 17, 40, 0.88)',
     isDark: true,
-    description: 'Enchanted, dreamy dark purple theme with radiant amethyst neon lilac touches.'
+    description: 'Deep midnight navy background, metallic gold accents, off-white text. Sleek modern luxury with subtle glints.'
   },
   {
-    id: 'blush',
-    name: 'Blush Rose Gold',
-    icon: '🌸',
-    bgToTr: 'Elegant Rose Quartz',
-    bg: '#FCFAF9',
-    bgVia: '#F5ECE8',
-    bgTo: '#FAF2EC',
-    text: '#5C3E35',
-    textMuted: 'rgba(92, 62, 53, 0.6)',
-    accent: '#DE8070',
-    accentLight: 'rgba(222, 128, 112, 0.15)',
-    accentHover: '#5C3E35',
-    card: '#FFFFFF',
-    cardHover: '#F7EDE9',
-    border: 'rgba(222, 128, 112, 0.25)',
-    contrast: '#FFFFFF',
-    glass: 'rgba(252, 250, 249, 0.85)',
-    isDark: false,
-    description: 'A cozy, delicate rose gold theme mimicking fine bone china and sweet vanilla.'
-  },
-  {
-    id: 'espresso',
-    name: 'Espresso Caramel',
+    id: 'espresso-cream',
+    name: 'Espresso Cream',
     icon: '☕',
-    bgToTr: 'Roasted Espresso Latte',
-    bg: '#0F0C0B',
-    bgVia: '#261F1C',
-    bgTo: '#181311',
-    text: '#F9F6F5',
-    textMuted: 'rgba(249, 246, 245, 0.55)',
-    accent: '#E6A15C',
-    accentLight: 'rgba(230, 161, 92, 0.15)',
-    accentHover: '#FFFFFF',
-    card: '#1B1513',
-    cardHover: '#2F2420',
-    border: 'rgba(230, 161, 92, 0.23)',
-    contrast: '#0F0C0B',
-    glass: 'rgba(15, 12, 11, 0.85)',
+    bgToTr: 'Dark Espresso & Caramel',
+    bg: '#2B1A12',
+    bgVia: '#20120B',
+    bgTo: '#140A06',
+    text: '#F5EBDD',
+    textMuted: 'rgba(245, 235, 221, 0.68)',
+    accent: '#C9995A',
+    accentLight: 'rgba(201, 153, 90, 0.16)',
+    accentHover: '#E0B57C',
+    card: '#3B2419',
+    cardHover: '#4D3022',
+    border: 'rgba(201, 153, 90, 0.28)',
+    contrast: '#2B1A12',
+    glass: 'rgba(43, 26, 18, 0.88)',
     isDark: true,
-    description: 'Deep roasted espresso bean tones with rich, glossy hot salted caramel highlights.'
-  },
-  {
-    id: 'blueberry',
-    name: 'Frosted Blueberry',
-    icon: '🫐',
-    bgToTr: 'Nordic Blue Glaze',
-    bg: '#F3F7FA',
-    bgVia: '#E4EEF5',
-    bgTo: '#EBF2F8',
-    text: '#1C2E4C',
-    textMuted: 'rgba(28, 46, 76, 0.62)',
-    accent: '#3B82F6',
-    accentLight: 'rgba(59, 130, 246, 0.12)',
-    accentHover: '#1C2E4C',
-    card: '#FFFFFF',
-    cardHover: '#EFF5F9',
-    border: 'rgba(59, 130, 246, 0.2)',
-    contrast: '#FFFFFF',
-    glass: 'rgba(243, 247, 250, 0.85)',
-    isDark: false,
-    description: 'Refreshing frosty blue and vanilla glaze scheme, perfect for modern patisseries.'
-  },
-  {
-    id: 'chai',
-    name: 'Spiced Chai',
-    icon: '🍂',
-    bgToTr: 'Cozy Chai Lattechino',
-    bg: '#FAF6F2',
-    bgVia: '#EFE6DC',
-    bgTo: '#F5ECDE',
-    text: '#3D261A',
-    textMuted: 'rgba(61, 38, 26, 0.65)',
-    accent: '#D97706',
-    accentLight: 'rgba(217, 119, 6, 0.14)',
-    accentHover: '#3D261A',
-    card: '#FCFAF7',
-    cardHover: '#F4ECE1',
-    border: 'rgba(217, 119, 6, 0.22)',
-    contrast: '#FFFFFF',
-    glass: 'rgba(250, 246, 242, 0.85)',
-    isDark: false,
-    description: 'Warm terracotta chai latte biscuit shades mixed with spicy cinnamon-gold.'
-  },
-  {
-    id: 'matcha',
-    name: 'Matcha Zen Pistachio',
-    icon: '🍵',
-    bgToTr: 'Organic Herbal Matcha',
-    bg: '#F3F7F5',
-    bgVia: '#E4ECE7',
-    bgTo: '#ECF3EF',
-    text: '#1A3022',
-    textMuted: 'rgba(26, 48, 34, 0.6)',
-    accent: '#15803D',
-    accentLight: 'rgba(21, 128, 61, 0.14)',
-    accentHover: '#1A3022',
-    card: '#FFFFFF',
-    cardHover: '#EEF6F1',
-    border: 'rgba(21, 128, 61, 0.22)',
-    contrast: '#FFFFFF',
-    glass: 'rgba(243, 247, 245, 0.85)',
-    isDark: false,
-    description: 'Calm, organic elements mimicking powdered ceremonial matcha and pistachio moss.'
+    description: 'Dark espresso brown background, soft caramel gold accents, warm cream text. Cozy premium bakery feel.'
   }
 ];
 
@@ -283,26 +177,27 @@ export const injectThemeCSS = (theme: ThemePreset) => {
     html, body, #root {
       background-color: ${theme.bg} !important;
       color: ${theme.text} !important;
-      transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s ease-in-out !important;
+      transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease-in-out !important;
     }
 
     /* Target Tailwind color stops globally to repaint any background gradients across all pages */
-    .from-\\[\\#140603\\], .from-\\[\\#1E0D0A\\], .from-\\[\\#1C0A05\\], .from-\\[\\#2D150F\\], .from-emerald-950\\/10 {
+    .from-\\[\\#10141C\\], .from-\\[\\#121722\\], .from-\\[\\#140603\\], .from-\\[\\#1E0D0A\\], .from-\\[\\#1C0A05\\], .from-\\[\\#2D150F\\], .from-emerald-950\\/10 {
       --tw-gradient-from: var(--theme-bg) !important;
       --tw-gradient-to: var(--theme-bg-to) !important;
       --tw-gradient-stops: var(--theme-bg), var(--theme-bg-via), var(--theme-bg-to) !important;
     }
 
-    .via-\\[\\#2F150F\\], .via-\\[\\#1B0A06\\], .via-\\[\\#2F140A\\] {
+    .via-\\[\\#161C26\\], .via-\\[\\#1A2230\\], .via-\\[\\#18202C\\], .via-\\[\\#2F150F\\], .via-\\[\\#1B0A06\\], .via-\\[\\#2F140A\\] {
       --tw-gradient-to: var(--theme-bg-to) !important;
       --tw-gradient-stops: var(--theme-bg), var(--theme-bg-via), var(--theme-bg-to) !important;
     }
 
-    .to-\\[\\#210D09\\], .to-\\[\\#120502\\], .to-black, .to-\\[\\#2D150F\\] {
+    .to-\\[\\#0D1017\\], .to-\\[\\#0E121A\\], .to-\\[\\#0C0F16\\], .to-\\[\\#210D09\\], .to-\\[\\#120502\\], .to-black, .to-\\[\\#2D150F\\] {
       --tw-gradient-to: var(--theme-bg-to) !important;
     }
 
-    /* Core Tailwinds overrides targeting precise Hex codes */
+    /* Core Tailwinds overrides targeting precise container and card classes */
+    .bg-\\[\\#10141C\\],
     .bg-\\[\\#140603\\], 
     .bg-\\[\\#140603\\]\\/80, 
     .bg-\\[\\#140603\\]\\/40, 
@@ -311,6 +206,21 @@ export const injectThemeCSS = (theme: ThemePreset) => {
     .bg-black\\/70,
     .bg-\\[\\#140603\\]\\/35 {
       background-color: var(--theme-bg) !important;
+    }
+
+    .bg-\\[\\#181F2B\\],
+    .bg-\\[\\#141923\\],
+    .bg-\\[\\#161C26\\],
+    .bg-\\[\\#1C2330\\],
+    .bg-\\[\\#18191e\\],
+    .bg-\\[\\#26130F\\],
+    .bg-\\[\\#210F0C\\],
+    .bg-\\[\\#26130F\\]\\/45,
+    .bg-\\[\\#26130F\\]\\/90,
+    .bg-\\[\\#26130F\\]\\/85,
+    .bg-\\[\\#1A0A07\\]\\/80,
+    .bg-\\[\\#102619\\] {
+      background-color: var(--theme-card) !important;
     }
 
     /* Global gradients layout background */
@@ -327,6 +237,11 @@ export const injectThemeCSS = (theme: ThemePreset) => {
     }
 
     /* Transparent navigation bars / filters and headers */
+    .bg-\\[\\#10141C\\]\\/95,
+    .bg-\\[\\#10141C\\]\\/90,
+    .bg-\\[\\#141923\\]\\/98,
+    .bg-\\[\\#181F2B\\]\\/90,
+    .bg-\\[\\#181F2B\\]\\/80,
     .bg-\\[\\#140603\\]\\/85,
     .bg-\\[\\#140603\\]\\/20,
     .bg-\\[\\#140603\\]\\/30,
@@ -339,83 +254,47 @@ export const injectThemeCSS = (theme: ThemePreset) => {
       backdrop-filter: blur(12px) !important;
     }
 
-    /* Option background fix for native selects */
-    option {
-      background-color: #0F172A;
-      color: #FFFFFF;
+    /* Accent borders */
+    .border-\\[\\#DFB15B\\],
+    .border-\\[\\#DFB15B\\]\\/40,
+    .border-\\[\\#DFB15B\\]\\/30,
+    .border-\\[\\#DFB15B\\]\\/25,
+    .border-\\[\\#DFB15B\\]\\/20,
+    .border-\\[\\#DFB15B\\]\\/15,
+    .border-\\[\\#DFB15B\\]\\/10 {
+      border-color: var(--theme-border) !important;
+    }
+
+    /* Accent text and fill colors */
+    .text-\\[\\#DFB15B\\] {
+      color: var(--theme-accent) !important;
+    }
+    .fill-\\[\\#DFB15B\\] {
+      fill: var(--theme-accent) !important;
+    }
+    .bg-\\[\\#DFB15B\\] {
+      background-color: var(--theme-accent) !important;
+      color: var(--theme-contrast) !important;
+    }
+    .bg-\\[\\#DFB15B\\]\\/10,
+    .bg-\\[\\#DFB15B\\]\\/15,
+    .bg-\\[\\#DFB15B\\]\\/20,
+    .bg-\\[\\#DFB15B\\]\\/25,
+    .bg-\\[\\#DFB15B\\]\\/30 {
+      background-color: var(--theme-accent-light) !important;
+    }
+
+    /* Text colors */
+    .text-\\[\\#FFFDFB\\],
+    .text-\\[\\#F1F5F9\\] {
+      color: var(--theme-text) !important;
     }
 
     /* Custom Selection Styling */
     ::selection {
-      background-color: rgba(223, 177, 91, 0.3);
-      color: #DFB15B;
+      background-color: var(--theme-accent-light) !important;
+      color: var(--theme-accent) !important;
     }
-
-    /* Adjust the standard 4D glass sphere overlays if theme is light */
-    ${!theme.isDark ? `
-      .absolute.rounded-full.backdrop-blur-md {
-        background-color: rgba(0,0,0,0.02) !important;
-        border-color: rgba(0,0,0,0.08) !important;
-      }
-      .bg-white\\/5, .bg-white\\/10 {
-        background-color: rgba(0, 0, 0, 0.03) !important;
-      }
-      .text-white {
-        color: var(--theme-text) !important;
-      }
-
-      /* Guard explicit dark elements, footers, headers, cards and primary buttons to maintain absolute readability */
-      header .text-white,
-      footer .text-white,
-      footer .text-zinc-300,
-      footer .text-zinc-400,
-      .bg-gradient-to-r .text-white,
-      button.text-white,
-      .text-white-keep,
-      .bg-\\[\\#26130F\\] .text-white,
-      .bg-\\[\\#26130F\\]\\/90 .text-white,
-      .bg-\\[\\#26130F\\]\\/85 .text-white,
-      .bg-\\[\\#140603\\] .text-white,
-      .bg-\\[\\#210F0C\\] .text-white,
-      .bg-\\[\\#1A0A07\\]\\/80 .text-white,
-      .bg-emerald-950 .text-white,
-      .bg-purple-950 .text-white,
-      .bg-[#26130F] .text-white,
-      .bg-[#26130F]/45 .text-white,
-      .bg-[#26130F]/85 .text-white,
-      .bg-[#140603] .text-white,
-      .bg-[#140603]/85 .text-white,
-      .bg-stone-900 .text-white,
-      .bg-zinc-900 .text-white,
-      .bg-[#210F0C] .text-white,
-      .bg-[#140603]/95 .text-white,
-      .bg-gradient-to-b .text-white,
-      .bg-gradient-to-tr .text-white,
-      .bg-gradient-to-br .text-white,
-      .text-slate-100,
-      .font-sans.text-white,
-      .text-zinc-300-keep {
-        color: #ffffff !important;
-      }
-      header .text-white\\/80,
-      footer .text-white\\/80,
-      .bg-gradient-to-r .text-white\\/80,
-      .bg-slate-900 .text-white\\/80,
-      .bg-\\[\\#26130F\\] .text-white\\/80,
-      .bg-\\[\\#26130F\\]\\/90 .text-white\\/80,
-      .bg-[#26130F]/85 .text-white\\/80,
-      .bg-[#26130F]/45 .text-white\\/80,
-      .bg-stone-900 .text-white\\/80,
-      .bg-zinc-900 .text-white\\/80 {
-        color: rgba(255, 255, 255, 0.8) !important;
-      }
-      footer .text-zinc-400,
-      .bg-gradient-to-r .text-zinc-400,
-      .bg-\\[\\#26130F\\] .text-zinc-400,
-      .bg-[#26130F]/85 .text-zinc-400 {
-        color: rgba(255, 255, 255, 0.6) !important;
-      }
-    ` : ''}
   `;
 };
 
@@ -427,14 +306,20 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   useEffect(() => {
     // Sync style instantly for the default theme first
     const localThemeId = localStorage.getItem('cakehouse_local_theme');
-    if (localThemeId) {
+    if (localThemeId && localThemeId !== 'classic') {
       const match = THEME_PRESETS.find(t => t.id === localThemeId);
       if (match) {
         setActiveThemeState(match);
         injectThemeCSS(match);
+      } else {
+        setActiveThemeState(THEME_PRESETS[0]);
+        injectThemeCSS(THEME_PRESETS[0]);
+        localStorage.setItem('cakehouse_local_theme', THEME_PRESETS[0].id);
       }
     } else {
-      injectThemeCSS(activeTheme);
+      setActiveThemeState(THEME_PRESETS[0]);
+      injectThemeCSS(THEME_PRESETS[0]);
+      localStorage.setItem('cakehouse_local_theme', THEME_PRESETS[0].id);
     }
 
     const unsub = onSnapshot(doc(db, 'settings', 'theme'), (docSnap) => {

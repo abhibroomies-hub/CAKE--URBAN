@@ -302,7 +302,7 @@ export default function AiDesignerStudio() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-32 relative overflow-hidden selection:bg-pink-100 selection:text-pink-600">
+    <div className="min-h-screen bg-transparent text-[#FFFDFB] font-sans pb-32 relative overflow-hidden selection:bg-[#DFB15B]/30 selection:text-[#DFB15B]">
       <SEO 
         title="AI Luxury Cake Designer Studio | CakeUrban"
         description="Design your dream celebration cake in real time with our luxury AI baking model. Select occasions, tiered shapes, organic toppings, and photo-sugar prints."

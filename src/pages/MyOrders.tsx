@@ -189,7 +189,7 @@ export default function MyOrders() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#140603] via-[#1c0c0a] to-[#0d0302] text-[#FFFDFB] font-sans selection:bg-[#DFB15B]/30 selection:text-[#DFB15B] pb-24 overflow-hidden relative">
+    <div className="min-h-screen bg-transparent text-[#FFFDFB] font-sans selection:bg-[#DFB15B]/30 selection:text-[#DFB15B] pb-24 overflow-hidden relative">
       <SEO 
         title="My Orders Dashboard | CakeUrban"
         description="View your past handcrafted treats, track active custom orders in real-time, and manage delivery specifications."

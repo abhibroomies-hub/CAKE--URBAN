@@ -112,14 +112,14 @@ export function ProductCard({ product, onEdit }: { product: Product; onEdit?: ()
     >
       <div 
         onClick={(e) => { e.stopPropagation(); playSlidePop(); navigate(`/product/${product.id}`); }}
-        className="group relative w-full h-full rounded-[32px] bg-white border border-white/50 shadow-[0_25px_80px_rgba(0,0,0,0.08)] hover:shadow-[0_40px_90px_rgba(0,0,0,0.15)] p-6 overflow-hidden flex flex-col justify-between transition-all duration-300 ease-out cursor-pointer select-none"
+        className="group relative w-full h-full rounded-[32px] bg-[#1E0B07]/90 border border-[#DFB15B]/30 backdrop-blur-md shadow-2xl p-6 overflow-hidden flex flex-col justify-between transition-all duration-300 ease-out cursor-pointer select-none text-[#FFFDFB]"
         style={{ transformStyle: 'preserve-3d' }}
       >
         {/* Subtle, luxurious background visual details */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white via-pink-50/20 to-blue-50/25 z-0 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#26130F]/40 via-transparent to-[#140603]/80 z-0 pointer-events-none" />
         {/* Soft floating blurred glow circles */}
-        <div className="absolute top-[25%] left-[5%] w-36 h-36 rounded-full bg-pink-300/10 blur-2xl group-hover:bg-pink-400/15 transition-all duration-500 pointer-events-none" />
-        <div className="absolute bottom-[20%] right-[5%] w-28 h-28 rounded-full bg-blue-300/10 blur-2xl group-hover:bg-blue-400/15 transition-all duration-500 pointer-events-none" />
+        <div className="absolute top-[25%] left-[5%] w-36 h-36 rounded-full bg-[#DFB15B]/10 blur-2xl group-hover:bg-[#DFB15B]/20 transition-all duration-500 pointer-events-none" />
+        <div className="absolute bottom-[20%] right-[5%] w-28 h-28 rounded-full bg-[#DE9088]/10 blur-2xl group-hover:bg-[#DE9088]/20 transition-all duration-500 pointer-events-none" />
 
         {/* Tiny minimal floating confetti */}
         <div className="absolute inset-0 opacity-15 pointer-events-none z-0 overflow-hidden">
@@ -215,7 +215,7 @@ export function ProductCard({ product, onEdit }: { product: Product; onEdit?: ()
           {/* Name & Short Description */}
           <div className="space-y-1">
             {/* Title - Max 2 Lines */}
-            <h3 className="text-[24px] font-black tracking-tight text-[#111111] leading-tight line-clamp-2 min-h-[56px] group-hover:text-[#FF4FA3] transition-colors duration-300">
+            <h3 className="text-[22px] font-black tracking-tight text-white leading-tight line-clamp-2 min-h-[52px] group-hover:text-[#DFB15B] transition-colors duration-300">
               {product.name}
             </h3>
 
@@ -226,12 +226,12 @@ export function ProductCard({ product, onEdit }: { product: Product; onEdit?: ()
                   <Star key={i} className="w-3.5 h-3.5 fill-current stroke-[1.5px]" />
                 ))}
               </div>
-              <span className="text-[13px] font-black text-slate-800 ml-1">4.9</span>
-              <span className="text-[12px] text-slate-400 font-semibold">({product.reviewsCount || '2,435'})</span>
+              <span className="text-[13px] font-black text-white ml-1">4.9</span>
+              <span className="text-[12px] text-white/60 font-semibold">({product.reviewsCount || '2,435'})</span>
             </div>
 
-            {/* Description - Max 2 Lines, Font 16px, Line Height 28px */}
-            <p className="text-[15px] text-[#666666] leading-[24px] font-medium line-clamp-2 min-h-[48px] pt-1">
+            {/* Description - Max 2 Lines */}
+            <p className="text-[14px] text-[#FFFDFB]/80 leading-[22px] font-normal line-clamp-2 min-h-[44px] pt-1">
               {product.description || 'Rich Belgian chocolate cake layered with silky chocolate mousse and premium cocoa.'}
             </p>
           </div>
@@ -239,18 +239,18 @@ export function ProductCard({ product, onEdit }: { product: Product; onEdit?: ()
           {/* SLIDEOUT DRAWER FOR ACTION BUTTONS */}
           <div className="relative overflow-hidden h-[124px] mt-4 flex flex-col justify-end">
             
-            {/* 1. Default View: Price and Delivery Pills (fades/slides up out of screen on hover) */}
+            {/* 1. Default View: Price and Delivery Pills */}
             <div className="absolute inset-0 flex flex-col justify-end transition-all duration-350 ease-out group-hover:opacity-0 group-hover:-translate-y-8 pointer-events-auto group-hover:pointer-events-none">
               
               {/* Price Row */}
               <div className="flex items-center gap-2">
-                <span className="text-[32px] font-black text-[#FF4FA3] tracking-tighter leading-none">
+                <span className="text-[30px] font-black text-[#DFB15B] tracking-tighter leading-none">
                   ₹{product.price}
                 </span>
-                <span className="text-[15px] text-slate-400 line-through font-semibold leading-none">
+                <span className="text-[14px] text-white/50 line-through font-semibold leading-none">
                   ₹{oldPrice}
                 </span>
-                <span className="bg-emerald-50 text-emerald-600 border border-emerald-100 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider leading-none">
+                <span className="bg-[#DFB15B]/20 text-[#DFB15B] border border-[#DFB15B]/40 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider leading-none">
                   20% OFF
                 </span>
               </div>
@@ -262,7 +262,7 @@ export function ProductCard({ product, onEdit }: { product: Product; onEdit?: ()
                   { icon: '🌙', label: 'Midnight' },
                   { icon: '🥚', label: 'Eggless' }
                 ].map((pill, idx) => (
-                  <span key={idx} className="bg-slate-50 border border-slate-100 shadow-sm px-2.5 py-1 rounded-full text-[11px] font-extrabold text-slate-600 flex items-center gap-1 shrink-0">
+                  <span key={idx} className="bg-white/10 border border-white/20 shadow-sm px-2.5 py-1 rounded-full text-[11px] font-extrabold text-amber-200 flex items-center gap-1 shrink-0">
                     <span>{pill.icon}</span>
                     <span>{pill.label}</span>
                   </span>
@@ -280,9 +280,9 @@ export function ProductCard({ product, onEdit }: { product: Product; onEdit?: ()
                   playSlidePop();
                   openDirectWeightSelector('add_to_cart');
                 }}
-                className="h-[58px] w-full rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-extrabold text-[14px] uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-pink-500/20 hover:shadow-[0_8px_25px_rgba(236,72,153,0.4)] hover:scale-[1.02] active:scale-95 transition-all duration-200"
+                className="h-[58px] w-full rounded-full bg-gradient-to-r from-[#DFB15B] to-[#F3C87A] text-[#0F0503] font-black text-[14px] uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg hover:scale-[1.02] active:scale-95 transition-all duration-200 cursor-pointer"
               >
-                <ShoppingCart className="w-4 h-4" />
+                <ShoppingCart className="w-4 h-4 text-[#0F0503]" />
                 Add to Cart
               </button>
               
@@ -293,7 +293,7 @@ export function ProductCard({ product, onEdit }: { product: Product; onEdit?: ()
                   playSlidePop();
                   openDirectWeightSelector('buy_now');
                 }}
-                className="h-[44px] w-full rounded-full bg-white border-2 border-slate-200 hover:border-[#FF4FA3] text-slate-700 hover:text-[#FF4FA3] font-extrabold text-[12px] uppercase tracking-wider transition-all duration-200"
+                className="h-[44px] w-full rounded-full bg-white/15 hover:bg-white/25 border border-white/30 text-white font-black text-[12px] uppercase tracking-wider transition-all duration-200 cursor-pointer"
               >
                 Buy Now
               </button>

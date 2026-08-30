@@ -52,6 +52,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 import { toast } from 'sonner';
 import { playSuccessChime, playBtnTap, playSlidePop } from '../lib/sound';
+import { useTheme, THEME_PRESETS } from '../lib/theme';
 
 // ---------------------------------------------------------
 // TYPING PLACEHOLDER ANIMATION FOR SEARCH BAR
@@ -77,6 +78,8 @@ export function Header() {
   const cartTotal = useCart((state) => state.getTotal());
 
   // Component UI States
+  const { activeTheme, setTheme, setGlobalTheme } = useTheme();
+  const [themeDropdownOpen, setThemeDropdownOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -298,9 +301,9 @@ export function Header() {
   return (
     <>
       {/* =========================================================
-          DESKTOP HEADER (Apple, Stripe & Tesla design language)
+          DESKTOP HEADER (Deep Slate, Champagne Gold & Rich Cream Luxury Theme)
           ========================================================= */}
-      <header className="sticky top-0 z-[80] w-full bg-white/70 backdrop-blur-[24px] border-b border-white/20 shadow-[0_10px_40px_rgba(0,0,0,0.06)] h-[88px] transition-all duration-300">
+      <header className="sticky top-0 z-[80] w-full bg-[#10141C]/85 backdrop-blur-[24px] border-b border-[#DFB15B]/20 shadow-[0_10px_40px_rgba(0,0,0,0.3)] h-[88px] transition-all duration-300">
         <div className="max-w-[1720px] mx-auto h-full px-4 md:px-8 xl:px-12 2xl:px-16 flex items-center justify-between relative">
           
           {/* 1. BRAND LOGO (Left) */}
@@ -309,33 +312,33 @@ export function Header() {
             onClick={triggerBtnSound}
             className="flex items-center gap-2.5 group select-none shrink-0"
           >
-            {/* Gradient Pink-Purple Icon */}
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-pink-500 via-rose-500 to-purple-600 flex items-center justify-center shadow-[0_8px_20px_rgba(236,72,153,0.3)] group-hover:scale-105 group-hover:rotate-3 group-hover:shadow-[0_10px_25px_rgba(236,72,153,0.45)] transition-all duration-300">
-              <Sparkles className="w-5.5 h-5.5 text-white fill-white/10" />
+            {/* Champagne Gold Icon */}
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#DFB15B] via-[#F3D389] to-[#C99738] flex items-center justify-center shadow-[0_8px_20px_rgba(223,177,91,0.25)] group-hover:scale-105 group-hover:rotate-3 group-hover:shadow-[0_10px_25px_rgba(223,177,91,0.4)] transition-all duration-300">
+              <Sparkles className="w-5.5 h-5.5 text-[#10141C] fill-[#10141C]/20" />
             </div>
             <div className="flex flex-col text-left">
-              <span className="text-[24px] font-black tracking-tight leading-none text-slate-900 group-hover:text-pink-600 transition-colors duration-200">
-                Cake<span className="bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">Urban</span>
+              <span className="text-[24px] font-black tracking-tight leading-none text-[#FFFDFB] group-hover:text-[#DFB15B] transition-colors duration-200">
+                Cake<span className="bg-gradient-to-r from-[#DFB15B] to-[#F3D389] bg-clip-text text-transparent">Urban</span>
               </span>
-              <span className="text-[9px] font-bold tracking-[0.22em] uppercase text-slate-400 mt-1">
+              <span className="text-[9px] font-bold tracking-[0.22em] uppercase text-[#DFB15B]/70 mt-1">
                 Artisan Confectionery
               </span>
             </div>
           </Link>
 
-          {/* 2. NAVIGATION LINKS (Center - Perfect ratio & wording to match screenshot) */}
+          {/* 2. NAVIGATION LINKS (Center - Rich Cream Text with Champagne Gold Accents) */}
           <nav className="hidden lg:flex items-center gap-[24px] xl:gap-[32px] h-full z-25">
             {/* Home link */}
             <div className="relative h-full flex items-center">
               <Link 
                 to="/" 
                 onClick={triggerBtnSound}
-                className={`text-[15px] font-medium transition-colors duration-250 py-6 ${location.pathname === '/' ? 'text-pink-600 font-semibold' : 'text-slate-600 hover:text-pink-600'}`}
+                className={`text-[15px] font-medium transition-colors duration-250 py-6 ${location.pathname === '/' ? 'text-[#DFB15B] font-semibold' : 'text-[#FFFDFB]/80 hover:text-[#DFB15B]'}`}
               >
                 Home
               </Link>
               {location.pathname === '/' && (
-                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-pink-500 rounded-full" />
+                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#DFB15B] rounded-full shadow-[0_0_10px_rgba(223,177,91,0.6)]" />
               )}
             </div>
 
@@ -345,11 +348,11 @@ export function Header() {
               onMouseEnter={() => { setMegaMenuOpen(true); triggerSlideSound(); }}
               onMouseLeave={() => setMegaMenuOpen(false)}
             >
-              <button className={`text-[15px] font-medium transition-colors duration-250 flex items-center gap-1 py-6 ${location.pathname.startsWith('/shop') || megaMenuOpen ? 'text-pink-600' : 'text-slate-600 hover:text-pink-600'}`}>
+              <button className={`text-[15px] font-medium transition-colors duration-250 flex items-center gap-1 py-6 ${location.pathname.startsWith('/shop') || megaMenuOpen ? 'text-[#DFB15B]' : 'text-[#FFFDFB]/80 hover:text-[#DFB15B]'}`}>
                 Cakes
-                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${megaMenuOpen ? 'rotate-180 text-pink-500' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-[#DFB15B]/70 transition-transform duration-300 ${megaMenuOpen ? 'rotate-180 text-[#DFB15B]' : ''}`} />
               </button>
-              <div className={`absolute bottom-0 left-0 right-0 h-[3px] bg-pink-500 rounded-full transition-all duration-300 origin-left ${megaMenuOpen ? 'scale-x-100' : 'scale-x-0'}`} />
+              <div className={`absolute bottom-0 left-0 right-0 h-[3px] bg-[#DFB15B] rounded-full shadow-[0_0_10px_rgba(223,177,91,0.6)] transition-all duration-300 origin-left ${megaMenuOpen ? 'scale-x-100' : 'scale-x-0'}`} />
             </div>
 
             {/* Occasions, Custom Cakes, Combos, About Us */}
@@ -365,15 +368,15 @@ export function Header() {
                   <Link 
                     to={link.href}
                     onClick={triggerBtnSound}
-                    className={`text-[15px] font-medium transition-colors duration-250 py-6 ${isActive ? 'text-pink-600 font-semibold' : 'text-slate-600 hover:text-pink-600'}`}
+                    className={`text-[15px] font-medium transition-colors duration-250 py-6 ${isActive ? 'text-[#DFB15B] font-semibold' : 'text-[#FFFDFB]/80 hover:text-[#DFB15B]'}`}
                   >
                     {link.label}
                   </Link>
                   {isActive && (
-                    <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-pink-500 rounded-full" />
+                    <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#DFB15B] rounded-full shadow-[0_0_10px_rgba(223,177,91,0.6)]" />
                   )}
                   {!isActive && (
-                    <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-pink-500 rounded-full scale-x-0 hover:scale-x-100 transition-transform duration-300 origin-left" />
+                    <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#DFB15B] rounded-full scale-x-0 hover:scale-x-100 transition-transform duration-300 origin-left shadow-[0_0_10px_rgba(223,177,91,0.6)]" />
                   )}
                 </div>
               );
@@ -385,8 +388,8 @@ export function Header() {
             
             {/* Live Search Capsule */}
             <div className="relative hidden xl:block">
-              <div className={`flex items-center bg-slate-100/80 border transition-all duration-300 rounded-full px-4 h-12 w-[340px] ${searchFocused ? 'w-[420px] bg-white border-pink-500/50 shadow-lg shadow-pink-500/5' : 'border-transparent'}`}>
-                <Search className="w-5 h-5 text-slate-400 shrink-0" />
+              <div className={`flex items-center bg-[#181F2B]/90 border transition-all duration-300 rounded-full px-4 h-12 w-[340px] ${searchFocused ? 'w-[420px] bg-[#1E2636] border-[#DFB15B]/60 shadow-[0_0_20px_rgba(223,177,91,0.15)]' : 'border-[#DFB15B]/20'}`}>
+                <Search className="w-5 h-5 text-[#DFB15B] shrink-0" />
                 <input 
                   type="text" 
                   placeholder={typingPlaceholder}
@@ -394,21 +397,21 @@ export function Header() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => { setSearchFocused(true); triggerSlideSound(); }}
                   onBlur={() => setTimeout(() => setSearchFocused(false), 250)}
-                  className="w-full bg-transparent border-none text-[14px] text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-0 px-2.5 h-full"
+                  className="w-full bg-transparent border-none text-[14px] text-[#FFFDFB] placeholder-[#FFFDFB]/40 focus:outline-none focus:ring-0 px-2.5 h-full"
                 />
                 
                 {/* Mic & Filter Action Icons */}
                 <div className="flex items-center gap-1.5 shrink-0">
                   <button 
                     onClick={handleVoiceSearch}
-                    className={`p-1.5 rounded-full hover:bg-slate-200 text-slate-500 transition-colors ${voiceActive ? 'text-pink-500 animate-pulse bg-pink-50' : ''}`}
+                    className={`p-1.5 rounded-full hover:bg-white/10 text-[#DFB15B] transition-colors ${voiceActive ? 'text-[#DFB15B] animate-pulse bg-[#DFB15B]/20' : ''}`}
                     title="Voice Search"
                   >
                     <Mic className="w-4 h-4" />
                   </button>
                   <button 
                     onClick={() => navigate('/shop')}
-                    className="p-1.5 rounded-full hover:bg-slate-200 text-slate-500 transition-colors"
+                    className="p-1.5 rounded-full hover:bg-white/10 text-[#DFB15B] transition-colors"
                     title="Filters"
                   >
                     <SlidersHorizontal className="w-4 h-4" />
@@ -424,43 +427,43 @@ export function Header() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 15 }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="absolute top-14 right-0 w-[420px] bg-white/95 backdrop-blur-xl border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.12)] rounded-3xl p-5 z-50 text-left space-y-5"
+                    className="absolute top-14 right-0 w-[420px] bg-[#141923]/98 backdrop-blur-xl border border-[#DFB15B]/25 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-3xl p-5 z-50 text-left space-y-5"
                   >
                     {/* Live Results */}
                     {searchQuery.trim() ? (
                       <div className="space-y-3">
-                        <span className="text-[10px] font-black text-pink-500 uppercase tracking-widest block">MATCHING CAKES</span>
+                        <span className="text-[10px] font-black text-[#DFB15B] uppercase tracking-widest block">MATCHING CAKES</span>
                         {searchResults.length > 0 ? (
                           <div className="space-y-2 max-h-[250px] overflow-y-auto">
                             {searchResults.map((p) => (
                               <Link 
                                 key={p.id} 
                                 to={`/product/${p.id}`}
-                                className="flex items-center gap-3 p-2 rounded-2xl hover:bg-pink-50/50 transition-colors group"
+                                className="flex items-center gap-3 p-2 rounded-2xl hover:bg-[#DFB15B]/10 transition-colors group"
                               >
                                 <img src={p.images?.[0]} className="w-12 h-12 rounded-xl object-cover" />
                                 <div>
-                                  <h4 className="text-xs font-black text-slate-800 group-hover:text-pink-600">{p.name}</h4>
-                                  <p className="text-[10px] font-bold text-slate-400">₹{p.price}</p>
+                                  <h4 className="text-xs font-black text-[#FFFDFB] group-hover:text-[#DFB15B]">{p.name}</h4>
+                                  <p className="text-[10px] font-bold text-[#DFB15B]">₹{p.price}</p>
                                 </div>
                               </Link>
                             ))}
                           </div>
                         ) : (
-                          <p className="text-xs text-slate-400 font-medium italic">No direct matches. Try looking for "Chocolate" or "Velvet"</p>
+                          <p className="text-xs text-[#FFFDFB]/50 font-medium italic">No direct matches. Try looking for "Chocolate" or "Velvet"</p>
                         )}
                       </div>
                     ) : (
                       <>
                         {/* Recent Searches */}
                         <div className="space-y-2">
-                          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">RECENT SEARCHES</span>
+                          <span className="text-[10px] font-black text-[#DFB15B]/70 uppercase tracking-widest block">RECENT SEARCHES</span>
                           <div className="flex flex-wrap gap-2">
                             {recentSearches.map((tag) => (
                               <button 
                                 key={tag} 
                                 onClick={() => setSearchQuery(tag)}
-                                className="bg-slate-100 hover:bg-pink-50 hover:text-pink-600 text-slate-600 font-semibold text-xs px-3.5 py-1.5 rounded-full transition-colors flex items-center gap-1"
+                                className="bg-[#1C2330] hover:bg-[#DFB15B]/20 hover:text-[#DFB15B] text-[#FFFDFB]/80 font-semibold text-xs px-3.5 py-1.5 rounded-full transition-colors flex items-center gap-1 border border-white/5"
                               >
                                 {tag}
                               </button>
@@ -470,15 +473,15 @@ export function Header() {
 
                         {/* Popular Searches */}
                         <div className="space-y-2">
-                          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">TRENDING CAKES</span>
+                          <span className="text-[10px] font-black text-[#DFB15B]/70 uppercase tracking-widest block">TRENDING CAKES</span>
                           <div className="grid grid-cols-2 gap-2 text-xs">
                             {["Bespoke Wedding Cakes", "Pinata Hammer Cakes", "Fresh Fruit Gateaux", "Minimal Bento Desserts"].map((item) => (
                               <button 
                                 key={item} 
                                 onClick={() => setSearchQuery(item.split(' ')[0])}
-                                className="text-left py-1.5 px-3 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-slate-900 font-medium transition-colors flex items-center gap-1.5"
+                                className="text-left py-1.5 px-3 rounded-xl hover:bg-[#DFB15B]/10 text-[#FFFDFB]/80 hover:text-[#DFB15B] font-medium transition-colors flex items-center gap-1.5"
                               >
-                                <Flame className="w-3.5 h-3.5 text-orange-500 fill-orange-500/20" />
+                                <Flame className="w-3.5 h-3.5 text-[#DFB15B] fill-[#DFB15B]/20" />
                                 {item}
                               </button>
                             ))}
@@ -491,25 +494,100 @@ export function Header() {
               </AnimatePresence>
             </div>
 
-            {/* ACTION ICONS (48x48 Glass Circles) */}
+            {/* ACTION ICONS (48x48 Glass Circles in Slate & Champagne Gold) */}
             
-            {/* Search Trigger for smaller screens (not desktop search capsule) */}
+            {/* Search Trigger for smaller screens */}
             <button 
               onClick={() => { setSearchFocused(!searchFocused); triggerSlideSound(); }}
-              className="xl:hidden w-12 h-12 rounded-full bg-slate-50 border border-slate-100/50 flex items-center justify-center text-slate-600 hover:bg-pink-50 hover:text-pink-600 hover:border-pink-200 transition-all shadow-sm hover:scale-105"
+              className="xl:hidden w-12 h-12 rounded-full bg-[#181F2B] border border-[#DFB15B]/20 flex items-center justify-center text-[#DFB15B] hover:bg-[#DFB15B]/20 transition-all shadow-sm hover:scale-105"
             >
               <Search className="w-5 h-5" />
             </button>
 
+            {/* 0. Luxury Theme Switcher trigger */}
+            <div className="relative">
+              <button 
+                onClick={() => { setThemeDropdownOpen(!themeDropdownOpen); triggerSlideSound(); }}
+                className="w-12 h-12 rounded-full bg-[#181F2B] border border-[#DFB15B]/20 flex items-center justify-center text-[#DFB15B] hover:bg-[#DFB15B]/20 transition-all shadow-sm relative hover:scale-105"
+                title="Change Luxury Theme"
+              >
+                <Palette className="w-5 h-5" />
+                <span className="absolute -bottom-0.5 right-1 text-[10px]">{activeTheme.icon}</span>
+              </button>
+
+              <AnimatePresence>
+                {themeDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                    className="absolute right-0 mt-3 w-80 bg-[#141923]/98 backdrop-blur-xl border border-[#DFB15B]/25 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-3xl p-4 z-50 text-left space-y-3"
+                  >
+                    <div className="flex justify-between items-center border-b border-white/10 pb-2.5">
+                      <div>
+                        <span className="text-xs font-black text-[#FFFDFB] uppercase tracking-wider block">LUXURY THEMES</span>
+                        <span className="text-[10px] text-[#DFB15B] font-medium">5 Curated Color Palettes</span>
+                      </div>
+                      <button 
+                        onClick={() => setThemeDropdownOpen(false)}
+                        className="text-white/40 hover:text-white text-xs"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                    
+                    <div className="space-y-2 max-h-[340px] overflow-y-auto pr-1">
+                      {THEME_PRESETS.map((preset) => {
+                        const isCurrent = activeTheme.id === preset.id;
+                        return (
+                          <button
+                            key={preset.id}
+                            onClick={() => {
+                              setTheme(preset.id);
+                              playBtnTap();
+                              toast.success(`Theme switched to: ${preset.name}!`, { icon: preset.icon });
+                              setThemeDropdownOpen(false);
+                            }}
+                            className={`w-full p-3 rounded-2xl border transition-all text-left flex items-center justify-between gap-3 cursor-pointer ${
+                              isCurrent
+                                ? 'border-[#DFB15B] bg-[#DFB15B]/15 shadow-sm'
+                                : 'border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2.5">
+                              <span className="text-xl">{preset.icon}</span>
+                              <div>
+                                <div className="text-xs font-bold text-[#FFFDFB] flex items-center gap-1.5">
+                                  {preset.name}
+                                  {isCurrent && <span className="text-[8px] bg-[#DFB15B] text-[#10141C] font-black px-1.5 py-0.2 rounded-full uppercase">Active</span>}
+                                </div>
+                                <span className="text-[10px] text-white/50 block line-clamp-1">{preset.description}</span>
+                              </div>
+                            </div>
+                            {/* Palette preview dots */}
+                            <div className="flex items-center gap-1 shrink-0">
+                              <span className="w-3.5 h-3.5 rounded-full border border-white/20" style={{ backgroundColor: preset.bg }} />
+                              <span className="w-3.5 h-3.5 rounded-full border border-white/20" style={{ backgroundColor: preset.accent }} />
+                              <span className="w-3.5 h-3.5 rounded-full border border-white/20" style={{ backgroundColor: preset.text }} />
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {/* 1. Wishlist trigger */}
             <button 
               onClick={() => { setWishlistOpen(true); triggerSlideSound(); }}
-              className="w-12 h-12 rounded-full bg-slate-50 border border-slate-100/50 flex items-center justify-center text-slate-600 hover:bg-pink-50 hover:text-pink-600 hover:border-pink-200 transition-all shadow-sm relative hover:scale-105"
+              className="w-12 h-12 rounded-full bg-[#181F2B] border border-[#DFB15B]/20 flex items-center justify-center text-[#DFB15B] hover:bg-[#DFB15B]/20 transition-all shadow-sm relative hover:scale-105"
               title="Saved Cakes"
             >
               <Heart className="w-5 h-5" />
               {wishlistItems.length > 0 && (
-                <span className="absolute top-1 right-1 bg-pink-500 text-white text-[9px] font-black rounded-full h-4.5 w-4.5 flex items-center justify-center border-2 border-white animate-scale-up">
+                <span className="absolute top-1 right-1 bg-[#DFB15B] text-[#10141C] text-[9px] font-black rounded-full h-4.5 w-4.5 flex items-center justify-center border-2 border-[#10141C] animate-scale-up">
                   {wishlistItems.length}
                 </span>
               )}
@@ -519,11 +597,11 @@ export function Header() {
             <div className="relative">
               <button 
                 onClick={() => { setNotificationsOpen(!notificationsOpen); triggerSlideSound(); }}
-                className="w-12 h-12 rounded-full bg-slate-50 border border-slate-100/50 flex items-center justify-center text-slate-600 hover:bg-pink-50 hover:text-pink-600 hover:border-pink-200 transition-all shadow-sm relative hover:scale-105"
+                className="w-12 h-12 rounded-full bg-[#181F2B] border border-[#DFB15B]/20 flex items-center justify-center text-[#DFB15B] hover:bg-[#DFB15B]/20 transition-all shadow-sm relative hover:scale-105"
                 title="Notifications"
               >
                 <Bell className="w-5 h-5" />
-                <span className="absolute top-1.5 right-1.5 bg-purple-500 text-white text-[8px] font-black rounded-full h-3 w-3 flex items-center justify-center" />
+                <span className="absolute top-1.5 right-1.5 bg-[#DFB15B] text-[#10141C] text-[8px] font-black rounded-full h-3 w-3 flex items-center justify-center" />
               </button>
 
               <AnimatePresence>
@@ -532,29 +610,29 @@ export function Header() {
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 15 }}
-                    className="absolute right-0 mt-3 w-80 bg-white/95 backdrop-blur-xl border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.12)] rounded-3xl p-5 z-50 text-left space-y-4"
+                    className="absolute right-0 mt-3 w-80 bg-[#141923]/98 backdrop-blur-xl border border-[#DFB15B]/25 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-3xl p-5 z-50 text-left space-y-4"
                   >
-                    <div className="flex justify-between items-center border-b border-slate-100 pb-2">
-                      <span className="text-xs font-black text-slate-800 uppercase tracking-wider">NOTIFICATIONS</span>
-                      <span className="text-[10px] font-bold text-pink-500">2 New</span>
+                    <div className="flex justify-between items-center border-b border-white/10 pb-2">
+                      <span className="text-xs font-black text-[#FFFDFB] uppercase tracking-wider">NOTIFICATIONS</span>
+                      <span className="text-[10px] font-bold text-[#DFB15B]">2 New</span>
                     </div>
                     <div className="space-y-3">
                       <div className="flex gap-2.5 text-xs">
-                        <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 shrink-0 mt-0.5">
+                        <div className="w-8 h-8 rounded-full bg-[#DFB15B]/20 flex items-center justify-center text-[#DFB15B] shrink-0 mt-0.5">
                           <Gift className="w-4 h-4" />
                         </div>
                         <div>
-                          <p className="font-extrabold text-slate-800">Your Birthday Code Active!</p>
-                          <p className="text-[10.5px] text-slate-500 mt-0.5 font-medium">Use code <strong>BIRTHDAY20</strong> to claim 20% off your custom cake.</p>
+                          <p className="font-extrabold text-[#FFFDFB]">Your Birthday Code Active!</p>
+                          <p className="text-[10.5px] text-[#FFFDFB]/60 mt-0.5 font-medium">Use code <strong className="text-[#DFB15B]">BIRTHDAY20</strong> to claim 20% off your custom cake.</p>
                         </div>
                       </div>
                       <div className="flex gap-2.5 text-xs">
-                        <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 shrink-0 mt-0.5">
+                        <div className="w-8 h-8 rounded-full bg-[#DFB15B]/20 flex items-center justify-center text-[#DFB15B] shrink-0 mt-0.5">
                           <Truck className="w-4 h-4" />
                         </div>
                         <div>
-                          <p className="font-extrabold text-slate-800">Premium Delivery Dispatch</p>
-                          <p className="text-[10.5px] text-slate-500 mt-0.5 font-medium">Standard orders now ship in climate-locked premium boxes across NCR.</p>
+                          <p className="font-extrabold text-[#FFFDFB]">Premium Delivery Dispatch</p>
+                          <p className="text-[10.5px] text-[#FFFDFB]/60 mt-0.5 font-medium">Standard orders now ship in climate-locked premium boxes across NCR.</p>
                         </div>
                       </div>
                     </div>
@@ -563,14 +641,14 @@ export function Header() {
               </AnimatePresence>
             </div>
 
-            {/* 3. Cart Trigger (Right Drawer) */}
+            {/* 3. Cart Trigger (Champagne Gold Capsule) */}
             <button 
               onClick={() => { setCartDrawerOpen(true); triggerSlideSound(); }}
-              className="w-12 h-12 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center text-white hover:brightness-110 transition-all shadow-[0_5px_15px_rgba(236,72,153,0.3)] relative hover:scale-105"
+              className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#DFB15B] to-[#C99738] flex items-center justify-center text-[#10141C] hover:brightness-110 transition-all shadow-[0_5px_15px_rgba(223,177,91,0.35)] relative hover:scale-105 cursor-pointer"
             >
-              <ShoppingCart className="w-5 h-5" />
+              <ShoppingCart className="w-5 h-5 stroke-[2.5]" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-white text-pink-600 text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border border-pink-100 shadow-md">
+                <span className="absolute -top-1 -right-1 bg-[#10141C] text-[#DFB15B] text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border border-[#DFB15B] shadow-md">
                   {cartCount}
                 </span>
               )}
@@ -580,7 +658,7 @@ export function Header() {
             <div className="relative">
               <button 
                 onClick={() => { setProfileDropdownOpen(!profileDropdownOpen); triggerSlideSound(); }}
-                className="w-12 h-12 rounded-full overflow-hidden border border-slate-100 hover:border-pink-300 shadow-sm hover:scale-105 transition-all flex items-center justify-center bg-white"
+                className="w-12 h-12 rounded-full overflow-hidden border border-[#DFB15B]/25 hover:border-[#DFB15B] shadow-sm hover:scale-105 transition-all flex items-center justify-center bg-[#181F2B]"
               >
                 {user ? (
                   <img 
@@ -589,7 +667,7 @@ export function Header() {
                     alt="Profile"
                   />
                 ) : (
-                  <User className="w-5 h-5 text-slate-600 hover:text-pink-600 transition-colors" />
+                  <User className="w-5 h-5 text-[#DFB15B] hover:text-[#FFFDFB] transition-colors" />
                 )}
               </button>
 
@@ -601,17 +679,17 @@ export function Header() {
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 15 }}
-                      className="absolute right-0 mt-3 w-64 bg-white/95 backdrop-blur-xl border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.12)] rounded-3xl p-2 z-50 text-left font-sans"
+                      className="absolute right-0 mt-3 w-64 bg-[#141923]/98 backdrop-blur-xl border border-[#DFB15B]/25 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-3xl p-2 z-50 text-left font-sans"
                     >
-                      <div className="p-4 border-b border-slate-100 flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 to-purple-600 text-white font-black flex items-center justify-center text-sm shadow">
+                      <div className="p-4 border-b border-white/10 flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#DFB15B] to-[#C99738] text-[#10141C] font-black flex items-center justify-center text-sm shadow">
                           {profile?.displayName ? profile.displayName.charAt(0).toUpperCase() : "U"}
                         </div>
                         <div className="min-w-0">
-                          <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider truncate">
+                          <h4 className="text-xs font-black text-[#FFFDFB] uppercase tracking-wider truncate">
                             {profile?.displayName || "Verified User"}
                           </h4>
-                          <p className="text-[10px] text-slate-400 truncate">{user?.email}</p>
+                          <p className="text-[10px] text-[#DFB15B]/80 truncate">{user?.email}</p>
                         </div>
                       </div>
 
@@ -628,9 +706,9 @@ export function Header() {
                             key={item.label}
                             to={item.href}
                             onClick={() => setProfileDropdownOpen(false)}
-                            className="flex items-center gap-3 px-3.5 py-2.5 text-xs font-black uppercase tracking-widest text-slate-600 hover:bg-pink-50/50 hover:text-pink-600 rounded-2xl transition-all"
+                            className="flex items-center gap-3 px-3.5 py-2.5 text-xs font-black uppercase tracking-widest text-[#FFFDFB]/80 hover:bg-[#DFB15B]/15 hover:text-[#DFB15B] rounded-2xl transition-all"
                           >
-                            <item.icon className="w-4 h-4" />
+                            <item.icon className="w-4 h-4 text-[#DFB15B]" />
                             <span>{item.label}</span>
                           </Link>
                         ))}
@@ -639,14 +717,14 @@ export function Header() {
                           <Link 
                             to="/admin"
                             onClick={() => setProfileDropdownOpen(false)}
-                            className="flex items-center gap-3 px-3.5 py-2.5 text-xs font-black uppercase tracking-widest text-emerald-600 hover:bg-emerald-50 rounded-2xl transition-all"
+                            className="flex items-center gap-3 px-3.5 py-2.5 text-xs font-black uppercase tracking-widest text-[#DFB15B] hover:bg-[#DFB15B]/20 rounded-2xl transition-all"
                           >
                             <LayoutDashboard className="w-4 h-4" />
                             <span>Admin Dashboard</span>
                           </Link>
                         )}
 
-                        <div className="h-px bg-slate-100 my-1" />
+                        <div className="h-px bg-white/10 my-1" />
 
                         <button 
                           onClick={async () => {

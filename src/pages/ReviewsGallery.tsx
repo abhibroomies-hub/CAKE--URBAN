@@ -411,7 +411,7 @@ export default function ReviewsGallery() {
   };
 
   return (
-    <div className="min-h-screen bg-[#2D150F] text-white">
+    <div className="min-h-screen bg-transparent text-[#FFFDFB]">
       <SEO 
         title="Customer Reviews & Photo Gallery | Cake Urban" 
         description="Browse real photo reviews from our sweet customers across Faridabad, Noida, Gurgaon, and Delhi NCR. Order eggless customized designer cakes today."

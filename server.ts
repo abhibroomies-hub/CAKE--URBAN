@@ -1118,19 +1118,32 @@ async function startServer() {
     { name: 'Premium Butter Croissants Pair', slug: 'butter-croissants' }
   ];
 
-  // Dynamically serve programmatic XML sitemaps
+  // Dynamically serve programmatic XML sitemaps (Clean Indexable Main Hubs Only)
   app.get("/sitemap_core.xml", (req, res) => {
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
     // Core static pages
-    const corePages = ["", "shop", "custom-order", "about", "contact", "blog", "legal"];
+    const corePages = ["", "shop", "custom-order", "about", "contact", "blog", "legal", "seo-directory", "corporate-catering", "reviews-gallery", "rewards-loyalty", "ai-designer"];
     corePages.forEach(p => {
       xml += `  <url>\n    <loc>https://www.cakeurban.com/${p}</loc>\n    <lastmod>2026-07-06</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>\n`;
     });
 
     // Regional hubs
-    const hubs = ["bakery-in-delhi", "bakery-in-noida", "bakery-in-faridabad", "bakery-in-gurgaon", "bakery-in-ghaziabad"];
+    const hubs = [
+      "bakery-in-delhi", 
+      "bakery-in-noida", 
+      "bakery-in-faridabad", 
+      "bakery-in-gurgaon", 
+      "bakery-in-ghaziabad",
+      "midnight-cake-delivery-faridabad",
+      "eggless-cake-delivery-faridabad",
+      "pinata-cakes-faridabad",
+      "photo-cakes-faridabad",
+      "greater-faridabad-cake-delivery",
+      "nit-faridabad-cake-delivery",
+      "bento-mini-cakes-faridabad"
+    ];
     hubs.forEach(h => {
       xml += `  <url>\n    <loc>https://www.cakeurban.com/${h}</loc>\n    <lastmod>2026-07-06</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.95</priority>\n  </url>\n`;
     });
@@ -1141,29 +1154,6 @@ async function startServer() {
       xml += `  <url>\n    <loc>https://www.cakeurban.com/${s}</loc>\n    <lastmod>2026-07-06</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.90</priority>\n  </url>\n`;
     });
 
-    // Pattern 2: [Flavor] [Occasion] Cake Shop in [City] (630 URLs)
-    for (const city of CITIES) {
-      for (const flav of FLAVORS) {
-        for (const occ of OCCASIONS) {
-          xml += `  <url>\n    <loc>https://www.cakeurban.com/${flav.slug}-${occ.slug}-cake-in-${city.toLowerCase()}</loc>\n    <lastmod>2026-07-06</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.80</priority>\n  </url>\n`;
-        }
-      }
-    }
-
-    // Pattern 8: [Hamper Type] Gifting in [City] (35 URLs)
-    for (const city of CITIES) {
-      for (const hamper of HAMPERS) {
-        xml += `  <url>\n    <loc>https://www.cakeurban.com/${hamper.slug}-gifting-hamper-in-${city.toLowerCase()}</loc>\n    <lastmod>2026-07-06</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.80</priority>\n  </url>\n`;
-      }
-    }
-
-    // Pattern 9: [Bakery Item] Shop in [City] (40 URLs)
-    for (const city of CITIES) {
-      for (const item of BAKERY_ITEMS) {
-        xml += `  <url>\n    <loc>https://www.cakeurban.com/artisanal-${item.slug}-bakery-in-${city.toLowerCase()}</loc>\n    <lastmod>2026-07-06</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.80</priority>\n  </url>\n`;
-      }
-    }
-
     xml += `</urlset>`;
     res.send(xml);
   });
@@ -1172,74 +1162,28 @@ async function startServer() {
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
-    // Static targeted sector pages
-    const staticSectors = [
-      "cake-delivery-faridabad-sector-31",
-      "cake-delivery-faridabad-sector-15",
-      "best-cake-in-greenfield-faridabad",
-      "cake-delivery-faridabad-sector-14",
-      "cake-delivery-faridabad-sector-16",
-      "cake-delivery-faridabad-sector-21",
-      "cake-delivery-faridabad-sector-37",
-      "cake-delivery-faridabad-sector-85",
-      "cake-delivery-faridabad-neharpar",
-      "cake-delivery-noida-sector-62",
-      "cake-delivery-noida-sector-18",
-      "cake-delivery-noida-sector-15",
-      "cake-delivery-noida-sector-50",
-      "cake-delivery-noida-sector-137",
-      "cake-delivery-noida-sector-150",
-      "cake-delivery-noida-extension",
-      "cake-delivery-gurgaon-dlf",
-      "cake-delivery-gurgaon-golf-course-road",
-      "cake-delivery-gurgaon-golf-course-ext",
-      "cake-delivery-gurgaon-sohna-road",
-      "cake-delivery-gurgaon-cyber-city",
-      "cake-delivery-gurgaon-sushant-lok",
-      "cake-delivery-delhi-dwarka",
-      "cake-delivery-delhi-south-delhi",
-      "cake-delivery-delhi-saket",
-      "cake-delivery-delhi-greater-kailash",
-      "cake-delivery-delhi-janakpuri",
-      "cake-delivery-delhi-punjabi-bagh",
-      "cake-delivery-delhi-rohini",
-      "cake-delivery-delhi-pitampura"
+    // Curated Main Hubs that are index, follow
+    const curatedMainHubs = [
+      "midnight-cake-delivery-faridabad",
+      "eggless-cake-delivery-faridabad",
+      "pinata-cakes-faridabad",
+      "photo-cakes-faridabad",
+      "greater-faridabad-cake-delivery",
+      "nit-faridabad-cake-delivery",
+      "bento-mini-cakes-faridabad",
+      "cake-delivery-in-faridabad",
+      "cake-delivery-in-delhi",
+      "cake-delivery-in-noida",
+      "cake-delivery-in-gurgaon",
+      "cake-delivery-in-ghaziabad",
+      "best-cake-in-faridabad",
+      "cake-shop-in-faridabad",
+      "eggless-cake-in-faridabad",
+      "birthday-cake-in-faridabad"
     ];
-    staticSectors.forEach(s => {
+    curatedMainHubs.forEach(s => {
       xml += `  <url>\n    <loc>https://www.cakeurban.com/${s}</loc>\n    <lastmod>2026-07-06</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.90</priority>\n  </url>\n`;
     });
-
-    // Pattern 3: [Theme] Cake Delivery in [Locality] (575 URLs)
-    for (const loc of LOCALITIES) {
-      for (const theme of THEMES) {
-        xml += `  <url>\n    <loc>https://www.cakeurban.com/${theme.slug}-cake-delivery-in-${loc.slug}</loc>\n    <lastmod>2026-07-06</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.85</priority>\n  </url>\n`;
-      }
-    }
-
-    // Pattern 5: [Occasion] Cake Delivery in [Locality] (225 URLs)
-    for (const loc of LOCALITIES) {
-      for (const occ of OCCASIONS) {
-        xml += `  <url>\n    <loc>https://www.cakeurban.com/${occ.slug}-cake-delivery-in-${loc.slug}</loc>\n    <lastmod>2026-07-06</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.85</priority>\n  </url>\n`;
-      }
-    }
-
-    // Pattern 6: [Hamper Type] [Occasion] Gift Delivery in [Locality] (700 URLs)
-    for (const loc of LOCALITIES) {
-      for (const hamper of HAMPERS) {
-        for (const occ of OCCASIONS.slice(0, 4)) {
-          xml += `  <url>\n    <loc>https://www.cakeurban.com/eggless-${hamper.slug}-${occ.slug}-gift-delivery-in-${loc.slug}</loc>\n    <lastmod>2026-07-06</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.85</priority>\n  </url>\n`;
-        }
-      }
-    }
-
-    // Pattern 7: Artisanal [Bakery Item] Shop in [Locality] (800 URLs)
-    for (const loc of LOCALITIES) {
-      for (const item of BAKERY_ITEMS) {
-        for (const occ of OCCASIONS.slice(0, 4)) {
-          xml += `  <url>\n    <loc>https://www.cakeurban.com/fresh-${item.slug}-${occ.slug}-delivery-in-${loc.slug}</loc>\n    <lastmod>2026-07-06</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.85</priority>\n  </url>\n`;
-        }
-      }
-    }
 
     xml += `</urlset>`;
     res.send(xml);
@@ -1249,7 +1193,7 @@ async function startServer() {
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
-    // Static specialty pages
+    // Static primary specialty pages (Indexable)
     const staticSpecialties = [
       "belgian-chocolate-truffle-cake",
       "lotus-biscoff-cake",
@@ -1278,13 +1222,6 @@ async function startServer() {
       xml += `  <url>\n    <loc>https://www.cakeurban.com/${s}</loc>\n    <lastmod>2026-07-06</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.90</priority>\n  </url>\n`;
     });
 
-    // Pattern 4: [Flavor] Cake in [Locality] (350 URLs)
-    for (const loc of LOCALITIES) {
-      for (const flav of FLAVORS) {
-        xml += `  <url>\n    <loc>https://www.cakeurban.com/${flav.slug}-cake-in-${loc.slug}</loc>\n    <lastmod>2026-07-06</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.85</priority>\n  </url>\n`;
-      }
-    }
-
     xml += `</urlset>`;
     res.send(xml);
   });
@@ -1293,56 +1230,20 @@ async function startServer() {
     res.setHeader("Content-Type", "application/xml; charset=utf-8");
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
-    // Static combinations
+    // Static indexable primary combinations
     const staticCombinations = [
-      "belgian-chocolate-birthday-cake-in-sector-15-faridabad",
-      "belgian-chocolate-birthday-cake-in-sector-31-faridabad",
-      "belgian-chocolate-birthday-cake-in-noida-sector-62",
-      "belgian-chocolate-birthday-cake-in-gurgaon-dlf",
-      "belgian-chocolate-birthday-cake-in-delhi-dwarka",
-      "lotus-biscoff-anniversary-cake-in-sector-62-noida",
-      "lotus-biscoff-anniversary-cake-in-sector-15-faridabad",
-      "lotus-biscoff-anniversary-cake-in-gurgaon-dlf",
-      "lotus-biscoff-anniversary-cake-in-delhi-south-delhi",
-      "chocolate-hazelnut-wedding-cake-in-dlf-gurgaon",
-      "chocolate-hazelnut-wedding-cake-in-noida-extension",
-      "chocolate-hazelnut-wedding-cake-in-greenfield-faridabad",
-      "eggless-red-velvet-engagement-cake-in-dwarka-delhi",
-      "eggless-red-velvet-engagement-cake-in-sector-15-faridabad",
-      "eggless-red-velvet-engagement-cake-in-noida-sector-62",
-      "rasmalai-corporate-event-cake-in-gurgaon-cyber-city",
-      "rasmalai-corporate-event-cake-in-noida-sector-62",
-      "rasmalai-corporate-event-cake-in-delhi-saket",
-      "bento-mini-birthday-cake-in-south-delhi",
-      "bento-mini-birthday-cake-in-sector-15-faridabad",
-      "bento-mini-birthday-cake-in-noida-sector-137",
-      "pinata-hammer-kids-cake-in-greenfield-faridabad",
-      "pinata-hammer-kids-cake-in-noida-sector-150",
-      "pinata-hammer-kids-cake-in-gurgaon-dlf",
-      "edible-photo-anniversary-cake-in-indirapuram-ghaziabad",
-      "edible-photo-anniversary-cake-in-dwarka-delhi",
-      "edible-photo-anniversary-cake-in-sector-31-faridabad",
-      "sugar-free-healthy-birthday-cake-in-sohna-road-gurgaon",
-      "sugar-free-healthy-birthday-cake-in-south-delhi",
-      "sugar-free-healthy-birthday-cake-in-sector-15-faridabad"
+      "belgian-chocolate-birthday-cake-in-faridabad",
+      "lotus-biscoff-anniversary-cake-in-faridabad",
+      "chocolate-hazelnut-wedding-cake-in-faridabad",
+      "eggless-red-velvet-engagement-cake-in-faridabad",
+      "rasmalai-corporate-event-cake-in-faridabad",
+      "bento-mini-birthday-cake-in-faridabad",
+      "pinata-hammer-kids-cake-in-faridabad",
+      "edible-photo-anniversary-cake-in-faridabad"
     ];
     staticCombinations.forEach(s => {
       xml += `  <url>\n    <loc>https://www.cakeurban.com/${s}</loc>\n    <lastmod>2026-07-06</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.85</priority>\n  </url>\n`;
     });
-
-    // Pattern 1: [Flavor] [Theme] [Occasion] Cake Delivery in [Locality] (11,200 combinations)
-    for (const loc of LOCALITIES) {
-      for (let fIdx = 0; fIdx < FLAVORS.length; fIdx++) {
-        const flav = FLAVORS[fIdx];
-        for (let tShift = 0; tShift < 8; tShift++) {
-          const theme = THEMES[(fIdx + tShift) % THEMES.length];
-          for (let oShift = 0; oShift < 4; oShift++) {
-            const occ = OCCASIONS[(fIdx + oShift) % OCCASIONS.length];
-            xml += `  <url>\n    <loc>https://www.cakeurban.com/${flav.slug}-${theme.slug}-${occ.slug}-cake-delivery-in-${loc.slug}</loc>\n    <lastmod>2026-07-06</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.80</priority>\n  </url>\n`;
-          }
-        }
-      }
-    }
 
     xml += `</urlset>`;
     res.send(xml);

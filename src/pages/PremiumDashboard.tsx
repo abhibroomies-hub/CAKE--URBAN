@@ -181,7 +181,7 @@ export default function PremiumDashboard() {
     : RECOMMENDED_PRODUCTS.filter(p => p.category === activeCategory);
 
   return (
-    <div className="min-h-screen bg-slate-50/50 text-slate-900 font-sans relative overflow-hidden pb-24 selection:bg-pink-100 selection:text-pink-600">
+    <div className="min-h-screen bg-transparent text-[#FFFDFB] font-sans relative overflow-hidden pb-24 selection:bg-[#DFB15B]/30 selection:text-[#DFB15B]">
       <SEO 
         title="Premium Member Dashboard | CakeUrban"
         description="Experience the ultimate luxury baking lounge. Check your reward progress, view custom milestone events, and configure concierge shipments."

@@ -3,22 +3,35 @@ export interface Product {
   name: string;
   description: string;
   price: number;
+  compareAtPrice?: number;
+  costPerItem?: number;
+  sku?: string;
+  barcode?: string;
+  vendor?: string;
+  productType?: string;
+  status?: 'active' | 'draft' | 'archived';
   categories: string[];
+  collections?: string[];
+  tags?: string[];
   occasions: string[];
   flavors: string[];
   images: string[];
   stockStatus: 'in-stock' | 'out-of-stock';
+  inventoryQuantity?: number;
   isCustomizable: boolean;
   isBestseller?: boolean;
   isNew?: boolean;
   weights?: number[];
   dietary?: string[];
   createdAt?: any;
+  updatedAt?: any;
   seoTitle?: string;
   seoSlug?: string;
   seoKeywords?: string[];
   seoMetaDescription?: string;
   seoSchema?: string;
+  seoCustomParagraph?: string;
+  customLocationParagraph?: string;
   instagramCaption?: string;
   pinterestPin?: {
     title: string;
@@ -26,6 +39,33 @@ export interface Product {
   };
   reviewsCount?: number;
   rating?: number;
+}
+
+export interface CategoryCollection {
+  id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  image?: string;
+  productCount?: number;
+  isFeatured?: boolean;
+  sortOrder?: number;
+  ruleType?: 'manual' | 'automated';
+  conditions?: string;
+  createdAt?: string;
+}
+
+export interface DiscountCode {
+  id: string;
+  code: string;
+  type: 'percentage' | 'fixed';
+  value: number;
+  minOrderAmount?: number;
+  maxUsage?: number;
+  usageCount: number;
+  isActive: boolean;
+  expiresAt?: string;
+  createdAt: string;
 }
 
 export interface CartItem extends Product {

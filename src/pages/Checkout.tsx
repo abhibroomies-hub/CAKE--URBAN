@@ -268,9 +268,9 @@ export default function Checkout() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-[#FFF9FC] flex flex-col items-center justify-center space-y-4">
-        <div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-[10px] uppercase tracking-[0.2em] font-black text-pink-500/50 italic">
+      <div className="min-h-screen bg-transparent text-[#FFFDFB] flex flex-col items-center justify-center space-y-4">
+        <div className="w-12 h-12 border-4 border-[#DFB15B] border-t-transparent rounded-full animate-spin" />
+        <p className="text-[10px] uppercase tracking-[0.2em] font-black text-[#DFB15B]/70 italic">
           Decrypting Secure Session...
         </p>
       </div>
@@ -286,7 +286,7 @@ export default function Checkout() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="min-h-screen bg-[#FFF9FC] py-20 px-4 relative overflow-hidden flex flex-col items-center justify-center text-center select-none"
+        className="min-h-screen bg-transparent text-[#FFFDFB] py-20 px-4 relative overflow-hidden flex flex-col items-center justify-center text-center select-none"
       >
         <SEO 
           title="Reservation Perfected | CakeUrban" 
@@ -389,7 +389,7 @@ export default function Checkout() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFF9FC] text-slate-800 py-12 px-4 sm:px-6 lg:px-8 relative overflow-x-hidden">
+    <div className="min-h-screen bg-transparent text-[#FFFDFB] py-12 px-4 sm:px-6 lg:px-8 relative overflow-x-hidden">
       <SEO 
         title="Secure Confection checkout | CakeUrban" 
         description="Verify your delivery logistics, customize your packaging, and finalise your luxury order."

@@ -16,7 +16,7 @@
 
 @layer base {
   body {
-    @apply font-sans antialiased text-[#FFFDFB] bg-[#140603] selection:bg-[#DFB15B]/30 selection:text-[#DFB15B];
+    @apply font-sans antialiased text-[#FFFDFB] bg-transparent selection:bg-[#DFB15B]/30 selection:text-[#DFB15B];
     -webkit-font-smoothing: antialiased;
   }
 }
@@ -150,17 +150,21 @@
     --sidebar-ring: oklch(0.556 0 0);
 }
 
+html {
+  background-color: #0e0f12;
+  background-image: radial-gradient(circle at 50% 0%, #1a1b20 0%, #0e0f12 65%, #08090b 100%);
+  background-attachment: fixed;
+  @apply font-sans;
+}
+
 @layer base {
   * {
     @apply border-border outline-[#DFB15B]/40;
-    }
+  }
   body {
-    @apply bg-[#140603] text-[#FFFDFB] antialiased selection:bg-[#DFB15B]/30 selection:text-[#DFB15B];
+    @apply bg-transparent text-[#FFFDFB] antialiased selection:bg-[#DFB15B]/30 selection:text-[#DFB15B];
     -webkit-font-smoothing: antialiased;
-    }
-  html {
-    @apply font-sans;
-    }
+  }
 }
 
 @keyframes waveSlow {

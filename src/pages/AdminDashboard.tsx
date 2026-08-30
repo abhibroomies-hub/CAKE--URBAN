@@ -17,7 +17,7 @@ import {
   CheckCircle2, AlertCircle, ArrowLeft, Check as CheckIcon, Loader2,
   Trash2, Star, Eye, Calendar, User, Mail, Plus, ToggleLeft, ToggleRight,
   Sparkle, Award, MessageSquare, Coffee, Trash, Phone, Palette, Settings,
-  Play, Pause, SkipForward, Send, BarChart3
+  Play, Pause, SkipForward, Send, BarChart3, Layers, Scissors
 } from 'lucide-react';
 import { ScrollArea } from '../components/ui/scroll-area';
 import { toast } from 'sonner';
@@ -26,6 +26,10 @@ import SEO from '../components/SEO';
 import heroBgImage from '../assets/images/regenerated_image_1783519203025.webp';
 import SeoAnalyticsDashboard from '../components/SeoAnalyticsDashboard';
 import { useTheme, THEME_PRESETS } from '../lib/theme';
+import ShopifyProductsTable from '../components/admin/ShopifyProductsTable';
+import ShopifyProductEditor from '../components/admin/ShopifyProductEditor';
+import ShopifyCategoriesManager from '../components/admin/ShopifyCategoriesManager';
+import ShopifyDiscountsManager from '../components/admin/ShopifyDiscountsManager';
 
 const MOCK_ORDERS: Order[] = [
   {
@@ -428,6 +432,7 @@ export default function AdminDashboard() {
   const [prodSeoSlug, setProdSeoSlug] = useState('');
   const [prodSeoKeywords, setProdSeoKeywords] = useState<string[]>([]);
   const [prodSeoMetaDescription, setProdSeoMetaDescription] = useState('');
+  const [prodSeoCustomParagraph, setProdSeoCustomParagraph] = useState('');
   const [prodSeoAlt, setProdSeoAlt] = useState('');
   const [prodSeoSchema, setProdSeoSchema] = useState('');
   const [prodInstagram, setProdInstagram] = useState('');
@@ -460,6 +465,7 @@ export default function AdminDashboard() {
   const [editProdSeoSlug, setEditProdSeoSlug] = useState('');
   const [editProdSeoKeywords, setEditProdSeoKeywords] = useState<string[]>([]);
   const [editProdSeoMetaDescription, setEditProdSeoMetaDescription] = useState('');
+  const [editProdSeoCustomParagraph, setEditProdSeoCustomParagraph] = useState('');
   const [editProdSeoAlt, setEditProdSeoAlt] = useState('');
   const [editProdSeoSchema, setEditProdSeoSchema] = useState('');
   const [editProdInstagram, setEditProdInstagram] = useState('');
@@ -1742,6 +1748,7 @@ export default function AdminDashboard() {
     setEditProdSeoSlug(p.seoSlug || '');
     setEditProdSeoKeywords(p.seoKeywords || []);
     setEditProdSeoMetaDescription(p.seoMetaDescription || '');
+    setEditProdSeoCustomParagraph((p as any).customLocationParagraph || '');
     setEditProdSeoAlt(p.seoMetaDescription || ''); // Alt tag
     setEditProdSeoSchema(p.seoSchema || '');
     setEditProdInstagram(p.instagramCaption || '');
@@ -1788,6 +1795,7 @@ export default function AdminDashboard() {
         seoSlug: editProdSeoSlug || editProdName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
         seoKeywords: editProdSeoKeywords.length ? editProdSeoKeywords : [editProdName.toLowerCase()],
         seoMetaDescription: editProdSeoMetaDescription || editProdDescription,
+        customLocationParagraph: editProdSeoCustomParagraph || '',
         seoSchema: editProdSeoSchema || '',
         instagramCaption: editProdInstagram || '',
         pinterestPin: {
@@ -1848,6 +1856,7 @@ export default function AdminDashboard() {
         seoSlug: prodSeoSlug || prodName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
         seoKeywords: prodSeoKeywords.length ? prodSeoKeywords : [prodName.toLowerCase()],
         seoMetaDescription: prodSeoMetaDescription || prodDescription,
+        customLocationParagraph: prodSeoCustomParagraph || '',
         seoSchema: prodSeoSchema || '',
         instagramCaption: prodInstagram || '',
         pinterestPin: {
@@ -1872,6 +1881,7 @@ export default function AdminDashboard() {
       setProdSeoSlug('');
       setProdSeoAlt('');
       setProdSeoMetaDescription('');
+      setProdSeoCustomParagraph('');
       setProdSeoKeywords([]);
       setProdSeoSchema('');
       setProdInstagram('');
@@ -1889,6 +1899,147 @@ export default function AdminDashboard() {
     }
   };
 
+  // Shopify Product Save Handler (Supports Create & Update)
+  const handleSaveShopifyProduct = async (productData: Partial<Product>) => {
+    try {
+      if (editingProduct) {
+        // Update existing
+        try {
+          await updateDoc(doc(db, 'products', editingProduct.id), productData);
+        } catch (firestoreError) {
+          console.warn("Could not update in live Firestore, applying to local state:", firestoreError);
+        }
+
+        setProducts(prev => prev.map(p => p.id === editingProduct.id ? { ...p, ...productData } as Product : p));
+        setEditingProduct(null);
+        setActiveTab('products');
+      } else {
+        // Create new
+        const newDocPayload = {
+          ...productData,
+          createdAt: new Date().toISOString()
+        };
+
+        let newId = `prod-${Date.now()}`;
+        try {
+          const docRef = await addDoc(collection(db, 'products'), newDocPayload);
+          newId = docRef.id;
+        } catch (firestoreError) {
+          console.warn("Could not save to live Firestore, applying to local state:", firestoreError);
+        }
+
+        const createdProduct = { id: newId, ...newDocPayload } as Product;
+        setProducts(prev => [createdProduct, ...prev]);
+        setActiveTab('products');
+      }
+    } catch (err: any) {
+      console.error(err);
+      throw err;
+    }
+  };
+
+  // Shopify Product Duplicate Handler
+  const handleDuplicateProduct = async (productToDuplicate: Product) => {
+    try {
+      const duplicatePayload: Partial<Product> = {
+        name: `${productToDuplicate.name} (Copy)`,
+        description: productToDuplicate.description,
+        price: productToDuplicate.price,
+        compareAtPrice: productToDuplicate.compareAtPrice,
+        costPerItem: productToDuplicate.costPerItem,
+        sku: productToDuplicate.sku ? `${productToDuplicate.sku}-COPY` : undefined,
+        status: 'draft',
+        stockStatus: productToDuplicate.stockStatus,
+        inventoryQuantity: productToDuplicate.inventoryQuantity || 50,
+        images: productToDuplicate.images,
+        categories: productToDuplicate.categories,
+        tags: productToDuplicate.tags,
+        flavors: productToDuplicate.flavors,
+        occasions: productToDuplicate.occasions,
+        weights: productToDuplicate.weights,
+        dietary: productToDuplicate.dietary,
+        isBestseller: false,
+        isNew: true,
+        isCustomizable: productToDuplicate.isCustomizable,
+        seoTitle: `${productToDuplicate.name} (Copy) | CakeUrban`,
+        seoSlug: `${productToDuplicate.seoSlug || 'product'}-copy`,
+        seoMetaDescription: productToDuplicate.seoMetaDescription,
+        createdAt: new Date().toISOString()
+      };
+
+      let newId = `prod-${Date.now()}`;
+      try {
+        const docRef = await addDoc(collection(db, 'products'), duplicatePayload);
+        newId = docRef.id;
+      } catch (e) {
+        console.warn("Firestore copy fallback:", e);
+      }
+
+      setProducts(prev => [{ id: newId, ...duplicatePayload } as Product, ...prev]);
+      toast.success(`Duplicated "${productToDuplicate.name}" as draft!`);
+    } catch (err: any) {
+      toast.error(`Failed to duplicate product: ${err.message}`);
+    }
+  };
+
+  // Bulk Status Update Handler
+  const handleBulkStatusUpdate = async (productIds: string[], newStatus: 'active' | 'draft' | 'archived') => {
+    toast.loading(`Updating ${productIds.length} products to ${newStatus}...`, { id: 'bulk-status' });
+    try {
+      for (const id of productIds) {
+        try {
+          await updateDoc(doc(db, 'products', id), { status: newStatus });
+        } catch (e) {
+          console.warn("Bulk update status fallback:", e);
+        }
+      }
+      setProducts(prev => prev.map(p => productIds.includes(p.id) ? { ...p, status: newStatus } : p));
+      toast.success(`Updated ${productIds.length} products to ${newStatus}`, { id: 'bulk-status' });
+    } catch (err: any) {
+      toast.error(`Bulk status update failed: ${err.message}`, { id: 'bulk-status' });
+    }
+  };
+
+  // Bulk Assign Category
+  const handleBulkAssignCategory = async (productIds: string[], categoryName: string) => {
+    toast.loading(`Assigning category "${categoryName}" to ${productIds.length} products...`, { id: 'bulk-cat' });
+    try {
+      setProducts(prev => prev.map(p => {
+        if (productIds.includes(p.id)) {
+          const currentCats = p.categories || [];
+          const updatedCats = currentCats.includes(categoryName) ? currentCats : [...currentCats, categoryName];
+          try {
+            updateDoc(doc(db, 'products', p.id), { categories: updatedCats });
+          } catch (e) {}
+          return { ...p, categories: updatedCats };
+        }
+        return p;
+      }));
+      toast.success(`Assigned to "${categoryName}" successfully!`, { id: 'bulk-cat' });
+    } catch (err: any) {
+      toast.error(`Failed to assign category: ${err.message}`, { id: 'bulk-cat' });
+    }
+  };
+
+  // Remove Category From Products
+  const handleRemoveCategoryFromProducts = async (productIds: string[], categoryName: string) => {
+    try {
+      setProducts(prev => prev.map(p => {
+        if (productIds.includes(p.id)) {
+          const updatedCats = (p.categories || []).filter(c => c !== categoryName);
+          try {
+            updateDoc(doc(db, 'products', p.id), { categories: updatedCats });
+          } catch (e) {}
+          return { ...p, categories: updatedCats };
+        }
+        return p;
+      }));
+      toast.success(`Removed from collection "${categoryName}"`);
+    } catch (err: any) {
+      toast.error("Failed to remove from collection");
+    }
+  };
+
   // Calculations for Performance Tab
   const totalRevenue = orders.filter(o => o.status !== 'cancelled').reduce((acc, o) => acc + o.total, 0);
   const avgOrderValue = orders.length ? Math.round(totalRevenue / orders.length) : 0;
@@ -1897,14 +2048,15 @@ export default function AdminDashboard() {
 
   const navigationTabs = [
     { value: 'insights', label: 'Performance', icon: LayoutDashboard },
-    { value: 'seo-analytics', label: 'SEO Analytics', icon: BarChart3 },
-    { value: 'orders', label: `active Reservations (${orders.length})`, icon: Clock },
+    { value: 'products', label: `Products (${products.length})`, icon: Package },
+    { value: 'categories', label: `Collections (${categoriesList.length})`, icon: Layers },
+    { value: 'discounts', label: 'Discounts & Codes', icon: Scissors },
+    { value: 'orders', label: `Active Orders (${orders.length})`, icon: Clock },
     { value: 'inquiries', label: `Builder Inquiries (${customInquiries.length})`, icon: Sparkles },
     { value: 'grok-studio', label: 'Gemini Pro Studio ✦', icon: Sparkle },
-    { value: 'products', label: `Boutique Inventory (${products.length})`, icon: Package },
-    { value: 'add-product', label: 'Add New Item', icon: Plus },
-    { value: 'reviews', label: `Feedback Studio (${reviews.length})`, icon: MessageSquare },
-    { value: 'themes', label: 'Artisan Themes NEW', icon: Palette },
+    { value: 'seo-analytics', label: 'SEO Analytics', icon: BarChart3 },
+    { value: 'reviews', label: `Reviews (${reviews.length})`, icon: MessageSquare },
+    { value: 'themes', label: 'Artisan Themes', icon: Palette },
     ...(editingProduct ? [{ value: 'edit-product', label: `Edit: ${editingProduct.name.substring(0, 15)}...`, icon: FileText }] : [])
   ];
 
@@ -2789,1093 +2941,35 @@ export default function AdminDashboard() {
             )}
           </motion.div>
         </div>
-          ) : activeTab === 'edit-product' && editingProduct ? (
-            <div className="mt-0">
-              <motion.div
-                initial={{ opacity: 0, y: 35 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -35 }}
-                className="grid grid-cols-1 lg:grid-cols-12 gap-10"
-              >
-            {/* LEFT COLUMN: EDIT SELECTIONS FOR WEIGHTS, CATEGORY, TYPE, IMAGE */}
-            <div className="lg:col-span-5 space-y-8 text-left">
-              
-              <div className="bg-[#26130F]/45 backdrop-blur-md border border-[#DFB15B]/15 rounded-[36px] p-8 shadow-xl">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xs font-black uppercase tracking-widest text-[#DFB15B] flex items-center gap-2">
-                    <Package className="w-5 h-5 text-[#DFB15B]" /> Revise Core Confection
-                  </h3>
-                  <Badge className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold text-[8px] uppercase tracking-wider px-3 px-1.5 py-1 rounded-full">
-                    Active Editor
-                  </Badge>
-                </div>
-
-                {/* Cake Name */}
-                <div className="space-y-2 mb-6">
-                  <label className="text-[10px] uppercase font-black tracking-widest text-white/50 block">Confection Name *</label>
-                  <Input 
-                    placeholder="Ex. 24K Gold Flake Truffle Tower"
-                    value={editProdName}
-                    onChange={e => setEditProdName(e.target.value)}
-                    className="h-14 rounded-xl bg-[#140603]/80 border-white/10 p-4 text-xs font-bold text-white focus:border-[#DFB15B]/40 focus:ring-1 focus:ring-[#DFB15B]/40"
-                    required
-                  />
-                </div>
-
-                {/* Primary Category Selector */}
-                <div className="space-y-2.5 mb-6">
-                  <label className="text-[10px] uppercase font-black tracking-widest text-white/50 block">Primary Boutique Category *</label>
-                  <select
-                    value={editSelectedCategory}
-                    onChange={e => setEditSelectedCategory(e.target.value)}
-                    className="h-14 w-full rounded-xl bg-[#140603]/80 border border-[#DFB15B]/15 px-4 text-xs font-bold text-white focus:border-[#DFB15B]/40 focus:ring-1 focus:ring-[#DFB15B]/40 cursor-pointer"
-                  >
-                    {categoriesList.map(category => (
-                      <option key={category} value={category} className="bg-[#140603] text-white">
-                        {category}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Cake Type Selector */}
-                <div className="space-y-2.5 mb-6">
-                  <label className="text-[10px] uppercase font-black tracking-widest text-white/50 block">Cake Dietary Classification *</label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {[
-                      { label: '🌿 Eggless', value: 'Eggless' },
-                      { label: '🥚 With Egg', value: 'Regular' },
-                      { label: '🧁 Both', value: 'Both Available' }
-                    ].map(type => (
-                      <button
-                        type="button"
-                        key={type.value}
-                        onClick={() => setEditCakeType(type.value)}
-                        className={`text-[10px] font-black uppercase tracking-wider py-3.5 rounded-xl border text-center transition-all duration-350 cursor-pointer ${
-                          editCakeType === type.value
-                            ? 'bg-[#DFB15B] text-[#140603] border-[#DFB15B] shadow-md shadow-[#DFB15B]/10'
-                            : 'bg-[#140603]/80 border-white/10 text-white/50 hover:text-white'
-                        }`}
-                      >
-                        {type.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Weights Selection Grid */}
-                <div className="space-y-2.5 mb-6">
-                  <label className="text-[10px] uppercase font-black tracking-widest text-white/50 block">Available Weights (Select multiple) *</label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {[0.5, 1.0, 1.5, 2.0, 3.0, 4.0].map(w => {
-                      const active = editSelectedWeights.includes(w);
-                      return (
-                        <button
-                          type="button"
-                          key={w}
-                          onClick={() => {
-                            if (active) {
-                              setEditSelectedWeights(editSelectedWeights.filter(item => item !== w));
-                            } else {
-                              setEditSelectedWeights([...editSelectedWeights, w].sort((a,b)=>a-b));
-                            }
-                          }}
-                          className={`text-[10px] font-mono font-bold py-3.5 rounded-xl border text-center transition-all duration-300 cursor-pointer ${
-                            active
-                              ? 'bg-[#DFB15B]/25 text-[#DFB15B] border-[#DFB15B]'
-                              : 'bg-[#140603]/80 border-white/10 text-white/40 hover:text-white'
-                          }`}
-                        >
-                          {w === 0.5 ? '0.5 Kg' : `${w.toFixed(1)} Kg`} {active ? '✓' : ''}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-              </div>
-
-              {/* IMAGE SELECTION BLOCK FOR EDITING */}
-              <div className="bg-[#26130F]/45 backdrop-blur-md border border-[#DFB15B]/15 rounded-[36px] p-6 shadow-xl space-y-5">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-black uppercase tracking-widest text-[#DFB15B] flex items-center gap-2">
-                    <UploadCloud className="w-5 h-5 text-[#DFB15B]" /> Reference Visual Asset
-                  </h3>
-                  <div className="flex bg-[#140603]/80 p-1 border border-white/10 rounded-xl">
-                    <button
-                      type="button"
-                      onClick={() => setEditImageUrlMode('upload')}
-                      className={`text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg cursor-pointer ${
-                        editImageUrlMode === 'upload' ? 'bg-[#DFB15B] text-[#140603]' : 'text-white/45'
-                      }`}
-                    >
-                      File Upload
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setEditImageUrlMode('url')}
-                      className={`text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg cursor-pointer ${
-                        editImageUrlMode === 'url' ? 'bg-[#DFB15B] text-[#140603]' : 'text-white/45'
-                      }`}
-                    >
-                      Image Link
-                    </button>
-                  </div>
-                </div>
-
-                {editImageUrlMode === 'url' ? (
-                  <div className="space-y-4">
-                    <Input
-                      placeholder="Paste Image URL Address link (e.g., https://...)"
-                      value={editPastedImageUrl}
-                      onChange={e => setEditPastedImageUrl(e.target.value)}
-                      className="h-14 rounded-xl bg-[#140603]/80 border-white/10 p-4 text-xs text-white"
-                    />
-                    {editPastedImageUrl && (
-                      <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden border border-[#DFB15B]/15 bg-[#140603]">
-                        <img src={editPastedImageUrl} alt="Pasted preview catalog" className="w-full h-full object-cover animate-fade-in" />
-                        {specsGenerating && (
-                          <>
-                            <div className="absolute left-0 right-0 h-1.5 bg-gradient-to-r from-transparent via-[#DFB15B] to-transparent shadow-[0_0_12px_#DFB15B] z-20 animate-laser-scan pointer-events-none" />
-                            <div className="absolute inset-0 bg-[#DFB15B]/10 animate-pulse z-10 pointer-events-none" />
-                          </>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <div className="relative border border-dashed border-[#DFB15B]/20 rounded-[28px] overflow-hidden bg-[#140603]/80 group hover:border-[#DFB15B]/50 transition-colors">
-                      <input 
-                        type="file" 
-                        accept="image/*" 
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (!file) return;
-                          const reader = new FileReader();
-                          reader.onload = () => {
-                            setEditProductImage(reader.result as string);
-                            toast.success('Edit files reference pre-loaded.');
-                          };
-                          reader.readAsDataURL(file);
-                        }} 
-                        className="absolute inset-0 opacity-0 cursor-pointer z-10" 
-                      />
-                      
-                      {editProductImage ? (
-                        <div className="relative aspect-[4/3] w-full">
-                          <img src={editProductImage} alt="Cake preview edit lookup" className="w-full h-full object-cover" />
-                          {specsGenerating && (
-                            <>
-                              <div className="absolute left-0 right-0 h-1.5 bg-gradient-to-r from-transparent via-[#DFB15B] to-transparent shadow-[0_0_12px_#DFB15B] z-20 animate-laser-scan pointer-events-none" />
-                              <div className="absolute inset-0 bg-[#DFB15B]/10 animate-pulse z-10 pointer-events-none" />
-                            </>
-                          )}
-                        </div>
-                      ) : (
-                        <div className="py-12 text-center space-y-3 px-4">
-                          <UploadCloud className="w-8 h-8 text-[#DFB15B] mx-auto" />
-                          <p className="text-xs text-white font-bold">Select replacement file</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-
+          ) : activeTab === "edit-product" && editingProduct ? (
+            <div className="mt-6">
+              <ShopifyProductEditor
+                initialProduct={editingProduct}
+                categoriesList={categoriesList}
+                onSave={async (prodData) => {
+                  await handleSaveShopifyProduct(prodData);
+                  setActiveTab("products");
+                  setEditingProduct(null);
+                }}
+                onCancel={() => {
+                  setEditingProduct(null);
+                  setActiveTab("products");
+                }}
+              />
             </div>
-
-            {/* RIGHT COLUMN: DETAIL EDIT FORM EXPLAINING REMAINING SPECIFICATIONS */}
-            <div className="lg:col-span-7">
-              <div className="bg-[#26130F]/45 backdrop-blur-md border border-[#DFB15B]/15 rounded-[44px] p-8 md:p-12 shadow-xl text-left space-y-8">
-                
-                <div className="border-b border-white/10 pb-4 flex justify-between items-center">
-                  <div>
-                    <h3 className="text-xl font-serif font-bold italic text-white flex items-center gap-2">
-                      <Award className="w-5 h-5 text-[#DFB15B]" /> Confectionery Revision Studio
-                    </h3>
-                    <p className="text-[10px] uppercase font-black tracking-widest text-[#DFB15B]/75 mt-0.5">Modify or replace any detail of your live confectionery masterpiece</p>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    onClick={() => {
-                      setConfirmAction({
-                        message: "Undo your current edits and return?",
-                        onConfirm: () => setEditingProduct(null)
-                      });
-                    }}
-                    className="text-[9px] uppercase tracking-widest text-white/50 hover:text-white"
-                  >
-                    Cancel Edit
-                  </Button>
-                </div>
-
-                {/* AI MAGIC SINGLE CLICK BULK CONFIGURATION FOR EDITING */}
-                <div className="bg-gradient-to-r from-[#DFB15B]/15 to-transparent border border-[#DFB15B]/20 p-6 rounded-[28px] relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-[#DFB15B]/5 rounded-full blur-xl -z-10" />
-                  
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 bg-[#DFB15B]/15 text-[#DFB15B] rounded-2xl border border-[#DFB15B]/25">
-                      <Sparkles className="w-6 h-6 animate-pulse" />
-                    </div>
-                    <div className="space-y-1.5 flex-1">
-                      <h4 className="text-xs font-black uppercase tracking-widest text-[#DFB15B] flex items-center gap-1.5">
-                        🪄 Instant AI Auto-Fill Form
-                      </h4>
-                      <p className="text-[11px] text-[#FFFDFB]/70 leading-relaxed italic">
-                        Upload or paste a replacement image, type a cake name, and click below! Gemini will read the image, read the name, and automatically auto-populate ALL product details & SEO metadata instantly with zero error!
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-4">
-                    <Button
-                      type="button"
-                      onClick={() => handleMagicAiAutofill(true)}
-                      disabled={specsGenerating}
-                      className="w-full h-14 rounded-2xl bg-[#DFB15B] hover:bg-white text-[#140603] text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2 shadow-[0_4px_25px_rgba(223,177,91,0.25)] transition-all cursor-pointer disabled:opacity-40 animate-pulse duration-1000 font-bold"
-                    >
-                      {specsGenerating ? (
-                        <>
-                          <Loader2 className="w-5 h-5 animate-spin text-[#140603]" />
-                          <span>AI reading image & filling details...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Sparkles className="w-5 h-5 text-[#140603]" />
-                          <span>1-Click AI Auto-Fill Form (Reads Image & Name)</span>
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </div>
-
-                <form onSubmit={handleUpdateProduct} className="space-y-8">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Price */}
-                    <div className="space-y-2">
-                      <label className="text-[10px] uppercase font-black tracking-widest text-white/50 block">INR Pricing Value (₹) *</label>
-                      <Input 
-                        type="number"
-                        placeholder="Ex. 1499"
-                        value={editProdPrice}
-                        onChange={e => setEditProdPrice(e.target.value)}
-                        className="h-14 rounded-xl bg-[#140603]/80 border border-white/10 p-4 text-xs font-mono font-bold text-[#DFB15B] focus:border-[#DFB15B]/40 focus:ring-1"
-                        required
-                      />
-                    </div>
-
-                    {/* Extra Categories tags */}
-                    <div className="space-y-2">
-                      <label className="text-[10px] uppercase font-black tracking-widest text-white/50 block">Secondary categories (comma-separated if any)</label>
-                      <Input 
-                        placeholder="Ex. Chocolate, Custom, Designer"
-                        value={editProdCategories}
-                        onChange={e => setEditProdCategories(e.target.value)}
-                        className="h-14 rounded-xl bg-[#140603]/80 border border-white/10 p-4 text-xs font-semibold"
-                      />
-                    </div>
-
-                    {/* Flavors */}
-                    <div className="space-y-2">
-                      <label className="text-[10px] uppercase font-black tracking-widest text-white/50 block">Flavor Options (comma separated)</label>
-                      <Input 
-                        placeholder="Ex. Cocoa, Red Velvet"
-                        value={editProdFlavors}
-                        onChange={e => setEditProdFlavors(e.target.value)}
-                        className="h-14 rounded-xl bg-[#140603]/80 border border-white/10 p-4 text-xs font-semibold"
-                      />
-                    </div>
-
-                    {/* Occasions */}
-                    <div className="space-y-2">
-                      <label className="text-[10px] uppercase font-black tracking-widest text-white/50 block">Occasions (comma-separated)</label>
-                      <Input 
-                        placeholder="Ex. Birthday, Anniversary"
-                        value={editProdOccasions}
-                        onChange={e => setEditProdOccasions(e.target.value)}
-                        className="h-14 rounded-xl bg-[#140603]/80 border border-white/10 p-4 text-xs font-semibold"
-                      />
-                    </div>
-
-                    {/* Stock Status & customizable */}
-                    <div className="grid grid-cols-2 gap-4 col-span-full">
-                      <div className="space-y-2">
-                        <label className="text-[10px] uppercase font-black tracking-widest text-white/50 block">Atelier Stock Status</label>
-                        <select 
-                          value={editProdStock}
-                          onChange={e => setEditProdStock(e.target.value as any)}
-                          className="w-full h-14 rounded-xl bg-[#140603]/80 border border-white/10 px-4 text-xs font-bold focus:outline-none focus:border-[#DFB15B] text-white"
-                        >
-                          <option value="in-stock">Available Now</option>
-                          <option value="out-of-stock">Bespoke Pre-Order Only</option>
-                        </select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <label className="text-[10px] uppercase font-black tracking-widest text-white/50 block">Customizable Options</label>
-                        <select 
-                          value={editProdCustomizable ? "yes" : "no"}
-                          onChange={e => setEditProdCustomizable(e.target.value === "yes")}
-                          className="w-full h-14 rounded-xl bg-[#140603]/80 border border-white/10 px-4 text-xs font-bold focus:outline-none focus:border-[#DFB15B] text-white"
-                        >
-                          <option value="yes">Customizations Enabled</option>
-                          <option value="no">Fixed Secret Recipe</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Taste description */}
-                  <div className="space-y-2">
-                    <label className="text-[10px] uppercase font-black tracking-widest text-white/50 block">Artisan Taste description copy</label>
-                    <textarea 
-                      rows={4}
-                      placeholder="Describe the wonderful taste, texture, crust density, design elements..."
-                      value={editProdDescription}
-                      onChange={e => setEditProdDescription(e.target.value)}
-                      className="w-full rounded-xl bg-[#140603]/80 border border-white/10 p-4 text-xs font-medium leading-relaxed focus:outline-none focus:border-[#DFB15B] text-white"
-                    />
-                  </div>
-
-                  {/* SEO REVISIONS SUBFORM */}
-                  <div className="border-t border-white/10 pt-6 space-y-6">
-                    <h4 className="text-xs font-black uppercase tracking-[0.25em] text-[#DFB15B] flex items-center gap-1.5">
-                      <FileText className="w-4.5 h-4.5" /> Google Search Engines Optimization (SEO)
-                    </h4>
-
-                    <div className="grid grid-cols-1 gap-4">
-                      {/* Google Head Title */}
-                      <div className="space-y-1.5">
-                        <label className="text-[9px] uppercase font-black tracking-widest text-[#FFFDFB]/40 block">Google Search SEO Title Tag</label>
-                        <Input 
-                          placeholder="Ex. 24K Gold Flake Truffle Tower - Cake Urban South Delhi"
-                          value={editProdSeoTitle}
-                          onChange={e => setEditProdSeoTitle(e.target.value)}
-                          className="h-11 rounded-lg bg-[#140603]/50 border-white/10 p-3 text-xs text-[#FFFDFB]"
-                        />
-                      </div>
-
-                      {/* URL Route Slug */}
-                      <div className="space-y-1.5">
-                        <label className="text-[9px] uppercase font-black tracking-widest text-[#FFFDFB]/40 block">URL Path Slug</label>
-                        <Input 
-                          placeholder="Ex. 24k-gold-flake-truffle-tower"
-                          value={editProdSeoSlug}
-                          onChange={e => setEditProdSeoSlug(e.target.value)}
-                          className="h-11 rounded-lg bg-[#140603]/50 border-white/10 p-3 text-xs font-mono text-[#FFFDFB]"
-                        />
-                      </div>
-
-                      {/* Meta description */}
-                      <div className="space-y-1.5">
-                        <label className="text-[9px] uppercase font-black tracking-widest text-[#FFFDFB]/40 block">Google Meta Description Tag (max 160 chars)</label>
-                        <Input 
-                          placeholder="Ex. Buy Gold Flake Truffle Tower Cake online at Cake Urban..."
-                          value={editProdSeoMetaDescription}
-                          onChange={e => setEditProdSeoMetaDescription(e.target.value)}
-                          className="h-11 rounded-lg bg-[#140603]/50 border-white/10 p-3 text-xs text-[#FFFDFB]"
-                        />
-                      </div>
-
-                      {/* High-volume search keywords */}
-                      <div className="space-y-1.5">
-                        <label className="text-[9px] uppercase font-black tracking-widest text-[#FFFDFB]/40 block">High-Volume Search Keywords (comma-separated)</label>
-                        <Input 
-                          placeholder="Ex. best gold cake faridabad, chocolate luxury cake delhi ncr"
-                          value={editProdSeoKeywords.join(', ')}
-                          onChange={e => setEditProdSeoKeywords(e.target.value.split(',').map(k => k.trim()))}
-                          className="h-11 rounded-lg bg-[#140603]/50 border-white/10 p-3 text-xs text-[#FFFDFB]"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* FORM ACTIONS */}
-                  <div className="pt-6 border-t border-white/10 flex gap-4">
-                    <Button 
-                      type="button"
-                      variant="outline"
-                      onClick={() => {
-                        setConfirmAction({
-                          message: "Throw away all revision edits and return?",
-                          onConfirm: () => setEditingProduct(null)
-                        });
-                      }}
-                      className="flex-1 h-14 rounded-2xl border-white/10 text-white hover:bg-white/5 text-[10px] font-black uppercase tracking-wider cursor-pointer"
-                    >
-                      Discard Shuffled Changes
-                    </Button>
-                    <Button 
-                      type="submit"
-                      className="flex-[2] h-14 rounded-2xl bg-[#DFB15B] hover:bg-white text-[#140603] text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl transition-all active:scale-95 cursor-pointer font-bold"
-                    >
-                      Commit & Replace creation
-                    </Button>
-                  </div>
-                </form>
-
-              </div>
+          ) : activeTab === "add-product" ? (
+            <div className="mt-6">
+              <ShopifyProductEditor
+                categoriesList={categoriesList}
+                onSave={async (prodData) => {
+                  await handleSaveShopifyProduct(prodData);
+                  setActiveTab("products");
+                }}
+                onCancel={() => {
+                  setActiveTab("products");
+                }}
+              />
             </div>
-          </motion.div>
-        </div>
-      ) : activeTab === 'add-product' ? (
-        <div className="mt-0">
-          <motion.div
-            initial={{ opacity: 0, y: 35 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -35 }}
-            className="grid grid-cols-1 xl:grid-cols-12 gap-8"
-          >
-            {/* COLUMN 1: INTERACTIVE GEMINI CHATBOT (xl:col-span-4 col-span-12) */}
-            <div className="xl:col-span-4 col-span-12 space-y-6 text-left">
-              <div className="bg-[#26130F]/45 backdrop-blur-md border border-[#DFB15B]/15 rounded-[36px] p-6 shadow-xl flex flex-col h-[700px] relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-[#DFB15B]/5 rounded-full blur-2xl -z-10" />
-                
-                {/* Chat Header */}
-                <div className="flex items-center gap-3 border-b border-white/10 pb-4 mb-4">
-                  <div className="p-2.5 bg-[#DFB15B]/15 text-[#DFB15B] rounded-xl border border-[#DFB15B]/25">
-                    <Sparkles className="w-5 h-5 animate-pulse text-[#DFB15B]" />
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#DFB15B] leading-none mb-1">
-                      Gemini Co-Curator v2.5
-                    </h3>
-                    <p className="text-[10px] text-white/50 font-medium italic leading-none">
-                      Bhai, discuss details & auto-add cakes!
-                    </p>
-                  </div>
-                </div>
-
-                {/* Chat Messages */}
-                <div className="flex-1 overflow-y-auto space-y-4 pr-2 scrollbar-thin scrollbar-thumb-[#DFB15B]/10 scrollbar-track-transparent">
-                  {chatMessages.map((msg, idx) => {
-                    const isAssistant = msg.role === 'assistant';
-                    return (
-                      <div key={idx} className="space-y-3">
-                        <div className={`flex ${isAssistant ? 'justify-start' : 'justify-end'}`}>
-                          <div className={`p-4 rounded-[22px] text-xs leading-relaxed max-w-[85%] ${
-                            isAssistant 
-                              ? 'bg-[#140603]/85 border border-white/5 text-white/90 rounded-tl-none text-left' 
-                              : 'bg-[#DFB15B]/10 border border-[#DFB15B]/25 text-white rounded-tr-none text-left'
-                          }`}>
-                            <p className="whitespace-pre-line font-medium text-[11px]">{msg.content}</p>
-                          </div>
-                        </div>
-
-                        {/* ATTACHMENT CARD FOR FINALIZED SPECS */}
-                        {isAssistant && msg.finalizedCake && (
-                          <div className="bg-[#140603]/90 border border-[#DFB15B]/20 rounded-2xl p-4 space-y-3 max-w-[90%] text-left animate-in fade-in slide-in-from-bottom-2 duration-300">
-                            <div className="flex items-center gap-2 border-b border-[#DFB15B]/15 pb-2">
-                              <Award className="w-4 h-4 text-[#DFB15B]" />
-                              <span className="text-[10px] uppercase tracking-widest font-black text-[#DFB15B]">Proposed Cake Specs</span>
-                            </div>
-                            <div className="space-y-1.5 font-sans text-[11px] text-white/70">
-                              <p><strong className="text-white/90">Name:</strong> {msg.finalizedCake.productName}</p>
-                              <p><strong className="text-white/90">Price:</strong> ₹{msg.finalizedCake.price}</p>
-                              <p><strong className="text-white/90">Flavors:</strong> {msg.finalizedCake.flavors}</p>
-                              <p><strong className="text-white/90">Categories:</strong> {msg.finalizedCake.categories}</p>
-                            </div>
-                            <div className="flex gap-2 pt-1.5">
-                              <Button
-                                type="button"
-                                onClick={() => populateFormFromSpecs(msg.finalizedCake)}
-                                className="h-9 px-3 rounded-lg bg-[#DFB15B]/10 hover:bg-[#DFB15B] text-[#DFB15B] hover:text-[#140603] border border-[#DFB15B]/20 text-[9px] font-black uppercase tracking-wider transition-all"
-                              >
-                                📥 Auto-Fill Form
-                              </Button>
-                              <Button
-                                type="button"
-                                onClick={() => {
-                                  const activeImg = imageUrlMode === 'url' ? pastedImageUrl : newProductImage;
-                                  if (!activeImg) {
-                                    toast.error("Bhai, pehle image generate kijiye ya form me select kijiye!");
-                                  } else {
-                                    handleDirectPublishFromChat(msg.finalizedCake, activeImg);
-                                  }
-                                }}
-                                className="h-9 px-3 rounded-lg bg-[#DFB15B] hover:bg-white text-[#140603] text-[9px] font-black uppercase tracking-wider transition-all"
-                              >
-                                🚀 Publish Live
-                              </Button>
-                            </div>
-                          </div>
-                        )}
-
-                        {/* ATTACHMENT CARD FOR IMAGE GENERATION */}
-                        {isAssistant && msg.imagePrompt && (
-                          <div className="bg-[#140603]/90 border border-white/5 rounded-2xl p-4 space-y-3 max-w-[90%] text-left animate-in fade-in slide-in-from-bottom-2 duration-300">
-                            <div className="flex items-center gap-2 border-b border-white/10 pb-2">
-                              <Sparkles className="w-4 h-4 text-[#DFB15B]" />
-                              <span className="text-[10px] uppercase tracking-widest font-black text-[#DFB15B]">Visual Concept Prompt</span>
-                            </div>
-                            <p className="text-[10px] text-white/60 italic leading-relaxed">{msg.imagePrompt}</p>
-                            
-                            {!msg.generatedImages || msg.generatedImages.length === 0 ? (
-                              <Button
-                                type="button"
-                                onClick={() => handleChatGenerateImages(idx, msg.imagePrompt || '')}
-                                disabled={isChatGeneratingImages !== null}
-                                className="w-full h-10 rounded-xl bg-[#DFB15B] hover:bg-white text-[#140603] text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all"
-                              >
-                                {isChatGeneratingImages === idx ? (
-                                  <>
-                                    <Loader2 className="w-4 h-4 animate-spin text-[#140603]" />
-                                    <span className="text-[#140603]">Rendering visuals...</span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <Sparkles className="w-4 h-4 text-[#140603]" />
-                                    <span>Paint Concept with Imagen</span>
-                                  </>
-                                )}
-                              </Button>
-                            ) : (
-                              <div className="space-y-3">
-                                <p className="text-[9px] uppercase tracking-widest text-emerald-500 font-bold flex items-center gap-1">
-                                  <CheckIcon className="w-3.5 h-3.5 text-emerald-500" /> Concept Render Complete!
-                                </p>
-                                <div className="grid grid-cols-3 gap-2">
-                                  {msg.generatedImages.map((img, iIndex) => {
-                                    const isSelected = pastedImageUrl === img && imageUrlMode === 'url';
-                                    return (
-                                      <div 
-                                        key={iIndex} 
-                                        onClick={() => {
-                                          setPastedImageUrl(img);
-                                          setImageUrlMode('url');
-                                          toast.success("🎯 Concept image active in boutique configuration!");
-                                        }}
-                                        className={`relative aspect-square rounded-lg overflow-hidden cursor-pointer border-2 transition-all ${
-                                          isSelected ? 'border-[#DFB15B] scale-105 shadow-lg' : 'border-transparent hover:border-white/25'
-                                        }`}
-                                      >
-                                        <img src={img} alt="AI Concept render" className="w-full h-full object-cover" />
-                                        {isSelected && (
-                                          <div className="absolute inset-0 bg-[#DFB15B]/15 flex items-center justify-center">
-                                            <div className="p-1 bg-[#140603] rounded-full border border-[#DFB15B]/30">
-                                              <CheckIcon className="w-3 h-3 text-[#DFB15B] font-bold" />
-                                            </div>
-                                          </div>
-                                        )}
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                                <p className="text-[9px] text-white/40 italic leading-none text-center">Click a concept thumbnail to load it in the editor.</p>
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                  <div ref={chatEndRef} />
-                </div>
-
-                {/* Chat Input */}
-                <div className="mt-4 pt-4 border-t border-white/10 flex gap-2">
-                  <Input
-                    placeholder="Describe cake idea or talk to Gemini..."
-                    value={chatInput}
-                    onChange={e => setChatInput(e.target.value)}
-                    onKeyDown={e => {
-                      if (e.key === 'Enter') handleSendChatMessage();
-                    }}
-                    disabled={isChatSending}
-                    className="h-12 rounded-xl bg-[#140603]/80 border border-white/10 px-4 text-xs font-bold placeholder-white/20 text-white focus:border-[#DFB15B]/30 focus:ring-1 focus:ring-[#DFB15B]/30"
-                  />
-                  <Button
-                    type="button"
-                    onClick={handleSendChatMessage}
-                    disabled={isChatSending || !chatInput.trim()}
-                    className="h-12 w-12 rounded-xl bg-[#DFB15B] hover:bg-white text-[#140603] flex items-center justify-center transition-all shrink-0"
-                  >
-                    {isChatSending ? (
-                      <Loader2 className="w-5 h-5 animate-spin text-[#140603]" />
-                    ) : (
-                      <Send className="w-4 h-4 text-[#140603]" />
-                    )}
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            {/* COLUMN 2: CULINARY BASIC VALUES & IMAGE (xl:col-span-4 lg:col-span-6 col-span-12) */}
-            <div className="xl:col-span-4 lg:col-span-6 col-span-12 space-y-8 text-left">
-              
-              {/* CORE FIELDS: NAME, CATEGORY, TYPE, AVAILABLE WEIGHTS */}
-              <div className="bg-[#26130F]/45 backdrop-blur-md border border-[#DFB15B]/15 rounded-[36px] p-8 shadow-xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-[#DFB15B]/5 rounded-full blur-2xl -z-10" />
-                
-                <h3 className="text-xs font-black uppercase tracking-widest text-[#DFB15B] mb-6 flex items-center gap-2">
-                  <Plus className="w-5 h-5 text-[#DFB15B]" /> Configure Culinary Basic Values
-                </h3>
-
-                {/* Cake Name */}
-                <div className="space-y-2 mb-6">
-                  <label className="text-[10px] uppercase font-black tracking-widest text-[#FFFDFB]/60 block">Cake Product Name *</label>
-                  <Input 
-                    placeholder="Ex. 24K Gold Flake Truffle Tower"
-                    value={prodName}
-                    onChange={e => setProdName(e.target.value)}
-                    className="h-14 rounded-xl bg-[#140603]/80 border border-[#DFB15B]/15 p-4 text-xs font-bold text-white focus:border-[#DFB15B]/40 focus:ring-1 focus:ring-[#DFB15B]/40"
-                    required
-                  />
-                </div>
-
-                {/* Categories Selection */}
-                <div className="space-y-2.5 mb-6">
-                  <label className="text-[10px] uppercase font-black tracking-widest text-[#FFFDFB]/60 block">Select Category *</label>
-                  <select
-                    value={selectedCategory}
-                    onChange={e => setSelectedCategory(e.target.value)}
-                    className="h-14 w-full rounded-xl bg-[#140603]/80 border border-[#DFB15B]/15 px-4 text-xs font-bold text-white focus:border-[#DFB15B]/40 focus:ring-1 focus:ring-[#DFB15B]/40 cursor-pointer"
-                  >
-                    {categoriesList.map(category => (
-                      <option key={category} value={category} className="bg-[#140603] text-white">
-                        {category}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Cake Type Selector */}
-                <div className="space-y-2.5 mb-6">
-                  <label className="text-[10px] uppercase font-black tracking-widest text-[#FFFDFB]/60 block">Select Cake Culinary Type *</label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {[
-                      { label: '🌿 Eggless', value: 'Eggless' },
-                      { label: '🥚 With Egg', value: 'Regular' },
-                      { label: '🧁 Both', value: 'Both Available' }
-                    ].map(type => (
-                      <button
-                        type="button"
-                        key={type.value}
-                        onClick={() => setSelectedCakeType(type.value)}
-                        className={`text-[10px] font-black uppercase tracking-wider py-3.5 rounded-xl border text-center transition-all duration-350 cursor-pointer ${
-                          selectedCakeType === type.value
-                            ? 'bg-[#DFB15B] text-[#140603] border-[#DFB15B] shadow-md shadow-[#DFB15B]/10 font-black'
-                            : 'bg-[#140603]/80 border-white/10 text-white/50 hover:text-white'
-                        }`}
-                      >
-                        {type.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Weights checklist capsules */}
-                <div className="space-y-2.5">
-                  <label className="text-[10px] uppercase font-black tracking-widest text-[#FFFDFB]/60 block">Select Available Weights *</label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {[0.5, 1.0, 1.5, 2.0, 3.0, 4.0].map(w => {
-                      const active = selectedWeights.includes(w);
-                      return (
-                        <button
-                          type="button"
-                          key={w}
-                          onClick={() => {
-                            if (active) {
-                              setSelectedWeights(selectedWeights.filter(item => item !== w));
-                            } else {
-                              setSelectedWeights([...selectedWeights, w].sort((a,b)=>a-b));
-                            }
-                          }}
-                          className={`text-[10px] font-mono font-bold py-3.5 rounded-xl border text-center transition-all duration-300 cursor-pointer ${
-                            active
-                              ? 'bg-[#DFB15B]/25 text-[#DFB15B] border-[#DFB15B] font-extrabold'
-                              : 'bg-[#140603]/80 border-white/10 text-white/40 hover:text-white'
-                          }`}
-                        >
-                          {w === 0.5 ? '0.5 Kg' : `${w.toFixed(1)} Kg`} {active ? '✓' : ''}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-              </div>
-
-              {/* IMAGE SELECTION MODE TOOL: UPLOAD VS LINK */}
-              <div className="bg-[#26130F]/45 backdrop-blur-md border border-[#DFB15B]/15 rounded-[36px] p-6 shadow-xl space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-black uppercase tracking-widest text-[#DFB15B] flex items-center gap-2">
-                    <UploadCloud className="w-5 h-5 text-[#DFB15B]" /> Image Setup Option
-                  </h3>
-                  
-                  {/* Switch toggle control */}
-                  <div className="flex bg-[#140603]/80 p-0.5 border border-white/10 rounded-xl">
-                    <button
-                      type="button"
-                      onClick={() => setImageUrlMode('upload')}
-                      className={`text-[9px] font-black uppercase tracking-widest px-3.5 py-1.5 rounded-lg cursor-pointer ${
-                        imageUrlMode === 'upload' ? 'bg-[#DFB15B] text-[#140603]' : 'text-white/45'
-                      }`}
-                    >
-                      File Upload
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setImageUrlMode('url')}
-                      className={`text-[9px] font-black uppercase tracking-widest px-3.5 py-1.5 rounded-lg cursor-pointer ${
-                        imageUrlMode === 'url' ? 'bg-[#DFB15B] text-[#140603]' : 'text-white/45'
-                      }`}
-                    >
-                      Paste Link
-                    </button>
-                  </div>
-                </div>
-
-                {imageUrlMode === 'url' ? (
-                  <div className="space-y-4 text-left">
-                    <p className="text-[10px] text-white/40 italic leading-relaxed">
-                      Copy and paste any direct image address link (e.g. from Unsplash, Google Photos or Instagram links).
-                    </p>
-                    <Input 
-                      placeholder="Paste direct Image URL address link..."
-                      value={pastedImageUrl}
-                      onChange={e => setPastedImageUrl(e.target.value)}
-                      className="h-14 rounded-xl bg-[#140603]/80 border border-white/10 p-4 text-xs font-semibold text-white placeholder-white/20 w-full"
-                    />
-                    {pastedImageUrl && (
-                      <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden border border-[#DFB15B]/15 bg-[#140603]">
-                        <img src={pastedImageUrl} alt="Pasted direct preview" className="w-full h-full object-cover" />
-                        {specsGenerating && (
-                          <>
-                            <div className="absolute left-0 right-0 h-1.5 bg-gradient-to-r from-transparent via-[#DFB15B] to-transparent shadow-[0_0_12px_#DFB15B] z-20 animate-laser-scan pointer-events-none" />
-                            <div className="absolute inset-0 bg-[#DFB15B]/10 animate-pulse z-10 pointer-events-none" />
-                          </>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="space-y-4 text-left">
-                    <div className="relative border border-dashed border-[#DFB15B]/20 rounded-[28px] overflow-hidden bg-[#140603]/80 group hover:border-[#DFB15B]/50 transition-colors">
-                      <input 
-                        type="file" 
-                        accept="image/*" 
-                        onChange={handleImageUpload} 
-                        disabled={aiOptimizing}
-                        className="absolute inset-0 opacity-0 cursor-pointer z-10" 
-                      />
-                      
-                      {newProductImage ? (
-                        <div className="relative aspect-[4/3] w-full">
-                          <img src={newProductImage} alt="Cake preview lookup" className="w-full h-full object-cover" />
-                          {specsGenerating && (
-                            <>
-                              <div className="absolute left-0 right-0 h-1.5 bg-gradient-to-r from-transparent via-[#DFB15B] to-transparent shadow-[0_0_12px_#DFB15B] z-20 animate-laser-scan pointer-events-none" />
-                              <div className="absolute inset-0 bg-[#DFB15B]/10 animate-pulse z-10 pointer-events-none" />
-                            </>
-                          )}
-                          <div className="absolute inset-x-0 bottom-0 bg-black/80 backdrop-blur-md p-3 text-center border-t border-white/10">
-                            <p className="text-[10px] text-[#DFB15B] font-bold italic flex items-center justify-center gap-1.5 leading-none">
-                              <CheckIcon className="w-4 h-4 text-emerald-500" /> Image uploaded successfully!
-                            </p>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="py-12 text-center space-y-3 px-4">
-                          <UploadCloud className="w-8 h-8 text-[#DFB15B] mx-auto" />
-                          <div className="space-y-1">
-                            <p className="text-xs font-bold text-white">Click or drag file here</p>
-                            <p className="text-[9px] text-white/40 font-semibold font-mono">PNG, JPE, or HEIC</p>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {newProductImage && (
-                      <Button
-                        type="button"
-                        onClick={triggerAiSeoOptimization}
-                        disabled={aiOptimizing}
-                        className="w-full h-11 rounded-xl bg-[#DFB15B]/10 hover:bg-[#DFB15B] text-[#DFB15B] hover:text-[#140603] text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2 cursor-pointer"
-                      >
-                        <Eye className="w-4 h-4" /> Analyze upload reference values
-                      </Button>
-                    )}
-                  </div>
-                )}
-              </div>
-
-            </div>
-
-            {/* COLUMN 3: CORE SEC SPECIFICATIONS FORM (xl:col-span-4 lg:col-span-6 col-span-12) */}
-            <div className="xl:col-span-4 lg:col-span-6 col-span-12">
-              <div className="bg-[#26130F]/45 backdrop-blur-md border border-[#DFB15B]/15 rounded-[44px] p-8 md:p-11 shadow-xl text-left space-y-8">
-                
-                {/* AI MAGIC SINGLE CLICK BULK CONFIGURATION */}
-                <div className="bg-gradient-to-r from-[#DFB15B]/15 to-transparent border border-[#DFB15B]/20 p-6 rounded-[28px] relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-[#DFB15B]/5 rounded-full blur-xl -z-10" />
-                  
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 bg-[#DFB15B]/15 text-[#DFB15B] rounded-2xl border border-[#DFB15B]/25">
-                      <Sparkles className="w-6 h-6 animate-pulse" />
-                    </div>
-                    <div className="space-y-1.5 flex-1">
-                      <h4 className="text-xs font-black uppercase tracking-widest text-[#DFB15B] flex items-center gap-1.5">
-                        🪄 Instant AI Auto-Fill Form
-                      </h4>
-                      <p className="text-[11px] text-[#FFFDFB]/70 leading-relaxed italic">
-                        Upload or paste an image, type a cake name, and click below! Gemini will read the image, read the name, and automatically auto-populate ALL product details & SEO metadata instantly with zero error!
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-4">
-                    <Button
-                      type="button"
-                      onClick={() => handleMagicAiAutofill(false)}
-                      disabled={specsGenerating}
-                      className="w-full h-14 rounded-2xl bg-[#DFB15B] hover:bg-white text-[#140603] text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2 shadow-[0_4px_25px_rgba(223,177,91,0.25)] transition-all cursor-pointer disabled:opacity-40 animate-pulse duration-1000 font-bold"
-                    >
-                      {specsGenerating ? (
-                        <>
-                          <Loader2 className="w-5 h-5 animate-spin text-[#140603]" />
-                          <span>AI reading image & filling details...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Sparkles className="w-5 h-5 text-[#140603]" />
-                          <span>1-Click AI Auto-Fill Form (Reads Image & Name)</span>
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </div>
-
-                <form onSubmit={handlePublishProduct} className="space-y-8">
-                  <div className="border-b border-white/10 pb-4">
-                    <h3 className="text-md font-serif font-bold italic text-white flex items-center gap-2">
-                      <Award className="w-5 h-5 text-[#DFB15B]" /> Custom Confection Parameters Form
-                    </h3>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Price */}
-                    <div className="space-y-2">
-                      <label className="text-[10px] uppercase font-black tracking-widest text-[#FFFDFB]/60 block font-bold">INR Selling Pricing (₹) *</label>
-                      <Input 
-                        type="number"
-                        placeholder="Ex. 1499"
-                        value={prodPrice}
-                        onChange={e => setProdPrice(e.target.value)}
-                        className="h-14 rounded-xl bg-[#140603]/80 border border-white/10 p-4 text-xs font-mono font-bold text-white focus:border-[#DFB15B]/40 focus:ring-1 focus:ring-[#DFB15B]/40"
-                        required
-                      />
-                    </div>
-
-                    {/* Secondary categories */}
-                    <div className="space-y-2">
-                      <label className="text-[10px] uppercase font-black tracking-widest text-[#FFFDFB]/60 block">Additional Categories (comma-separated)</label>
-                      <Input 
-                        placeholder="Ex. Customcakes, BelgianTruffle"
-                        value={prodCategories}
-                        onChange={e => setProdCategories(e.target.value)}
-                        className="h-14 rounded-xl bg-[#140603]/80 border border-white/10 p-4 text-xs font-semibold"
-                      />
-                    </div>
-
-                    {/* Flavors */}
-                    <div className="space-y-2">
-                      <label className="text-[10px] uppercase font-black tracking-widest text-[#FFFDFB]/60 block">Flavors (comma-separated)</label>
-                      <Input 
-                        placeholder="Ex. Cocoa sponge, Vanilla orchid cream"
-                        value={prodFlavors}
-                        onChange={e => setProdFlavors(e.target.value)}
-                        className="h-14 rounded-xl bg-[#140603]/80 border border-white/10 p-4 text-xs font-semibold"
-                      />
-                    </div>
-
-                    {/* Occasions */}
-                    <div className="space-y-2">
-                      <label className="text-[10px] uppercase font-black tracking-widest text-[#FFFDFB]/60 block">Occasions (comma-separated)</label>
-                      <Input 
-                        placeholder="Ex. Birthday, Anniversary"
-                        value={prodOccasions}
-                        onChange={e => setProdOccasions(e.target.value)}
-                        className="h-14 rounded-xl bg-[#140603]/80 border border-white/10 p-4 text-xs font-semibold"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Taste description */}
-                  <div className="space-y-2">
-                    <label className="text-[10px] uppercase font-black tracking-widest text-[#FFFDFB]/60 block">Rich taste & Design description</label>
-                    <textarea 
-                      rows={4}
-                      placeholder="Taste notes, design detail..."
-                      value={prodDescription}
-                      onChange={e => setProdDescription(e.target.value)}
-                      className="w-full rounded-xl bg-[#140603]/80 border border-white/10 p-4 text-xs font-medium leading-relaxed focus:outline-none focus:border-[#DFB15B] text-white"
-                    />
-                  </div>
-
-                  {/* Real-Time Automated SEO Engine & Google SERP Simulator */}
-                  <div className="border-t border-[#DFB15B]/20 pt-6 space-y-6 bg-gradient-to-br from-[#140603] to-[#1E0B07] p-6 rounded-[28px] border">
-                    
-                    {/* Header with Live SEO Score Meter */}
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
-                      <div>
-                        <h4 className="text-xs font-black uppercase tracking-[0.2em] text-[#DFB15B] flex items-center gap-2">
-                          <Sparkles className="w-4 h-4 text-[#DFB15B]" /> Real-Time Auto-SEO Optimizer
-                        </h4>
-                        <p className="text-[10px] text-white/50 italic mt-0.5">
-                          Ensures high ranking on Google Search when products are listed
-                        </p>
-                      </div>
-
-                      {/* SEO Score Gauge */}
-                      <div className="flex items-center gap-3 bg-black/40 px-4 py-2 rounded-2xl border border-white/10 shrink-0">
-                        <div className="text-right">
-                          <span className="text-[9px] uppercase font-black tracking-widest text-white/50 block">SEO Health</span>
-                          <span className={`text-xs font-black font-mono ${
-                            calculateSeoScore() >= 80 ? 'text-emerald-400' :
-                            calculateSeoScore() >= 50 ? 'text-amber-400' : 'text-rose-400'
-                          }`}>
-                            {calculateSeoScore()}% - {calculateSeoScore() >= 80 ? 'Excellent' : calculateSeoScore() >= 50 ? 'Good' : 'Needs Optimization'}
-                          </span>
-                        </div>
-                        <div className="w-10 h-10 rounded-full border-2 flex items-center justify-center font-black text-xs font-mono shrink-0 shadow-lg"
-                             style={{
-                               borderColor: calculateSeoScore() >= 80 ? '#34D399' : calculateSeoScore() >= 50 ? '#FBBF24' : '#F87171',
-                               backgroundColor: calculateSeoScore() >= 80 ? 'rgba(52,211,153,0.1)' : 'rgba(251,191,36,0.1)'
-                             }}>
-                          {calculateSeoScore()}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* 1-Click Auto-SEO Generator Button */}
-                    <Button
-                      type="button"
-                      onClick={autoGenerateSeoForProduct}
-                      className="w-full h-12 rounded-xl bg-[#DFB15B] hover:bg-white text-[#140603] text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2 shadow-lg cursor-pointer transition-all active:scale-95 font-bold"
-                    >
-                      <Sparkles className="w-4 h-4 text-[#140603]" />
-                      <span>⚡ 1-Click Auto-Generate High-Ranking SEO Metatags & Slug</span>
-                    </Button>
-
-                    <div className="grid grid-cols-1 gap-4">
-                      {/* SEO Title */}
-                      <div className="space-y-1.5">
-                        <div className="flex justify-between items-center">
-                          <label className="text-[9px] uppercase font-black tracking-widest text-[#DFB15B] block">
-                            Google Search SEO Title Tag
-                          </label>
-                          <span className="text-[9px] font-mono text-white/40">
-                            {(prodSeoTitle || prodName).length} / 60 chars
-                          </span>
-                        </div>
-                        <Input 
-                          placeholder="Ex. ⚡ 100% Eggless Belgian Chocolate Cake in Faridabad | Express 2-Hr Delivery"
-                          value={prodSeoTitle}
-                          onChange={e => setProdSeoTitle(e.target.value)}
-                          className="h-11 rounded-lg bg-[#030712] border-white/10 p-3 text-xs text-[#FFFDFB] focus:border-[#DFB15B]"
-                        />
-                      </div>
-
-                      {/* Path slug */}
-                      <div className="space-y-1.5">
-                        <label className="text-[9px] uppercase font-black tracking-widest text-[#DFB15B] block">
-                          URL Path Slug (Indexed by Google)
-                        </label>
-                        <Input 
-                          placeholder="Ex. eggless-belgian-chocolate-truffle-cake-faridabad"
-                          value={prodSeoSlug}
-                          onChange={e => setProdSeoSlug(e.target.value)}
-                          className="h-11 rounded-lg bg-[#030712] border-white/10 p-3 text-xs font-mono text-[#FFFDFB] focus:border-[#DFB15B]"
-                        />
-                      </div>
-
-                      {/* Meta Description */}
-                      <div className="space-y-1.5">
-                        <div className="flex justify-between items-center">
-                          <label className="text-[9px] uppercase font-black tracking-widest text-[#DFB15B] block">
-                            Google Meta Description Tag
-                          </label>
-                          <span className="text-[9px] font-mono text-white/40">
-                            {(prodSeoMetaDescription || prodDescription).length} / 160 chars
-                          </span>
-                        </div>
-                        <Input 
-                          placeholder="Ex. Order 100% Eggless Belgian Chocolate Cake online in Faridabad starting @ ₹499. Freshly baked..."
-                          value={prodSeoMetaDescription}
-                          onChange={e => setProdSeoMetaDescription(e.target.value)}
-                          className="h-11 rounded-lg bg-[#030712] border-white/10 p-3 text-xs text-[#FFFDFB] focus:border-[#DFB15B]"
-                        />
-                      </div>
-                    </div>
-
-                    {/* LIVE GOOGLE SEARCH SERP PREVIEW BOX */}
-                    <div className="bg-[#030712] border border-slate-800 rounded-2xl p-5 space-y-3 shadow-inner">
-                      <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                        <span className="text-[9px] uppercase font-black tracking-widest text-slate-400 flex items-center gap-1.5">
-                          <Eye className="w-3.5 h-3.5 text-blue-400" /> Live Google Search Result Preview
-                        </span>
-                        <span className="text-[8px] uppercase font-black tracking-widest text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/20">
-                          Index-Ready
-                        </span>
-                      </div>
-
-                      <div className="space-y-1 text-left font-sans">
-                        <div className="flex items-center gap-2 text-xs text-slate-300 font-normal">
-                          <div className="w-4 h-4 rounded-full bg-[#DFB15B] text-[#140603] flex items-center justify-center font-serif font-black text-[9px] shrink-0">
-                            C
-                          </div>
-                          <span className="text-slate-300 font-medium">CakeUrban</span>
-                          <span className="text-slate-500">https://www.cakeurban.com › product › {prodSeoSlug || 'product-slug'}</span>
-                        </div>
-
-                        <h5 className="text-base font-semibold text-[#8AB4F8] hover:underline cursor-pointer leading-snug">
-                          {prodSeoTitle || `${prodName || 'Designer Cake'} in Faridabad | CakeUrban`}
-                        </h5>
-
-                        <p className="text-xs text-slate-300 leading-relaxed font-normal">
-                          {prodSeoMetaDescription || prodDescription || 'Order 100% Eggless designer cakes online in Faridabad with express 2-hour home delivery and midnight delivery across Faridabad & Delhi NCR.'}
-                        </p>
-
-                        <div className="flex items-center gap-3 pt-1 text-[11px] text-slate-400">
-                          <span className="text-amber-400 font-bold">⭐⭐⭐⭐⭐ 4.9 (128)</span>
-                          <span>·</span>
-                          <span className="text-emerald-400 font-bold">₹{prodPrice || '499'}</span>
-                          <span>·</span>
-                          <span className="text-slate-300">In stock</span>
-                          <span>·</span>
-                          <span className="text-purple-300 font-semibold">100% Eggless</span>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-
-                  {/* FORM ACTIONS */}
-                  <div className="pt-6 border-t border-white/10 flex gap-4">
-                    <Button 
-                      type="button"
-                      variant="outline"
-                      onClick={() => setActiveTab('products')}
-                      className="flex-1 h-14 rounded-2xl border-white/10 text-white hover:bg-white/5 text-[10px] font-black uppercase tracking-wider cursor-pointer"
-                    >
-                      Discard Draft
-                    </Button>
-                    <Button 
-                      type="submit"
-                      className="flex-[2] h-14 rounded-2xl bg-[#DFB15B] hover:bg-white text-[#140603] text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl transition-all active:scale-95 cursor-pointer font-bold duration-300"
-                    >
-                      Deploy Masterpiece Live (1-Click)
-                    </Button>
-                  </div>
-                </form>
-
-              </div>
-            </div>
-          </motion.div>
-        </div>
       ) : (
         /* CORE STATS & FIVE INTERACTIVE COMMAND SECTIONS */
         <motion.div
@@ -4348,277 +3442,91 @@ export default function AdminDashboard() {
               </div>
               )}
 
-              {/* 🧁 TAB 4: BOUTIQUE CATALOG GALLERY INVENTORY */}
+              {/* 🛍️ SHOPIFY-LIKE PRODUCTS CATALOG MANAGER */}
               {activeTab === 'products' && (
-                <div className="mt-8">
-                  {/* Category Sequence Reordering Studio & Bulk Actions Manager */}
-                  <div className="flex flex-col gap-6 mb-8 p-6 bg-[#26130F]/45 rounded-[32px] border border-[#DFB15B]/15 text-white/90 text-left">
-                    {/* Section 1: Dynamic Category Manager & Reordering */}
-                    <div className="space-y-4">
-                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div>
-                          <h3 className="font-serif font-black text-white text-lg tracking-tight italic flex items-center gap-2">
-                            <Settings className="w-5 h-5 text-[#DFB15B]" /> Category Reordering & Sequence Studio
-                          </h3>
-                          <p className="text-[10px] text-white/50">
-                            Rearrange and control how your boutique collections appear in the shop. Select a position number or use the arrow buttons.
-                          </p>
-                        </div>
-                        {/* Add custom category */}
-                        <div className="flex gap-2 w-full md:w-auto max-w-md shrink-0">
-                          <Input 
-                            placeholder="Add Category (e.g. Birthday Cakes)"
-                            value={newCategoryName}
-                            onChange={e => setNewCategoryName(e.target.value)}
-                            className="h-10 bg-[#140603]/80 border-white/10 text-xs text-white rounded-xl focus:border-[#DFB15B]/40"
-                          />
-                          <Button 
-                            onClick={handleAddCategory}
-                            className="bg-[#DFB15B] hover:bg-white text-[#140603] text-xs font-black uppercase px-4 h-10 rounded-xl cursor-pointer font-bold shrink-0 transition"
-                          >
-                            Add
-                          </Button>
-                        </div>
-                      </div>
-
-                      {/* Categories reorder grid list */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 pt-2">
-                        {categoriesList.map((cat, idx) => (
-                          <div key={cat} className="flex items-center justify-between p-3 rounded-2xl bg-[#140603]/60 border border-white/5 text-xs hover:border-[#DFB15B]/25 transition duration-300">
-                            <div className="truncate pr-2">
-                              <span className="text-white/40 font-mono font-bold mr-1.5">{idx + 1}.</span>
-                              <span className="font-semibold text-white">{cat}</span>
-                            </div>
-                            <div className="flex items-center gap-1 shrink-0">
-                              {/* Position Dropdown Select */}
-                              <select
-                                value={idx}
-                                onChange={e => handleReorderCategorySelect(idx, e.target.value)}
-                                className="bg-[#140603] text-[#DFB15B] text-[10px] border border-white/10 rounded-lg px-1.5 py-1 h-7 cursor-pointer font-bold focus:border-[#DFB15B]/40"
-                              >
-                                {categoriesList.map((_, pIdx) => (
-                                  <option key={pIdx} value={pIdx}>
-                                    Pos {pIdx + 1}
-                                  </option>
-                                ))}
-                              </select>
-
-                              {/* Move Up Button */}
-                              <button
-                                type="button"
-                                disabled={idx === 0}
-                                onClick={() => handleMoveCategory(idx, 'up')}
-                                className="text-white/60 hover:text-[#DFB15B] disabled:opacity-20 disabled:hover:text-white/60 h-7 w-7 flex items-center justify-center rounded-lg bg-[#140603] border border-white/10"
-                                title="Move Up"
-                              >
-                                ↑
-                              </button>
-
-                              {/* Move Down Button */}
-                              <button
-                                type="button"
-                                disabled={idx === categoriesList.length - 1}
-                                onClick={() => handleMoveCategory(idx, 'down')}
-                                className="text-white/60 hover:text-[#DFB15B] disabled:opacity-20 disabled:hover:text-white/60 h-7 w-7 flex items-center justify-center rounded-lg bg-[#140603] border border-white/10"
-                                title="Move Down"
-                              >
-                                ↓
-                              </button>
-
-                              {/* Remove Button */}
-                              <button
-                                type="button"
-                                onClick={() => handleRemoveCategory(cat)}
-                                className="text-rose-400 hover:text-rose-500 h-7 w-7 flex items-center justify-center rounded-lg bg-rose-500/10 border border-rose-500/20"
-                                title="Remove Category"
-                              >
-                                🗑️
-                              </button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Section 2: Bulk Actions Control Bar */}
-                    <div className="border-t border-white/10 pt-5 flex flex-wrap items-center justify-between gap-4">
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="checkbox"
-                          id="selectAllProducts"
-                          checked={products.length > 0 && selectedProductIds.length === products.length}
-                          onChange={e => {
-                            if (e.target.checked) {
-                              setSelectedProductIds(products.map(p => p.id));
-                            } else {
-                              setSelectedProductIds([]);
-                            }
-                          }}
-                          className="w-5 h-5 rounded-md border-[#DFB15B]/30 text-[#DFB15B] focus:ring-[#DFB15B]/30 bg-[#140603] cursor-pointer"
-                        />
-                        <label htmlFor="selectAllProducts" className="text-xs font-bold uppercase tracking-wider text-white/70 cursor-pointer select-none">
-                          Select All Products ({selectedProductIds.length} of {products.length} selected)
-                        </label>
-                      </div>
-
-                       <div className="flex flex-wrap gap-2">
-                        {products.length > 0 && (
-                          <Button
-                            onClick={handleClearAllProducts}
-                            className="bg-red-950/40 border border-red-700/50 hover:bg-red-900/60 text-red-200 font-bold uppercase text-xs px-5 h-10 rounded-xl shadow-lg flex items-center gap-2 cursor-pointer transition-all duration-300 hover:scale-105"
-                          >
-                            <Trash2 className="w-4 h-4" /> Clear All Cakes
-                          </Button>
-                        )}
-
-                        {selectedProductIds.length > 0 && (
-                          <Button
-                            onClick={handleBulkDelete}
-                            className="bg-rose-600 hover:bg-rose-700 text-white font-black uppercase text-xs px-5 h-10 rounded-xl shadow-lg flex items-center gap-2 cursor-pointer transition-all duration-300 transform hover:scale-105"
-                          >
-                            <Trash2 className="w-4 h-4" /> Bulk Delete Selected ({selectedProductIds.length})
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {products.length === 0 ? (
-                      <div className="col-span-full py-24 text-center space-y-4 bg-[#26130F]/45 rounded-3xl border border-[#DFB15B]/15">
-                        <Package className="w-12 h-12 text-[#DFB15B]/20 mx-auto" />
-                        <p className="text-xs text-[#FFFDFB]/60 font-semibold italic">No active confections in catalog.</p>
-                      </div>
-                    ) : (
-                      products.map(p => (
-                        <Card key={p.id} className="rounded-[44px] border border-[#DFB15B]/15 overflow-hidden bg-[#26130F]/45 shadow-xl flex flex-col justify-between text-left">
-                          
-                          <div className="aspect-[4/3] relative p-3 bg-[#140603]/40">
-                            {/* Individual Checkbox Selection */}
-                            <div className="absolute top-6 left-6 z-10">
-                              <input
-                                type="checkbox"
-                                checked={selectedProductIds.includes(p.id)}
-                                onChange={e => {
-                                  if (e.target.checked) {
-                                    setSelectedProductIds([...selectedProductIds, p.id]);
-                                  } else {
-                                    setSelectedProductIds(selectedProductIds.filter(id => id !== p.id));
-                                  }
-                                }}
-                                className="w-6 h-6 rounded-lg border-2 border-[#DFB15B]/40 bg-[#140603]/80 text-[#DFB15B] focus:ring-[#DFB15B]/40 cursor-pointer shadow-lg transition-transform duration-200 active:scale-95"
-                              />
-                            </div>
-
-                            <img src={p.images?.[0]} className="w-full h-full object-cover rounded-[32px]" alt={p.name} />
-                          
-                          <div className="absolute top-6 right-6 flex flex-col gap-1.5 items-end">
-                            {/* Stock Toggle status Badge click */}
-                            <button
-                              type="button"
-                              onClick={() => handleToggleStock(p.id, p.stockStatus)}
-                              className="focus:outline-none"
-                            >
-                              <Badge className={`border-none font-bold text-[8px] tracking-widest uppercase px-3 py-1.5 rounded-full cursor-pointer shadow-xl ${
-                                p.stockStatus === 'in-stock' ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'
-                              }`}>
-                                {p.stockStatus === 'in-stock' ? '🟢 In Stock' : '🔴 Baking Reservation'}
-                              </Badge>
-                            </button>
-
-                            {p.seoSlug && (
-                              <Badge className="bg-[#DFB15B] text-[#140603] border-none shadow-md font-black text-[8px] uppercase tracking-wider px-3.5 py-1.5 rounded-full flex items-center gap-1">
-                                <Sparkles className="w-3 h-3 text-[#140603]" /> SEO Active
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-
-                        <CardContent className="p-8 flex-1 flex flex-col justify-between space-y-6">
-                          <div className="space-y-4">
-                            <div>
-                              <p className="text-[9px] uppercase tracking-[0.2em] font-black text-white/30 block mb-0.5">confectionery item</p>
-                              <h3 className="font-display font-black text-white text-xl tracking-tight italic leading-tight">{p.name}</h3>
-                              <p className="text-[10px] text-[#FFFDFB]/50 font-medium italic leading-relaxed line-clamp-2 mt-1">{p.description}</p>
-                            </div>
-
-                            {/* Info Lists */}
-                            <div className="space-y-1.5">
-                              <p className="text-[9px] font-bold text-[#DFB15B] uppercase tracking-widest leading-none">
-                                Categories: <span className="text-white/70 font-sans font-medium lowercase tracking-normal">{p.categories?.join(', ')}</span>
-                              </p>
-                              <p className="text-[9px] font-bold text-white/40 uppercase tracking-widest leading-none">
-                                Flavors: <span className="text-white/75 font-sans font-medium">{p.flavors?.join(', ')}</span>
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* Catalog Pricing Actions */}
-                          <div className="pt-4 border-t border-white/15 flex items-center justify-between">
-                            {editingPriceId === p.id ? (
-                              <div className="flex items-center gap-1.5">
-                                <span className="text-white text-lg font-serif italic text-[#DFB15B]">₹</span>
-                                <Input 
-                                  type="number"
-                                  value={tempPriceValue}
-                                  onChange={e => setTempPriceValue(e.target.value)}
-                                  className="w-20 bg-[#140603] rounded-lg border-white/10 text-xs font-mono font-bold h-9 text-white px-2 py-1"
-                                />
-                                <Button 
-                                  onClick={() => handleSavePrice(p.id)}
-                                  className="h-9 px-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg text-[9px] font-black tracking-wider uppercase cursor-pointer"
-                                >
-                                  Save
-                                </Button>
-                                <Button 
-                                  onClick={() => setEditingPriceId(null)}
-                                  variant="ghost"
-                                  className="h-9 px-1 text-white/40 text-[9px] font-bold rounded-lg cursor-pointer"
-                                >
-                                  X
-                                </Button>
-                              </div>
-                            ) : (
-                              <div className="space-y-0.5">
-                                <span className="font-serif font-black text-[#DFB15B] text-2xl italic">₹{p.price}</span>
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setEditingPriceId(p.id);
-                                    setTempPriceValue(p.price.toString());
-                                  }}
-                                  className="text-[9px] uppercase tracking-widest text-[#FFFDFB]/40 block hover:text-[#DFB15B] font-bold cursor-pointer underline"
-                                >
-                                  Adjust Price
-                                </button>
-                              </div>
-                            )}
-
-                            <div className="flex items-center gap-2">
-                              <Button 
-                                onClick={() => initiateProductEdit(p)}
-                                className="bg-[#DFB15B] hover:bg-white text-[#140603] text-[9px] font-black uppercase tracking-widest h-10 px-3.5 rounded-xl cursor-pointer transition-all duration-300 shadow-[0_2px_10px_rgba(223,177,91,0.15)] font-bold"
-                              >
-                                Edit Details
-                              </Button>
-                              <Button 
-                                onClick={() => handleDeleteProduct(p.id)}
-                                variant="ghost" 
-                                className="rounded-xl border border-white/5 hover:border-rose-500/20 text-white/30 hover:text-rose-400 p-2 h-10 w-10 cursor-pointer transition duration-300"
-                                title="Delete Product"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          </div>
-
-                        </CardContent>
-
-                      </Card>
-                    ))
-                  )}
+                <div className="mt-6">
+                  <ShopifyProductsTable
+                    products={products}
+                    categoriesList={categoriesList}
+                    onAddProduct={() => {
+                      setEditingProduct(null);
+                      setActiveTab('add-product');
+                    }}
+                    onEditProduct={(p) => {
+                      setEditingProduct(p);
+                      setActiveTab('edit-product');
+                    }}
+                    onDeleteProduct={handleDeleteProduct}
+                    onBulkDelete={handleBulkDelete}
+                    onBulkUpdateStatus={async (ids, status) => {
+                      setProducts(prev => prev.map(p => ids.includes(p.id) ? { ...p, stockStatus: status } : p));
+                      for (const id of ids) {
+                        try {
+                          await updateDoc(doc(db, 'products', id), { stockStatus: status });
+                        } catch (err) {
+                          console.error(err);
+                        }
+                      }
+                      toast.success(`Updated ${ids.length} products to ${status}`);
+                    }}
+                    onBulkAssignCategory={handleBulkAssignCategory}
+                    onQuickUpdatePrice={async (id, price) => {
+                      setProducts(prev => prev.map(p => p.id === id ? { ...p, price } : p));
+                      try {
+                        await updateDoc(doc(db, 'products', id), { price });
+                        toast.success('Price updated successfully');
+                      } catch (err) {
+                        console.error(err);
+                      }
+                    }}
+                    onToggleStock={handleToggleStock}
+                    onDuplicateProduct={handleDuplicateProduct}
+                  />
                 </div>
-              </div>
+              )}
+
+              {/* 🗂️ SHOPIFY-LIKE COLLECTIONS & CATEGORIES MANAGER */}
+              {activeTab === 'categories' && (
+                <div className="mt-6">
+                  <ShopifyCategoriesManager
+                    categoriesList={categoriesList}
+                    products={products}
+                    onAddCategory={async (categoryName) => {
+                      if (!categoriesList.includes(categoryName)) {
+                        const updated = [...categoriesList, categoryName];
+                        setCategoriesList(updated);
+                        try {
+                          await setDoc(doc(db, 'settings', 'categories'), { list: updated });
+                          toast.success(`Category "${categoryName}" added to boutique!`);
+                        } catch (err) {
+                          console.error(err);
+                        }
+                      }
+                    }}
+                    onRemoveCategory={handleRemoveCategory}
+                    onReorderCategory={async (oldIdx, newIdx) => {
+                      const updated = [...categoriesList];
+                      const [moved] = updated.splice(oldIdx, 1);
+                      updated.splice(newIdx, 0, moved);
+                      setCategoriesList(updated);
+                      try {
+                        await setDoc(doc(db, 'settings', 'categories'), { list: updated });
+                        toast.success('Categories reordered in boutique');
+                      } catch (err) {
+                        console.error(err);
+                      }
+                    }}
+                    onBulkAssignCategory={handleBulkAssignCategory}
+                    onRemoveCategoryFromProducts={handleRemoveCategoryFromProducts}
+                  />
+                </div>
+              )}
+
+              {/* 🏷️ SHOPIFY-LIKE DISCOUNTS & COUPONS STUDIO */}
+              {activeTab === 'discounts' && (
+                <div className="mt-6">
+                  <ShopifyDiscountsManager />
+                </div>
               )}
 
               {/* 💬 TAB 5: GRAPHIC FEEDBACK STUDIO (REVIEWS MODERATION) */}

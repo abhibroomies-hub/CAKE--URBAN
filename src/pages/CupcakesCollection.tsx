@@ -198,7 +198,7 @@ export default function CupcakesCollection() {
     });
 
   return (
-    <div className="bg-[#FFF8FB] min-h-screen text-slate-800 font-sans relative select-none pb-24 md:pb-0 overflow-x-hidden">
+    <div className="bg-transparent min-h-screen text-[#FFFDFB] font-sans relative select-none pb-24 md:pb-0 overflow-x-hidden">
       
       {/* Background soft pastel lights (Dior + Chanel Vibe) */}
       <div className="absolute top-0 left-0 w-full h-[120vh] pointer-events-none overflow-hidden z-0">

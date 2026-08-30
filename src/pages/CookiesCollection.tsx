@@ -200,7 +200,7 @@ export default function CookiesCollection() {
     });
 
   return (
-    <div className="bg-[#FFF8FB] min-h-screen text-slate-800 font-sans relative select-none pb-24 md:pb-0 overflow-x-hidden">
+    <div className="bg-transparent min-h-screen text-[#FFFDFB] font-sans relative select-none pb-24 md:pb-0 overflow-x-hidden">
       
       {/* =========================================================
           LUXURY EDITORIAL BACKGROUND EFFECTS (Parallax-ready)

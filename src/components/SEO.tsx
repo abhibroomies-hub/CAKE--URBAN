@@ -6,13 +6,23 @@ interface SEOProps {
   keywords?: string;
   ogImage?: string;
   schema?: object;
+  noIndex?: boolean;
 }
 
-export default function SEO({ title, description, keywords, ogImage, schema }: SEOProps) {
+export default function SEO({ title, description, keywords, ogImage, schema, noIndex = false }: SEOProps) {
   useEffect(() => {
     // Update Document Title
     document.title = `${title} | Cake Urban - Premium Faridabad Bakery`;
     
+    // Update Meta Robots
+    let metaRobots = document.querySelector('meta[name="robots"]');
+    if (!metaRobots) {
+      metaRobots = document.createElement('meta');
+      metaRobots.setAttribute('name', 'robots');
+      document.head.appendChild(metaRobots);
+    }
+    metaRobots.setAttribute('content', noIndex ? 'noindex, follow' : 'index, follow');
+
     // Update Meta Description
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
@@ -173,7 +183,7 @@ export default function SEO({ title, description, keywords, ogImage, schema }: S
       }
     };
 
-  }, [title, description, keywords, ogImage, schema]);
+  }, [title, description, keywords, ogImage, schema, noIndex]);
 
   return null;
 }

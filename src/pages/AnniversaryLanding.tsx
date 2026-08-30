@@ -251,7 +251,7 @@ export default function AnniversaryLanding() {
   };
 
   return (
-    <div className="bg-[#FFF9FC] min-h-screen text-slate-850 font-sans relative select-none pb-16 md:pb-0">
+    <div className="bg-transparent min-h-screen text-[#FFFDFB] font-sans relative select-none pb-16 md:pb-0">
       
       {/* Soft romantic glowing gradient backgrounds */}
       <div className="absolute top-0 left-0 w-[55%] h-[40%] bg-gradient-to-br from-pink-200/30 via-rose-100/10 to-transparent blur-[160px] pointer-events-none" />

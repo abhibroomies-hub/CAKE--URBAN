@@ -202,7 +202,7 @@ export default function KidsLanding() {
   const activeChar = characters.find(c => c.name === selectedCharacter) || characters[0];
 
   return (
-    <div className="bg-slate-50 min-h-screen text-slate-800 font-sans relative select-none pb-16 md:pb-0">
+    <div className="bg-transparent min-h-screen text-[#FFFDFB] font-sans relative select-none pb-16 md:pb-0">
       
       {/* Background Playful Glowing Lights */}
       <div className="absolute top-0 left-[-5%] w-[55%] h-[40%] bg-gradient-to-tr from-rose-200/25 via-sky-100/10 to-transparent blur-[160px] pointer-events-none" />

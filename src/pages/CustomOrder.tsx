@@ -296,7 +296,7 @@ export default function CustomOrder() {
 
   return (
     <div 
-      className="relative min-h-screen bg-gradient-to-tr from-[#FFF8FC] via-[#FFFFFF] to-[#F8FCFF] overflow-hidden py-16 md:py-24"
+      className="relative min-h-screen bg-transparent text-[#FFFDFB] overflow-hidden py-16 md:py-24"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
@@ -343,7 +343,7 @@ export default function CustomOrder() {
           <div className="lg:col-span-5 sticky top-24 space-y-6 w-full flex flex-col items-center">
             
             {/* The Floating Canvas (Nike/Tesla style) */}
-            <div className="relative w-full aspect-square md:aspect-[4/5] rounded-[40px] bg-white border border-white/60 shadow-[0_30px_90px_rgba(0,0,0,0.06)] flex flex-col justify-center items-center overflow-hidden p-6">
+            <div className="relative w-full aspect-square md:aspect-[4/5] rounded-[40px] bg-[#18191e]/90 border border-[#DFB15B]/30 shadow-[0_30px_90px_rgba(0,0,0,0.5)] flex flex-col justify-center items-center overflow-hidden p-6 text-white">
               
               {/* Internal abstract studio glow circle based on selected cream color */}
               <div 
@@ -617,7 +617,7 @@ export default function CustomOrder() {
             </div>
 
             {/* Quick configuration review pill */}
-            <div className="w-full flex justify-between bg-white/50 backdrop-blur-md border border-white p-4 rounded-3xl shadow-sm text-[12px] text-slate-500 font-bold">
+            <div className="w-full flex justify-between bg-[#18191e]/80 backdrop-blur-md border border-[#DFB15B]/30 p-4 rounded-3xl shadow-sm text-[12px] text-slate-300 font-bold">
               <span className="flex items-center gap-1">🍰 {shape}</span>
               <span className="flex items-center gap-1">⚖️ {size}</span>
               <span className="flex items-center gap-1">🍓 {flavor.slice(0,10)}..</span>
@@ -629,7 +629,7 @@ export default function CustomOrder() {
           <div className="lg:col-span-7 flex flex-col space-y-6">
             
             {/* LARGE CONFIGURATOR CONTAINER */}
-            <div className="bg-white/80 backdrop-blur-xl border border-white/60 shadow-[0_30px_90px_rgba(0,0,0,0.06)] rounded-[32px] p-6 md:p-10 flex flex-col justify-between min-h-[600px] relative">
+            <div className="bg-[#18191e]/90 backdrop-blur-xl border border-[#DFB15B]/30 shadow-[0_30px_90px_rgba(0,0,0,0.5)] rounded-[32px] p-6 md:p-10 flex flex-col justify-between min-h-[600px] relative text-white">
               
               {/* HEADER STEP INDICATOR & PROGRESS BAR */}
               <div className="space-y-4">

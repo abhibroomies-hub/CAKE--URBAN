@@ -222,12 +222,12 @@ export default function DessertsCollection() {
     });
 
   return (
-    <div className="bg-[#FFF8FB] min-h-screen text-slate-800 font-sans relative select-none pb-24 md:pb-0 overflow-x-hidden">
+    <div className="bg-transparent min-h-screen text-[#FFFDFB] font-sans relative select-none pb-24 md:pb-0 overflow-x-hidden">
       
       {/* Luxury Gradient Lights */}
       <div className="absolute top-0 left-0 w-full h-[120vh] pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-gradient-to-tr from-rose-200/20 via-[#FF4FA3]/5 to-transparent blur-[160px]" />
-        <div className="absolute top-[30%] right-[-10%] w-[55%] h-[55%] bg-gradient-to-bl from-purple-200/15 via-[#8B5CF6]/5 to-transparent blur-[150px]" />
+        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-gradient-to-tr from-pink-500/10 via-[#FF4FA3]/10 to-transparent blur-[160px]" />
+        <div className="absolute top-[30%] right-[-10%] w-[55%] h-[55%] bg-gradient-to-bl from-amber-500/10 via-[#DFB15B]/10 to-transparent blur-[150px]" />
       </div>
 
       {/* Floating Decorative Elements */}
@@ -250,16 +250,16 @@ export default function DessertsCollection() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="space-y-4"
             >
-              <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-md border border-[#FF4FA3]/20 py-2 px-4 rounded-full shadow-sm">
-                <Sparkles className="w-3.5 h-3.5 text-[#FF4FA3] animate-pulse" />
-                <span className="text-[#FF4FA3] font-black text-[10px] tracking-[0.3em] uppercase">
+              <div className="inline-flex items-center gap-2 bg-[#1E0B07]/80 backdrop-blur-md border border-[#DFB15B]/30 py-2 px-4 rounded-full shadow-md">
+                <Sparkles className="w-3.5 h-3.5 text-[#DFB15B] animate-pulse" />
+                <span className="text-[#DFB15B] font-black text-[10px] tracking-[0.3em] uppercase">
                   LA BOUTIQUE DE DESSERTS
                 </span>
               </div>
               
-              <h1 className="text-5xl sm:text-6xl xl:text-7xl font-black tracking-tighter text-slate-900 leading-[0.95] font-sans">
+              <h1 className="text-5xl sm:text-6xl xl:text-7xl font-black tracking-tighter text-white leading-[0.95] font-sans">
                 Luxury Desserts <br />
-                <span className="bg-gradient-to-r from-[#FF4FA3] via-[#8B5CF6] to-[#FFD166] bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-[#DFB15B] via-pink-400 to-[#F3C87A] bg-clip-text text-transparent">
                   Crafted Fresh Every Day
                 </span>
               </h1>
@@ -269,7 +269,7 @@ export default function DessertsCollection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
-              className="text-slate-500 font-semibold text-sm sm:text-base md:text-lg leading-relaxed max-w-xl"
+              className="text-slate-200 font-medium text-sm sm:text-base md:text-lg leading-relaxed max-w-xl"
             >
               Discover our spectacular assortment of handcrafted cheesecakes, rich brownies, delicate pastries, dark chocolate mousse, and authentic French tiramisu. Baked incrementally to preserve sensory divinity.
             </motion.p>
@@ -285,15 +285,15 @@ export default function DessertsCollection() {
                   const el = document.getElementById('dessert-collection-grid');
                   if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="bg-gradient-to-r from-[#FF4FA3] to-[#8B5CF6] hover:brightness-110 text-white text-xs sm:text-sm font-black uppercase tracking-[0.2em] py-5 px-10 rounded-full transition-all duration-300 hover:shadow-[0_15px_40px_rgba(255,79,163,0.35)] hover:scale-105 active:scale-95 flex items-center gap-2.5"
+                className="bg-gradient-to-r from-[#DFB15B] to-[#F3C87A] text-[#0F0503] text-xs sm:text-sm font-black uppercase tracking-[0.2em] py-5 px-10 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2.5 cursor-pointer shadow-lg"
               >
                 <span>Explore Desserts</span>
-                <ArrowRight className="w-4 h-4 text-white" />
+                <ArrowRight className="w-4 h-4 text-[#0F0503]" />
               </button>
               
               <button 
                 onClick={() => setIsQuickOrderOpen(true)}
-                className="bg-white/80 hover:bg-white text-slate-800 border border-slate-200 text-xs sm:text-sm font-black uppercase tracking-[0.2em] py-5 px-10 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2"
+                className="bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur-md text-xs sm:text-sm font-black uppercase tracking-[0.2em] py-5 px-10 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer"
               >
                 <span>Order Now</span>
               </button>
@@ -304,21 +304,21 @@ export default function DessertsCollection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.45 }}
-              className="flex flex-wrap items-center gap-8 pt-8 border-t border-slate-200/60 max-w-lg"
+              className="flex flex-wrap items-center gap-8 pt-8 border-t border-white/10 max-w-lg"
             >
               <div>
-                <span className="text-2xl font-black text-slate-900 block">Freshly</span>
-                <span className="text-[10px] font-black tracking-widest text-slate-400 uppercase">Chilled Deliveries</span>
+                <span className="text-2xl font-black text-white block">Freshly</span>
+                <span className="text-[10px] font-black tracking-widest text-[#DFB15B] uppercase">Chilled Deliveries</span>
               </div>
-              <div className="w-px h-10 bg-slate-200" />
+              <div className="w-px h-10 bg-white/20" />
               <div>
-                <span className="text-2xl font-black text-slate-900 block">Premium</span>
-                <span className="text-[10px] font-black tracking-widest text-slate-400 uppercase">Belgian Imports</span>
+                <span className="text-2xl font-black text-white block">Premium</span>
+                <span className="text-[10px] font-black tracking-widest text-[#DFB15B] uppercase">Belgian Imports</span>
               </div>
-              <div className="w-px h-10 bg-slate-200" />
+              <div className="w-px h-10 bg-white/20" />
               <div>
-                <span className="text-2xl font-black text-slate-900 block">Express</span>
-                <span className="text-[10px] font-black tracking-widest text-slate-400 uppercase">White Glove Delivery</span>
+                <span className="text-2xl font-black text-white block">Express</span>
+                <span className="text-[10px] font-black tracking-widest text-[#DFB15B] uppercase">White Glove Delivery</span>
               </div>
             </motion.div>
           </div>
@@ -329,7 +329,7 @@ export default function DessertsCollection() {
               initial={{ opacity: 0, scale: 0.92, rotate: -2 }}
               animate={{ opacity: 1, scale: 1, rotate: 0 }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-[480px] aspect-square rounded-[48px] overflow-hidden shadow-[0_40px_90px_rgba(255,79,163,0.12)] border-8 border-white bg-slate-50 group"
+              className="relative w-full max-w-[480px] aspect-square rounded-[48px] overflow-hidden shadow-2xl border-4 border-[#DFB15B]/40 bg-[#1E0B07] group"
             >
               <img 
                 src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&q=80&w=800" 
@@ -337,15 +337,15 @@ export default function DessertsCollection() {
                 alt="Luxury Gourmet Desserts Stack" 
                 referrerPolicy="no-referrer"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0F0503]/80 via-transparent to-transparent pointer-events-none" />
 
-              <div className="absolute bottom-8 left-8 right-8 bg-white/95 backdrop-blur-xl rounded-3xl p-5 shadow-[0_15px_35px_rgba(0,0,0,0.06)] border border-white flex justify-between items-center text-left">
+              <div className="absolute bottom-8 left-8 right-8 bg-[#1E0B07]/90 backdrop-blur-xl rounded-3xl p-5 shadow-2xl border border-[#DFB15B]/40 flex justify-between items-center text-left">
                 <div className="space-y-1">
-                  <span className="text-[#FF4FA3] font-black text-[9px] uppercase tracking-widest block">LA BOUTIQUE DE SIGNATURE</span>
-                  <h4 className="text-sm font-black text-slate-900 uppercase tracking-wider">The Gold Velvet Cheesecake</h4>
-                  <p className="text-[10px] text-slate-500 font-semibold leading-normal">Our cloud-airy standard cheesecake with Normandy butter crumbs.</p>
+                  <span className="text-[#DFB15B] font-black text-[9px] uppercase tracking-widest block">LA BOUTIQUE DE SIGNATURE</span>
+                  <h4 className="text-sm font-black text-white uppercase tracking-wider">The Gold Velvet Cheesecake</h4>
+                  <p className="text-[10px] text-slate-300 font-medium leading-normal">Our cloud-airy standard cheesecake with Normandy butter crumbs.</p>
                 </div>
-                <div className="bg-[#FF4FA3]/10 text-[#FF4FA3] p-3 rounded-2xl">
+                <div className="bg-[#DFB15B]/20 text-[#DFB15B] p-3 rounded-2xl border border-[#DFB15B]/30">
                   <Sparkles className="w-5 h-5 animate-spin" style={{ animationDuration: '6s' }} />
                 </div>
               </div>
@@ -355,29 +355,27 @@ export default function DessertsCollection() {
         </div>
       </section>
 
-      {/* =========================================================
-          CATEGORY CAROUSEL (Visible: 6 Desktop, 4 Tablet, 2 Mobile)
-          ========================================================= */}
-      <section className="py-12 bg-white border-y border-slate-100 relative z-10">
+      {/* CATEGORY CAROUSEL */}
+      <section className="py-12 bg-transparent border-y border-white/10 relative z-10">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-8 xl:px-12 space-y-6 text-left">
           
           <div className="flex justify-between items-center">
             <div>
-              <span className="text-[#FF4FA3] font-black text-[10px] tracking-[0.25em] uppercase block">EXPLORE BY TASTE</span>
-              <h3 className="text-xl font-black text-slate-900 uppercase tracking-wider">Curate Desserts Selection</h3>
+              <span className="text-[#DFB15B] font-black text-[10px] tracking-[0.25em] uppercase block">EXPLORE BY TASTE</span>
+              <h3 className="text-xl font-black text-white uppercase tracking-wider">Curate Desserts Selection</h3>
             </div>
             
             <div className="flex gap-2">
               <button 
                 onClick={() => scrollCarousel('left')}
-                className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-[#FFF8FB] hover:border-[#FF4FA3] hover:text-[#FF4FA3] transition-colors"
+                className="w-10 h-10 rounded-full border border-white/20 text-white flex items-center justify-center hover:bg-white/10 transition-colors"
                 aria-label="Previous categories"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button 
                 onClick={() => scrollCarousel('right')}
-                className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-[#FFF8FB] hover:border-[#FF4FA3] hover:text-[#FF4FA3] transition-colors"
+                className="w-10 h-10 rounded-full border border-white/20 text-white flex items-center justify-center hover:bg-white/10 transition-colors"
                 aria-label="Next categories"
               >
                 <ChevronRight className="w-5 h-5" />
@@ -399,16 +397,16 @@ export default function DessertsCollection() {
               }}
               className={`flex-none w-[160px] sm:w-[180px] snap-start cursor-pointer rounded-2xl p-4 border text-center space-y-3 transition-all ${
                 activeCategory === 'All'
-                  ? 'border-[#FF4FA3] bg-[#FFF8FB] shadow-md scale-105'
-                  : 'border-slate-200 bg-slate-50 hover:border-[#FF4FA3]/30 hover:bg-white hover:-translate-y-0.5'
+                  ? 'border-[#DFB15B] bg-[#DFB15B]/20 shadow-lg scale-105'
+                  : 'border-white/15 bg-[#1E0B07]/80 hover:border-[#DFB15B]/40 hover:-translate-y-0.5'
               }`}
             >
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#FF4FA3] to-[#8B5CF6] text-white flex items-center justify-center text-xl mx-auto shadow-sm">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#DFB15B] to-[#F3C87A] text-[#0F0503] flex items-center justify-center text-xl mx-auto shadow-sm">
                 🌟
               </div>
               <div>
-                <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider">All Desserts</h4>
-                <p className="text-[10px] text-slate-400 font-semibold mt-0.5">Explore entire menu</p>
+                <h4 className="text-xs font-black text-white uppercase tracking-wider">All Desserts</h4>
+                <p className="text-[10px] text-slate-300 font-semibold mt-0.5">Explore entire menu</p>
               </div>
             </div>
 
@@ -421,8 +419,8 @@ export default function DessertsCollection() {
                 }}
                 className={`flex-none w-[160px] sm:w-[180px] snap-start cursor-pointer rounded-2xl p-4 border text-center space-y-3 transition-all ${
                   activeCategory === cat.name
-                    ? 'border-[#FF4FA3] bg-[#FFF8FB] shadow-md scale-105'
-                    : 'border-slate-200 bg-slate-50 hover:border-[#FF4FA3]/30 hover:bg-white hover:-translate-y-0.5'
+                    ? 'border-[#DFB15B] bg-[#DFB15B]/20 shadow-lg scale-105'
+                    : 'border-white/15 bg-[#1E0B07]/80 hover:border-[#DFB15B]/40 hover:-translate-y-0.5'
                 }`}
               >
                 <div className="w-12 h-12 rounded-xl overflow-hidden relative mx-auto shadow-sm">
@@ -432,8 +430,8 @@ export default function DessertsCollection() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider line-clamp-1">{cat.name}</h4>
-                  <p className="text-[10px] text-slate-400 font-semibold mt-0.5">Custom bakes</p>
+                  <h4 className="text-xs font-black text-white uppercase tracking-wider line-clamp-1">{cat.name}</h4>
+                  <p className="text-[10px] text-slate-300 font-semibold mt-0.5">Custom bakes</p>
                 </div>
               </div>
             ))}
@@ -442,40 +440,38 @@ export default function DessertsCollection() {
         </div>
       </section>
 
-      {/* =========================================================
-          EDITORIAL FEATURE (Large Split Layout)
-          ========================================================= */}
+      {/* EDITORIAL FEATURE */}
       <section className="py-24 max-w-[1440px] mx-auto px-4 sm:px-8 xl:px-12 relative z-10 text-left">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-white rounded-[44px] border border-slate-200/50 p-8 md:p-16 shadow-sm overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-[#1E0B07]/80 backdrop-blur-md rounded-[44px] border border-[#DFB15B]/30 p-8 md:p-16 shadow-2xl overflow-hidden">
           
           {/* Left Large Dessert Image */}
-          <div className="lg:col-span-6 relative aspect-square sm:aspect-video lg:aspect-square rounded-[32px] overflow-hidden bg-slate-100 group">
+          <div className="lg:col-span-6 relative aspect-square sm:aspect-video lg:aspect-square rounded-[32px] overflow-hidden bg-slate-900 group">
             <img 
               src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&q=80&w=800" 
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[3000ms]" 
               alt="Artisanal Dessert Story Photography" 
               referrerPolicy="no-referrer"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0F0503]/80 to-transparent pointer-events-none" />
             <div className="absolute bottom-6 left-6 right-6">
-              <span className="text-[#FFD166] font-black text-[8px] uppercase tracking-widest block">L’ART DE LA CUISINE</span>
+              <span className="text-[#DFB15B] font-black text-[8px] uppercase tracking-widest block">L’ART DE LA CUISINE</span>
               <h4 className="text-sm font-black text-white uppercase tracking-wider mt-0.5">The Pure Sensation Series</h4>
             </div>
           </div>
 
           {/* Right Story Section */}
           <div className="lg:col-span-6 space-y-6">
-            <div className="inline-flex items-center gap-1 bg-[#FF4FA3]/10 border border-[#FF4FA3]/20 py-1 px-3 rounded-full text-[#FF4FA3] font-black text-[9px] uppercase tracking-widest">
+            <div className="inline-flex items-center gap-1 bg-[#DFB15B]/20 border border-[#DFB15B]/30 py-1 px-3 rounded-full text-[#DFB15B] font-black text-[9px] uppercase tracking-widest">
               <BookOpen className="w-3.5 h-3.5" />
               <span>OUR STORY & PHILOSOPHY</span>
             </div>
 
-            <h3 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight leading-tight uppercase font-sans">
+            <h3 className="text-3xl md:text-4xl font-black text-white tracking-tight leading-tight uppercase font-sans">
               Every Dessert <br />
               Tells A Story
             </h3>
 
-            <p className="text-slate-500 font-semibold text-xs sm:text-sm leading-relaxed">
+            <p className="text-slate-200 font-medium text-xs sm:text-sm leading-relaxed">
               At CakeUrban, we reject mass production. Our master pastry chefs hand-whip and bake every single item using Normandy butter, whole Madagascan vanilla pods, and premier Belgian chocolate. Every creation is designed to spark a rich, emotional taste memory.
             </p>
 
@@ -485,31 +481,29 @@ export default function DessertsCollection() {
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
                 toast.success("Ready to create your dessert story! ✨");
               }}
-              className="bg-slate-950 hover:bg-[#FF4FA3] text-white hover:text-white text-xs font-black uppercase tracking-[0.2em] py-4.5 px-8 rounded-full transition-all hover:scale-105 active:scale-95 flex items-center gap-2 shadow-md"
+              className="bg-gradient-to-r from-[#DFB15B] to-[#F3C87A] text-[#0F0503] text-xs font-black uppercase tracking-[0.2em] py-4.5 px-8 rounded-full transition-all hover:scale-105 active:scale-95 flex items-center gap-2 shadow-md cursor-pointer"
             >
               <span>Read More</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 text-[#0F0503]" />
             </button>
           </div>
 
         </div>
       </section>
 
-      {/* =========================================================
-          PRODUCT GRID (Desktop/Laptop: 4, Tablet: 3, Mobile: 2)
-          ========================================================= */}
+      {/* PRODUCT GRID */}
       <section id="dessert-collection-grid" className="py-24 max-w-[1440px] mx-auto px-4 sm:px-8 xl:px-12 space-y-12 relative z-10">
         
         {/* Controls block */}
-        <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-6 bg-white/70 backdrop-blur-xl border border-slate-200/50 p-6 rounded-[32px] shadow-sm text-left">
+        <div className="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-6 bg-[#1E0B07]/80 backdrop-blur-xl border border-[#DFB15B]/30 p-6 rounded-[32px] shadow-2xl text-left">
           
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-[#FF4FA3]/10 text-[#FF4FA3] rounded-2xl">
+            <div className="p-3 bg-[#DFB15B]/20 text-[#DFB15B] rounded-2xl border border-[#DFB15B]/30">
               <SlidersHorizontal className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider">Filtered Masterworks</h3>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Showing: {activeCategory} Collections</p>
+              <h3 className="text-sm font-black text-white uppercase tracking-wider">Filtered Masterworks</h3>
+              <p className="text-[10px] text-[#DFB15B] font-bold uppercase tracking-widest">Showing: {activeCategory} Collections</p>
             </div>
           </div>
 
@@ -521,7 +515,7 @@ export default function DessertsCollection() {
               placeholder="Search designer cheesecakes, tiramisu, pudding..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200/60 focus:border-[#FF4FA3] focus:bg-white rounded-2xl pl-12 pr-4 py-3 text-xs font-medium focus:outline-none transition-all placeholder:text-slate-400 text-slate-800"
+              className="w-full bg-[#0F0503]/80 border border-white/20 focus:border-[#DFB15B] focus:bg-[#0F0503] rounded-2xl pl-12 pr-4 py-3 text-xs font-medium focus:outline-none transition-all placeholder:text-slate-400 text-white"
             />
           </div>
 
@@ -532,7 +526,7 @@ export default function DessertsCollection() {
                   setActiveCategory('All');
                   toast.success("Reset filters to all gourmet desserts!");
                 }}
-                className="text-xs font-black text-[#FF4FA3] uppercase tracking-widest hover:underline"
+                className="text-xs font-black text-[#DFB15B] uppercase tracking-widest hover:underline cursor-pointer"
               >
                 Reset Filter
               </button>
@@ -542,7 +536,7 @@ export default function DessertsCollection() {
             <select
               value={selectedSort}
               onChange={(e) => setSelectedSort(e.target.value)}
-              className="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-xs font-black uppercase text-slate-700 focus:outline-none focus:border-[#FF4FA3] transition-colors"
+              className="bg-[#0F0503] border border-white/20 rounded-2xl px-4 py-3 text-xs font-black uppercase text-white focus:outline-none focus:border-[#DFB15B] transition-colors"
             >
               <option value="popular">Popular Selection</option>
               <option value="rating">Top Rated Elite</option>
@@ -564,11 +558,11 @@ export default function DessertsCollection() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4 }}
-                className="bg-white/75 backdrop-blur-md border border-slate-200/30 rounded-[30px] p-5 shadow-sm hover:shadow-[0_25px_55px_rgba(255,79,163,0.06)] hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between text-left group h-[420px]"
+                className="bg-[#1E0B07]/80 backdrop-blur-md border border-[#DFB15B]/30 rounded-[30px] p-5 shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between text-left group h-[420px]"
               >
                 {/* Image & tags */}
                 <div className="space-y-4 relative">
-                  <div className="aspect-[4/3] rounded-2xl overflow-hidden relative shadow-sm bg-slate-50 border border-slate-100">
+                  <div className="aspect-[4/3] rounded-2xl overflow-hidden relative shadow-sm bg-black/40 border border-white/10">
                     <img 
                       src={ds.image} 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
@@ -579,60 +573,60 @@ export default function DessertsCollection() {
                     {/* Floating wishlist */}
                     <button 
                       onClick={() => toggleFavorite(ds.id, ds.name)}
-                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center text-slate-400 hover:text-red-500 hover:scale-110 active:scale-95 transition-all shadow-sm"
+                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white/80 hover:text-red-500 hover:scale-110 active:scale-95 transition-all shadow-sm"
                     >
-                      <Heart className={`w-4.5 h-4.5 ${favorites.includes(ds.id) ? 'fill-red-500 text-red-500' : 'text-slate-400'}`} />
+                      <Heart className={`w-4.5 h-4.5 ${favorites.includes(ds.id) ? 'fill-red-500 text-red-500' : 'text-white'}`} />
                     </button>
 
                     {/* Category badge */}
-                    <span className="absolute bottom-3 left-3 bg-slate-950/85 backdrop-blur-md text-[#FFD166] font-black text-[7px] uppercase tracking-widest px-2.5 py-1 rounded-full">
+                    <span className="absolute bottom-3 left-3 bg-black/80 backdrop-blur-md text-[#DFB15B] border border-[#DFB15B]/40 font-black text-[7px] uppercase tracking-widest px-2.5 py-1 rounded-full">
                       {ds.category}
                     </span>
 
                     {/* Tag badge */}
                     {ds.tag && (
-                      <span className="absolute top-3 left-3 bg-[#FF4FA3] text-white font-black text-[7px] uppercase tracking-widest px-2.5 py-1 rounded-full">
+                      <span className="absolute top-3 left-3 bg-[#DFB15B] text-[#0F0503] font-black text-[7px] uppercase tracking-widest px-2.5 py-1 rounded-full">
                         {ds.tag}
                       </span>
                     )}
                   </div>
 
                   <div className="space-y-1.5">
-                    <div className="flex items-center gap-1.5 text-[10px] text-amber-500 font-bold">
-                      <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
+                    <div className="flex items-center gap-1.5 text-[10px] text-amber-300 font-bold">
+                      <Star className="w-3 h-3 fill-amber-300 text-amber-300" />
                       <span>{ds.rating}</span>
                       <span className="text-slate-400">({ds.reviews} reviews)</span>
-                      <span className="text-slate-300">|</span>
-                      <span className="text-[#FF4FA3] flex items-center gap-0.5 font-black">
-                        <Flame className="w-3 h-3 text-[#FF4FA3]" />
+                      <span className="text-slate-600">|</span>
+                      <span className="text-[#DFB15B] flex items-center gap-0.5 font-black">
+                        <Flame className="w-3 h-3 text-[#DFB15B]" />
                         <span>{ds.calories}</span>
                       </span>
                     </div>
 
-                    <h3 className="text-sm font-black text-slate-900 group-hover:text-[#FF4FA3] transition-colors leading-tight line-clamp-1 uppercase tracking-wider">{ds.name}</h3>
-                    <p className="text-[11px] text-slate-400 font-semibold leading-relaxed line-clamp-2 h-[34px]">{ds.desc}</p>
+                    <h3 className="text-sm font-black text-white group-hover:text-[#DFB15B] transition-colors leading-tight line-clamp-1 uppercase tracking-wider">{ds.name}</h3>
+                    <p className="text-[11px] text-slate-300 font-normal leading-relaxed line-clamp-2 h-[34px]">{ds.desc}</p>
                   </div>
                 </div>
 
                 {/* Footer and Cart */}
-                <div className="border-t border-slate-100 pt-4 mt-2">
-                  <div className="flex items-center justify-between text-[9px] text-slate-400 font-black uppercase tracking-widest mb-3">
+                <div className="border-t border-white/10 pt-4 mt-2">
+                  <div className="flex items-center justify-between text-[9px] text-slate-300 font-black uppercase tracking-widest mb-3">
                     <span className="flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5 text-emerald-500" />
+                      <Clock className="w-3.5 h-3.5 text-emerald-400" />
                       <span>Prep: {ds.prepTime} ({ds.eta})</span>
                     </span>
-                    <span className="text-slate-500">Eggless 🌱</span>
+                    <span className="text-[#DFB15B]">Eggless 🌱</span>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="text-[8px] font-black text-slate-400 block">PRICE</span>
-                      <span className="text-base font-black text-slate-950">₹{ds.price}</span>
+                      <span className="text-base font-black text-[#DFB15B]">₹{ds.price}</span>
                     </div>
 
                     <button 
                       onClick={() => handleAddToCart(ds)}
-                      className="bg-slate-950 hover:bg-[#FF4FA3] text-[#FFD166] hover:text-white text-[9px] font-black uppercase tracking-widest py-3 px-5 rounded-2xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-md flex items-center gap-1.5"
+                      className="bg-gradient-to-r from-[#DFB15B] to-[#F3C87A] text-[#0F0503] text-[9px] font-black uppercase tracking-widest py-3 px-5 rounded-2xl transition-all duration-300 hover:scale-105 active:scale-95 shadow-md flex items-center gap-1.5 cursor-pointer"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>QUICK ADD</span>
@@ -648,56 +642,54 @@ export default function DessertsCollection() {
         {/* Empty State */}
         {filteredProducts.length === 0 && (
           <div className="text-center py-16 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-rose-50 flex items-center justify-center mx-auto text-[#FF4FA3]">
+            <div className="w-16 h-16 rounded-full bg-[#DFB15B]/20 flex items-center justify-center mx-auto text-[#DFB15B]">
               <Search className="w-8 h-8" />
             </div>
             <div>
-              <h4 className="text-sm font-black text-slate-800 uppercase tracking-wider">No Desserts Match</h4>
-              <p className="text-xs text-slate-400 font-semibold">Try modifying your search or reset categories to browse our complete collection.</p>
+              <h4 className="text-sm font-black text-white uppercase tracking-wider">No Desserts Match</h4>
+              <p className="text-xs text-slate-300 font-medium">Try modifying your search or reset categories to browse our complete collection.</p>
             </div>
           </div>
         )}
 
       </section>
 
-      {/* =========================================================
-          AI RECOMMENDATIONS & FOOTER
-          ========================================================= */}
-      <section className="py-12 bg-[#FFF8FB]/80">
+      {/* AI RECOMMENDATIONS & FOOTER */}
+      <section className="py-12 bg-transparent">
         <AICakeRecommendation category="Desserts & Cheesecakes" />
       </section>
 
-      <section className="py-20 bg-white border-t border-slate-100">
+      <section className="py-20 bg-transparent border-t border-white/10">
         <LuxuryTestimonials />
       </section>
 
-      {/* BOTTOM CTA BANNER (Global Surprises) */}
-      <section className="py-12 bg-slate-50/50">
+      {/* BOTTOM CTA BANNER */}
+      <section className="py-12 bg-transparent">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-8 xl:px-12">
-          <div className="bg-gradient-to-tr from-slate-950 via-slate-900 to-slate-950 text-white rounded-[44px] p-8 md:p-14 text-center relative overflow-hidden flex flex-col items-center space-y-6 shadow-xl">
-            <div className="absolute top-0 right-0 w-80 h-80 bg-[#FF4FA3]/10 blur-[90px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#8B5CF6]/10 blur-[90px] pointer-events-none" />
+          <div className="bg-gradient-to-tr from-[#1E0B07] to-[#2E120B] text-white rounded-[44px] p-8 md:p-14 text-center relative overflow-hidden flex flex-col items-center space-y-6 shadow-2xl border border-[#DFB15B]/30">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-[#DFB15B]/10 blur-[90px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-80 h-80 bg-pink-500/10 blur-[90px] pointer-events-none" />
             
-            <span className="text-[#FFD166] font-black text-[10px] tracking-[0.3em] uppercase block">PRE-ORDER INVITATION</span>
-            <h3 className="text-3xl md:text-5xl font-black tracking-tight max-w-xl leading-tight font-sans">
+            <span className="text-[#DFB15B] font-black text-[10px] tracking-[0.3em] uppercase block">PRE-ORDER INVITATION</span>
+            <h3 className="text-3xl md:text-5xl font-black tracking-tight max-w-xl leading-tight font-sans text-white">
               Ready To Surprise Someone Special?
             </h3>
-            <p className="text-xs text-slate-400 leading-relaxed font-semibold max-w-sm">
+            <p className="text-xs text-slate-200 leading-relaxed font-medium max-w-sm">
               Create unforgettable culinary moments with our standard handcrafted cakes, gourmet cheesecakes, and luxury gift hampers.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <button 
                 onClick={() => setIsQuickOrderOpen(true)}
-                className="bg-[#FF4FA3] hover:bg-[#FF4FA3]/90 text-white font-black text-xs uppercase tracking-[0.2em] py-4.5 px-10 rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg flex items-center gap-2"
+                className="bg-gradient-to-r from-[#DFB15B] to-[#F3C87A] text-[#0F0503] font-black text-xs uppercase tracking-[0.2em] py-4.5 px-10 rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg flex items-center gap-2 cursor-pointer"
               >
                 <span>ORDER NOW</span>
-                <ArrowRight className="w-4 h-4 text-white" />
+                <ArrowRight className="w-4 h-4 text-[#0F0503]" />
               </button>
               <button 
                 onClick={() => {
                   window.location.href = '/custom-order';
                 }}
-                className="bg-white/10 hover:bg-white/15 text-white border border-white/20 font-black text-xs uppercase tracking-[0.2em] py-4.5 px-10 rounded-full transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
+                className="bg-white/10 hover:bg-white/20 text-white border border-white/30 font-black text-xs uppercase tracking-[0.2em] py-4.5 px-10 rounded-full transition-all hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer"
               >
                 <span>CUSTOMIZE CAKE</span>
               </button>

@@ -198,11 +198,11 @@ export default function BirthdayLanding() {
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen text-slate-900 overflow-x-hidden font-sans relative pb-16 md:pb-0 select-none">
+    <div className="bg-transparent min-h-screen text-[#FFFDFB] overflow-x-hidden font-sans relative pb-16 md:pb-0 select-none">
       
       {/* Background Lighting Elements */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-gradient-to-tr from-pink-300/20 via-purple-300/10 to-transparent blur-[160px] pointer-events-none" />
-      <div className="absolute top-[20%] right-[-10%] w-[45%] h-[45%] bg-gradient-to-br from-yellow-300/15 via-blue-300/10 to-transparent blur-[150px] pointer-events-none" />
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-gradient-to-tr from-pink-500/10 via-purple-500/5 to-transparent blur-[160px] pointer-events-none" />
+      <div className="absolute top-[20%] right-[-10%] w-[45%] h-[45%] bg-gradient-to-br from-amber-500/10 via-yellow-500/5 to-transparent blur-[150px] pointer-events-none" />
       
       {/* Dynamic Floating Confetti Elements */}
       {floatingItems.map((item, idx) => (
@@ -226,9 +226,7 @@ export default function BirthdayLanding() {
         </motion.div>
       ))}
 
-      {/* =========================================================
-          HERO SECTION (Apple / Dior Aesthetics)
-          ========================================================= */}
+      {/* HERO SECTION */}
       <section className="relative pt-12 pb-24 md:py-32 max-w-[1320px] mx-auto px-4 md:px-8 xl:px-0">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
@@ -243,9 +241,9 @@ export default function BirthdayLanding() {
               <span className="text-[#DFB15B] font-black text-[10px] tracking-[0.35em] uppercase block">
                 MAISON DE CONFECTIO
               </span>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-950 font-sans leading-none">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white font-sans leading-none">
                 Celebrate Every <br className="hidden sm:inline" />
-                <span className="bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-pink-400 via-amber-300 to-rose-400 bg-clip-text text-transparent">
                   Birthday Beautifully
                 </span>
               </h1>
@@ -255,7 +253,7 @@ export default function BirthdayLanding() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-xs sm:text-sm text-slate-500 leading-relaxed font-semibold max-w-lg"
+              className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium max-w-lg"
             >
               Where high fashion meets master pâtisserie. Orchestrated with hand-painted sugar sculptures, premium French macarons, rich chocolate cascades, and animated candles. Every creation is custom-tailored for your private celebration.
             </motion.p>
@@ -268,10 +266,10 @@ export default function BirthdayLanding() {
             >
               <button 
                 onClick={() => setIsQuickOrderOpen(true)}
-                className="bg-slate-950 hover:bg-slate-900 text-white text-xs font-black uppercase tracking-[0.2em] py-4.5 px-8 rounded-full transition-all hover:scale-105 active:scale-95 shadow-[0_10px_25px_rgba(0,0,0,0.15)] flex items-center gap-2"
+                className="bg-gradient-to-r from-[#DFB15B] to-[#F3C87A] hover:from-[#c99c48] hover:to-[#dfb15b] text-[#0F0503] text-xs font-black uppercase tracking-[0.2em] py-4.5 px-8 rounded-full transition-all hover:scale-105 active:scale-95 shadow-[0_10px_30px_rgba(223,177,91,0.3)] flex items-center gap-2 cursor-pointer"
               >
                 <span>Order Birthday Cake</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 text-[#0F0503]" />
               </button>
               
               <button 
@@ -279,10 +277,10 @@ export default function BirthdayLanding() {
                   const aiWidget = document.getElementById('ai-recommender');
                   if (aiWidget) aiWidget.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="bg-white hover:bg-slate-50 text-slate-800 border border-slate-200/80 text-xs font-black uppercase tracking-[0.2em] py-4.5 px-8 rounded-full transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
+                className="bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur-md text-xs font-black uppercase tracking-[0.2em] py-4.5 px-8 rounded-full transition-all hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer"
               >
                 <span>Customize Cake</span>
-                <Sparkles className="w-4 h-4 text-pink-500" />
+                <Sparkles className="w-4 h-4 text-amber-300" />
               </button>
             </motion.div>
 
@@ -290,21 +288,21 @@ export default function BirthdayLanding() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.35 }}
-              className="flex items-center gap-6 border-t border-slate-200/50 pt-8"
+              className="flex items-center gap-6 border-t border-white/15 pt-8"
             >
               <div className="text-left">
-                <span className="text-2xl font-black text-slate-950 block">4.9★</span>
-                <span className="text-[9px] font-black tracking-wider text-slate-400 uppercase">20k+ Tastemakers</span>
+                <span className="text-2xl font-black text-white block">4.9★</span>
+                <span className="text-[9px] font-black tracking-wider text-[#DFB15B] uppercase">20k+ Tastemakers</span>
               </div>
-              <div className="w-px h-10 bg-slate-200" />
+              <div className="w-px h-10 bg-white/20" />
               <div className="text-left">
-                <span className="text-2xl font-black text-slate-950 block">100%</span>
-                <span className="text-[9px] font-black tracking-wider text-slate-400 uppercase">Eggless Tailored</span>
+                <span className="text-2xl font-black text-white block">100%</span>
+                <span className="text-[9px] font-black tracking-wider text-[#DFB15B] uppercase">Eggless Tailored</span>
               </div>
-              <div className="w-px h-10 bg-slate-200" />
+              <div className="w-px h-10 bg-white/20" />
               <div className="text-left">
-                <span className="text-2xl font-black text-slate-950 block">Same Day</span>
-                <span className="text-[9px] font-black tracking-wider text-slate-400 uppercase">White Glove Ship</span>
+                <span className="text-2xl font-black text-white block">Same Day</span>
+                <span className="text-[9px] font-black tracking-wider text-[#DFB15B] uppercase">White Glove Ship</span>
               </div>
             </motion.div>
           </div>
@@ -315,7 +313,7 @@ export default function BirthdayLanding() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="relative w-full max-w-[480px] aspect-square rounded-[40px] overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.12)] border border-white"
+              className="relative w-full max-w-[480px] aspect-square rounded-[40px] overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.5)] border border-[#DFB15B]/40"
             >
               {/* Premium image representing majestic birthday cake */}
               <img 
@@ -326,18 +324,18 @@ export default function BirthdayLanding() {
               />
 
               {/* Glowing overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-pink-500/10 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0F0503]/80 via-transparent to-transparent pointer-events-none" />
 
               {/* Floating micro-badges */}
-              <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-lg text-left max-w-[180px] border border-white/20">
-                <span className="bg-pink-100 text-pink-600 font-black text-[8px] uppercase tracking-widest px-2 py-0.5 rounded-full inline-block">HOT IN REVELRY</span>
-                <h4 className="text-xs font-black text-slate-900 tracking-tight mt-1.5 uppercase">L’Or Macaron Dream</h4>
-                <p className="text-[9px] text-slate-400 mt-0.5 font-bold">₹2,499 / 1.5 kg</p>
+              <div className="absolute top-6 left-6 bg-[#1E0B07]/90 backdrop-blur-md rounded-2xl p-4 shadow-2xl text-left max-w-[180px] border border-[#DFB15B]/40">
+                <span className="bg-amber-400/20 text-amber-300 border border-amber-400/30 font-black text-[8px] uppercase tracking-widest px-2 py-0.5 rounded-full inline-block">HOT IN REVELRY</span>
+                <h4 className="text-xs font-black text-white tracking-tight mt-1.5 uppercase">L’Or Macaron Dream</h4>
+                <p className="text-[9px] text-[#DFB15B] mt-0.5 font-bold">₹2,499 / 1.5 kg</p>
               </div>
 
-              <div className="absolute bottom-6 right-6 bg-slate-950/95 backdrop-blur-md text-white rounded-2xl p-4 shadow-lg text-left max-w-[180px] border border-slate-800">
+              <div className="absolute bottom-6 right-6 bg-[#0F0503]/95 backdrop-blur-md text-white rounded-2xl p-4 shadow-2xl text-left max-w-[180px] border border-[#DFB15B]/30">
                 <span className="text-[#DFB15B] font-black text-[8px] uppercase tracking-widest block">CHEF SIGNATURE</span>
-                <p className="text-[10px] font-semibold text-slate-300 leading-relaxed mt-1">"Infused with grand Cru Belgian Cocoa & Saffron spray."</p>
+                <p className="text-[10px] font-semibold text-slate-200 leading-relaxed mt-1">"Infused with grand Cru Belgian Cocoa & Saffron spray."</p>
               </div>
             </motion.div>
           </div>
@@ -345,25 +343,23 @@ export default function BirthdayLanding() {
         </div>
       </section>
 
-      {/* =========================================================
-          COLLECTIONS GALLERY
-          ========================================================= */}
-      <section className="py-20 bg-white border-y border-slate-200/30">
+      {/* COLLECTIONS GALLERY */}
+      <section className="py-20 bg-transparent border-y border-white/10">
         <div className="max-w-[1320px] mx-auto px-4 md:px-8 xl:px-0 space-y-12">
           
           <div className="text-center md:text-left flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-2">
               <span className="text-[10px] font-black text-[#DFB15B] tracking-[0.3em] uppercase block">PREMIUM SELECTION</span>
-              <h2 className="text-3xl md:text-4xl font-black text-slate-950 tracking-tight">
+              <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight">
                 Curated Birthday Collections
               </h2>
-              <p className="text-xs text-slate-400 font-semibold max-w-sm">
+              <p className="text-xs text-slate-300 font-medium max-w-sm">
                 Each category represents a completely unique aesthetic philosophy, custom designed for discerning hosts.
               </p>
             </div>
             <button 
               onClick={() => setIsQuickOrderOpen(true)}
-              className="text-[#DFB15B] font-black text-xs uppercase tracking-widest flex items-center justify-center gap-1.5 self-center md:self-end border-b border-[#DFB15B] pb-1"
+              className="text-[#DFB15B] font-black text-xs uppercase tracking-widest flex items-center justify-center gap-1.5 self-center md:self-end border-b border-[#DFB15B] pb-1 cursor-pointer"
             >
               <span>Explore All Tastes</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -378,31 +374,31 @@ export default function BirthdayLanding() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-slate-50 border border-slate-200/30 rounded-[32px] overflow-hidden shadow-sm hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between text-left group"
+                className="bg-[#1E0B07]/80 backdrop-blur-md border border-[#DFB15B]/30 rounded-[32px] overflow-hidden shadow-2xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between text-left group"
               >
                 <div className="relative aspect-video overflow-hidden">
                   <img src={cake.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={cake.name} referrerPolicy="no-referrer" />
-                  <span className="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-slate-900 font-black text-[8px] uppercase tracking-widest px-3 py-1 rounded-full shadow-sm">
+                  <span className="absolute top-4 left-4 bg-black/80 backdrop-blur-md text-[#DFB15B] border border-[#DFB15B]/40 font-black text-[8px] uppercase tracking-widest px-3 py-1 rounded-full shadow-sm">
                     {cake.tag}
                   </span>
                 </div>
 
                 <div className="p-6 space-y-4">
                   <div className="space-y-1">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block">{cake.subtitle}</span>
-                    <h3 className="text-lg font-black text-slate-950 uppercase tracking-wider">{cake.name}</h3>
-                    <p className="text-xs text-slate-500 leading-relaxed font-semibold">{cake.desc}</p>
+                    <span className="text-[10px] font-black text-[#DFB15B] uppercase tracking-widest block">{cake.subtitle}</span>
+                    <h3 className="text-lg font-black text-white uppercase tracking-wider">{cake.name}</h3>
+                    <p className="text-xs text-slate-300 leading-relaxed font-normal">{cake.desc}</p>
                   </div>
 
-                  <div className="flex items-center justify-between border-t border-slate-200/50 pt-4 mt-2">
+                  <div className="flex items-center justify-between border-t border-white/10 pt-4 mt-2">
                     <div>
                       <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block">TAILORED PRICE</span>
-                      <span className="text-sm font-black text-slate-950">₹{cake.price}</span>
+                      <span className="text-sm font-black text-[#DFB15B]">₹{cake.price}</span>
                     </div>
                     
                     <button 
                       onClick={() => handleOrder(cake)}
-                      className="bg-slate-950 hover:bg-slate-900 text-[#DFB15B] text-[10px] font-black uppercase tracking-widest py-3 px-5 rounded-xl transition-all active:scale-95"
+                      className="bg-gradient-to-r from-[#DFB15B] to-[#F3C87A] text-[#0F0503] text-[10px] font-black uppercase tracking-widest py-3 px-5 rounded-xl transition-all active:scale-95 cursor-pointer shadow-md"
                     >
                       TAILOR & ADD
                     </button>
@@ -416,26 +412,26 @@ export default function BirthdayLanding() {
       </section>
 
       {/* Dynamic Birthday Cakes from Bakery */}
-      <section className="py-20 bg-slate-50 border-b border-slate-200/30">
+      <section className="py-20 bg-transparent border-b border-white/10">
         <div className="max-w-[1320px] mx-auto px-4 md:px-8 xl:px-0 space-y-12">
           <div className="text-center md:text-left">
-            <span className="text-[10px] font-black text-pink-500 tracking-[0.3em] uppercase block mb-1">ONLINE BAKERY COLLECTION</span>
-            <h2 className="text-3xl md:text-4xl font-black text-slate-950 tracking-tight">
+            <span className="text-[10px] font-black text-[#DFB15B] tracking-[0.3em] uppercase block mb-1">ONLINE BAKERY COLLECTION</span>
+            <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight">
               Freshly Baked Birthday Masterpieces
             </h2>
-            <p className="text-xs text-slate-500 font-semibold max-w-sm mt-1">
+            <p className="text-xs text-slate-300 font-medium max-w-sm mt-1">
               Direct from our gourmet kitchens, customizable for weight, flavor, and eggless preference.
             </p>
           </div>
 
           {loading ? (
             <div className="flex justify-center items-center py-20">
-              <Loader2 className="w-8 h-8 text-pink-500 animate-spin" />
+              <Loader2 className="w-8 h-8 text-[#DFB15B] animate-spin" />
             </div>
           ) : dbProducts.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-3xl border border-slate-100 p-8">
-              <Sparkles className="w-8 h-8 text-pink-400 mx-auto mb-2 animate-bounce" />
-              <p className="text-sm font-black text-slate-700">No custom database cakes yet.</p>
+            <div className="text-center py-16 bg-[#1E0B07]/80 rounded-3xl border border-[#DFB15B]/30 p-8">
+              <Sparkles className="w-8 h-8 text-[#DFB15B] mx-auto mb-2 animate-bounce" />
+              <p className="text-sm font-black text-white">No custom database cakes yet.</p>
               <p className="text-xs text-slate-400 mt-1">Our chefs are preparing new creative receipts!</p>
             </div>
           ) : (
@@ -448,18 +444,16 @@ export default function BirthdayLanding() {
         </div>
       </section>
 
-      {/* =========================================================
-          BIRTHDAY OFFERS SECTION
-          ========================================================= */}
+      {/* BIRTHDAY OFFERS SECTION */}
       <section className="py-20 max-w-[1320px] mx-auto px-4 md:px-8 xl:px-0">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           <div className="lg:col-span-4 text-left space-y-4">
             <span className="text-[#DFB15B] font-black text-[10px] tracking-[0.3em] uppercase block">EXQUISITE INDULGENCE</span>
-            <h2 className="text-3xl md:text-4xl font-black text-slate-950 tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight">
               Exclusive Birthday Offerings
             </h2>
-            <p className="text-xs text-slate-500 leading-relaxed font-semibold">
+            <p className="text-xs text-slate-300 leading-relaxed font-medium">
               Tailored enhancements provided with each celebration order to craft an unforgettable, high-end sensory event.
             </p>
           </div>
@@ -468,21 +462,21 @@ export default function BirthdayLanding() {
             {offers.map((off, idx) => (
               <div 
                 key={idx}
-                className="bg-white border border-slate-200/40 p-6 rounded-3xl text-left space-y-4 shadow-sm relative group hover:border-pink-300 transition-colors"
+                className="bg-[#1E0B07]/80 border border-[#DFB15B]/30 p-6 rounded-3xl text-left space-y-4 shadow-2xl relative group hover:border-[#DFB15B] transition-colors"
               >
-                <div className="w-10 h-10 rounded-2xl bg-pink-50 border border-pink-100 flex items-center justify-center text-pink-500">
+                <div className="w-10 h-10 rounded-2xl bg-[#DFB15B]/20 border border-[#DFB15B]/40 flex items-center justify-center text-[#DFB15B]">
                   <Gift className="w-5 h-5" />
                 </div>
                 <div className="space-y-1.5">
-                  <span className="bg-pink-100 text-pink-700 font-black text-[8px] tracking-widest px-2 py-0.5 rounded-full inline-block">
+                  <span className="bg-[#DFB15B]/20 text-[#DFB15B] font-black text-[8px] tracking-widest px-2 py-0.5 rounded-full inline-block border border-[#DFB15B]/30">
                     {off.badge}
                   </span>
-                  <h3 className="text-sm font-black text-slate-950 uppercase tracking-wider">{off.title}</h3>
-                  <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">{off.desc}</p>
+                  <h3 className="text-sm font-black text-white uppercase tracking-wider">{off.title}</h3>
+                  <p className="text-[11px] text-slate-300 leading-relaxed font-normal">{off.desc}</p>
                 </div>
                 <button 
                   onClick={() => setIsQuickOrderOpen(true)}
-                  className="text-xs font-black text-slate-950 group-hover:text-pink-600 transition-colors flex items-center gap-1 mt-2 uppercase tracking-wider"
+                  className="text-xs font-black text-[#DFB15B] group-hover:text-amber-300 transition-colors flex items-center gap-1 mt-2 uppercase tracking-wider cursor-pointer"
                 >
                   <span>{off.action}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -494,26 +488,22 @@ export default function BirthdayLanding() {
         </div>
       </section>
 
-      {/* =========================================================
-          AI RECOMMENDATION WIZARD (L’Atelier AI)
-          ========================================================= */}
-      <section id="ai-recommender" className="py-12 bg-slate-100/50">
+      {/* AI RECOMMENDATION WIZARD */}
+      <section id="ai-recommender" className="py-12 bg-transparent">
         <AICakeRecommendation category="Birthday" />
       </section>
 
-      {/* =========================================================
-          INSTAGRAM MASONRY GALLERY
-          ========================================================= */}
-      <section className="py-20 bg-white">
+      {/* INSTAGRAM MASONRY GALLERY */}
+      <section className="py-20 bg-transparent">
         <div className="max-w-[1320px] mx-auto px-4 md:px-8 xl:px-0 space-y-10">
           
           <div className="text-center space-y-2">
             <span className="text-[10px] font-black text-[#DFB15B] tracking-[0.3em] uppercase block">SOCIETY LOOKBOOK</span>
-            <h3 className="text-3xl font-black text-slate-950 tracking-tight font-sans">
+            <h3 className="text-3xl font-black text-white tracking-tight font-sans">
               Captured Moments of Grandeur
             </h3>
-            <p className="text-xs text-slate-400 font-semibold max-w-sm mx-auto">
-              Follow our aesthetic feed and tag <strong>#CakeCouture</strong> to be included in our elite circle.
+            <p className="text-xs text-slate-300 font-medium max-w-sm mx-auto">
+              Follow our aesthetic feed and tag <strong className="text-[#DFB15B]">#CakeCouture</strong> to be included in our elite circle.
             </p>
           </div>
 
@@ -521,14 +511,14 @@ export default function BirthdayLanding() {
             {galleryImages.map((img, idx) => (
               <div 
                 key={idx}
-                className={`${img.size} rounded-3xl overflow-hidden relative group shadow-sm border border-slate-100`}
+                className={`${img.size} rounded-3xl overflow-hidden relative group shadow-2xl border border-[#DFB15B]/30`}
               >
                 <img src={img.url} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={img.title} referrerPolicy="no-referrer" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5 text-left text-white space-y-1">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0F0503]/90 via-[#0F0503]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5 text-left text-white space-y-1">
                   <span className="text-[#DFB15B] font-black text-[8px] uppercase tracking-widest">INSTAGRAM REVELRY</span>
                   <h4 className="text-xs font-black uppercase tracking-wider">{img.title}</h4>
-                  <div className="flex items-center gap-1.5 text-[9px] text-slate-400 pt-1.5 border-t border-slate-800">
-                    <Instagram className="w-3 h-3" />
+                  <div className="flex items-center gap-1.5 text-[9px] text-slate-300 pt-1.5 border-t border-white/10">
+                    <Instagram className="w-3 h-3 text-[#DFB15B]" />
                     <span>@cakeurban_celebrations</span>
                   </div>
                 </div>
@@ -539,32 +529,30 @@ export default function BirthdayLanding() {
         </div>
       </section>
 
-      {/* =========================================================
-          COMMON TESTIMONIALS & FOOTER BANNER
-          ========================================================= */}
-      <section className="py-20 bg-slate-50 border-t border-slate-200/20">
+      {/* TESTIMONIALS & FOOTER BANNER */}
+      <section className="py-20 bg-transparent border-t border-white/10">
         <LuxuryTestimonials />
       </section>
 
       {/* Pre-Footer Action Block */}
-      <section className="py-12 bg-white">
+      <section className="py-12 bg-transparent">
         <div className="max-w-[1320px] mx-auto px-4 md:px-8 xl:px-0">
-          <div className="bg-gradient-to-tr from-slate-950 to-slate-900 text-white rounded-[40px] p-8 md:p-12 text-center relative overflow-hidden flex flex-col items-center space-y-6">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-pink-500/10 blur-[80px] pointer-events-none" />
+          <div className="bg-gradient-to-tr from-[#1E0B07] to-[#2E120B] text-white rounded-[40px] p-8 md:p-12 text-center relative overflow-hidden flex flex-col items-center space-y-6 border border-[#DFB15B]/40 shadow-2xl">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#DFB15B]/10 blur-[80px] pointer-events-none" />
             
             <span className="text-[#DFB15B] font-black text-[10px] tracking-[0.3em] uppercase block">PRE-ORDER INVITATION</span>
-            <h3 className="text-3xl md:text-5xl font-black tracking-tight max-w-xl leading-tight">
+            <h3 className="text-3xl md:text-5xl font-black tracking-tight max-w-xl leading-tight text-white">
               Book Birthday Cake Today
             </h3>
-            <p className="text-xs text-slate-400 leading-relaxed font-semibold max-w-sm">
+            <p className="text-xs text-slate-200 leading-relaxed font-medium max-w-sm">
               Tailor-designed birthday cakes take 12-24 hours to orchestrate. Initiate your luxury booking sequences today to secure the date.
             </p>
             <button 
               onClick={() => setIsQuickOrderOpen(true)}
-              className="bg-white hover:bg-slate-100 text-slate-950 font-black text-xs uppercase tracking-[0.2em] py-4.5 px-10 rounded-full transition-all hover:scale-105 active:scale-95 shadow-lg shadow-white/5 flex items-center gap-2"
+              className="bg-gradient-to-r from-[#DFB15B] to-[#F3C87A] text-[#0F0503] font-black text-xs uppercase tracking-[0.2em] py-4.5 px-10 rounded-full transition-all hover:scale-105 active:scale-95 shadow-xl flex items-center gap-2 cursor-pointer"
             >
               <span>INITIATE RESERVATION</span>
-              <ArrowRight className="w-4 h-4 text-slate-950" />
+              <ArrowRight className="w-4 h-4 text-[#0F0503]" />
             </button>
           </div>
         </div>

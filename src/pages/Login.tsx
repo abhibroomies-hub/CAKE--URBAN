@@ -695,7 +695,7 @@ export default function Login() {
   );
 
   return (
-    <div className="min-h-screen bg-[#1C0D08] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-transparent flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       <SEO 
         title={mode === 'register' ? "Join the Atelier" : "Boutique Entrance"} 
         description="Access your luxury Cakehouse account. Welcome back to premium artisanal delicacies."

@@ -214,7 +214,7 @@ export default function ThreeDConfigurator() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 font-sans relative overflow-hidden pb-12 select-none selection:bg-purple-900/50 selection:text-pink-300">
+    <div className="min-h-screen bg-transparent text-[#FFFDFB] font-sans relative overflow-hidden pb-12 select-none selection:bg-[#DFB15B]/30 selection:text-[#DFB15B]">
       <SEO 
         title="3D Premium Interactive Cake Configurator | CakeUrban"
         description="Interact with our real-time photorealistic 3D baking tool. Rotate 360 degrees, select custom weights, edit luxury cake text and preview in AR mode."

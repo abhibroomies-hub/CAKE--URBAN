@@ -453,7 +453,7 @@ export default function Shop() {
   const birthdayCakes = useMemo(() => allProducts.filter(p => p.occasions?.includes("Birthday")), [allProducts]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FFF8FA] via-[#FDF5FF] to-[#F5F8FF] text-slate-800 font-sans selection:bg-pink-100 selection:text-pink-900 pb-20 relative">
+    <div className="min-h-screen bg-transparent text-[#FFFDFB] font-sans selection:bg-[#DFB15B]/30 selection:text-[#DFB15B] pb-20 relative">
       <SEO 
         title="AI Luxury Shop - CakeUrban Boutique"
         description="Experience luxury cake shopping with AI search, smart filters, spec contrast tables, and dynamic price configuration."

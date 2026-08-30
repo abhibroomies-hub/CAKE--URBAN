@@ -183,38 +183,38 @@ export default function Cart() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-[#FFF9FC] flex flex-col items-center justify-center text-center px-4 py-20 relative overflow-hidden">
+      <div className="min-h-screen bg-transparent text-[#FFFDFB] flex flex-col items-center justify-center text-center px-4 py-20 relative overflow-hidden">
         <SEO 
           title="Bespoke Bag is Empty | CakeUrban" 
           description="Your premium CakeUrban cart is empty. Explore our luxury collection of custom cakes today."
         />
         {/* Floating gradient ambient background */}
-        <div className="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] rounded-full bg-gradient-to-tr from-pink-200/20 to-purple-200/20 blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-[-20%] right-[-20%] w-[60%] h-[60%] rounded-full bg-gradient-to-br from-rose-200/20 to-indigo-200/20 blur-[120px] pointer-events-none" />
+        <div className="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] rounded-full bg-gradient-to-tr from-[#DFB15B]/10 to-amber-500/10 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-[-20%] right-[-20%] w-[60%] h-[60%] rounded-full bg-gradient-to-br from-[#DFB15B]/10 to-amber-500/10 blur-[120px] pointer-events-none" />
 
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ type: "spring", stiffness: 100 }}
-          className="relative z-10 max-w-md w-full bg-white/60 backdrop-blur-xl border border-pink-100/50 p-12 rounded-[48px] shadow-[0_30px_80px_rgba(244,63,94,0.06)]"
+          className="relative z-10 max-w-md w-full bg-[#18191e]/90 backdrop-blur-xl border border-[#DFB15B]/30 p-12 rounded-[48px] shadow-2xl text-white"
         >
-          <div className="w-24 h-24 bg-gradient-to-tr from-pink-500/10 to-purple-500/10 rounded-[32px] flex items-center justify-center mx-auto mb-8 relative">
-            <ShoppingBag className="w-10 h-10 text-pink-500" strokeWidth={1.5} />
+          <div className="w-24 h-24 bg-[#DFB15B]/10 rounded-[32px] flex items-center justify-center mx-auto mb-8 relative border border-[#DFB15B]/20">
+            <ShoppingBag className="w-10 h-10 text-[#DFB15B]" strokeWidth={1.5} />
             <motion.div 
               animate={{ scale: [1, 1.2, 1] }} 
               transition={{ repeat: Infinity, duration: 3 }}
-              className="absolute -top-1 -right-1 w-4 h-4 bg-pink-500 rounded-full" 
+              className="absolute -top-1 -right-1 w-4 h-4 bg-[#DFB15B] rounded-full" 
             />
           </div>
-          <h2 className="text-3xl font-black text-slate-800 tracking-tight mb-3">Your Bag is Empty</h2>
-          <p className="text-slate-400 font-semibold italic text-sm mb-10 leading-relaxed">
+          <h2 className="text-3xl font-black text-white tracking-tight mb-3">Your Bag is Empty</h2>
+          <p className="text-slate-300 font-semibold italic text-sm mb-10 leading-relaxed">
             Your personal curation of luxury confections is waiting to be assembled. Let us curate your celebratory masterpiece.
           </p>
           <Link to="/shop" onClick={() => { try { playBtnTap(); } catch (e) {} }}>
             <motion.button 
               whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full h-14 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-black text-xs uppercase tracking-[0.25em] rounded-full shadow-lg shadow-pink-500/20 hover:shadow-pink-500/35 transition-all"
+              className="w-full h-14 bg-[#DFB15B] text-slate-950 font-black text-xs uppercase tracking-[0.25em] rounded-full shadow-lg hover:bg-amber-300 transition-all"
             >
               Explore Boutique
             </motion.button>
@@ -225,7 +225,7 @@ export default function Cart() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFF9FC] text-slate-800 font-sans selection:bg-pink-100 selection:text-pink-900 py-12 px-4 sm:px-6 lg:px-8 relative overflow-x-hidden">
+    <div className="min-h-screen bg-transparent text-[#FFFDFB] font-sans selection:bg-[#DFB15B]/30 selection:text-[#DFB15B] py-12 px-4 sm:px-6 lg:px-8 relative overflow-x-hidden">
       <SEO 
         title="Your Bespoke Shopping Cart | CakeUrban" 
         description="Review your selected artisan confections, custom ingredients, luxury packaging, and custom weight configurations of CakeUrban."

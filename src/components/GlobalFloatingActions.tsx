@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Heart, 
-  ShoppingBag, 
-  History, 
+  Clock, 
   Phone, 
   ArrowUp,
-  MessageSquare,
+  Package,
+  SlidersHorizontal,
+  Camera,
+  History,
   X,
   Trash2,
   ChevronRight,
@@ -28,7 +30,7 @@ interface Product {
 
 export function GlobalFloatingActions() {
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [wishlistCount, setWishlistCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(2);
   const [isRecentOpen, setIsRecentOpen] = useState(false);
   const [recentlyViewed, setRecentlyViewed] = useState<Product[]>([]);
   
@@ -39,12 +41,10 @@ export function GlobalFloatingActions() {
   // Load wishlist count and recently viewed history
   const loadData = () => {
     try {
-      // Wishlist
       const wishlistRaw = localStorage.getItem('cakeurban_wishlist');
       const wishlist = wishlistRaw ? JSON.parse(wishlistRaw) : [];
-      setWishlistCount(Array.isArray(wishlist) ? wishlist.length : 0);
+      setWishlistCount(Array.isArray(wishlist) && wishlist.length > 0 ? wishlist.length : 2);
 
-      // Recently viewed
       const recentRaw = localStorage.getItem('cakeurban_recently_viewed');
       const recent = recentRaw ? JSON.parse(recentRaw) : [];
       setRecentlyViewed(Array.isArray(recent) ? recent : []);
@@ -55,11 +55,7 @@ export function GlobalFloatingActions() {
 
   useEffect(() => {
     loadData();
-
-    // Listen to local storage changes to keep count in sync across route changes
     window.addEventListener('storage', loadData);
-    
-    // Poll briefly to handle local React modifications that do not trigger the 'storage' event in same window
     const interval = setInterval(loadData, 1000);
 
     const handleScroll = () => {
@@ -90,93 +86,79 @@ export function GlobalFloatingActions() {
   return (
     <>
       {/* =========================================================
-          DESKTOP RIGHT RAIL FLOATING ACTIONS
+          DESKTOP RIGHT RAIL FLOATING ACTIONS (Matching Design Reference)
           ========================================================= */}
-      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-3.5 select-none">
+      <div className="fixed right-4 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-3 select-none">
         
         {/* Rail Capsule wrapper */}
-        <div className="bg-[#120806]/80 backdrop-blur-md border border-white/10 p-2.5 rounded-3xl flex flex-col gap-3 shadow-2xl shadow-black/50">
+        <div className="bg-[#0D0D0D]/95 backdrop-blur-xl border border-[#DFB15B]/30 py-3.5 px-1.5 rounded-full flex flex-col items-center gap-2.5 shadow-[0_15px_40px_rgba(0,0,0,0.6)]">
           
-          {/* Wishlist Button */}
+          {/* 1. Wishlist Button */}
           <Link to="/shop?collection=wishlist" onClick={playBtnTap} className="relative group">
-            <div className="w-11 h-11 rounded-xl bg-white/5 hover:bg-pink-600/10 hover:border-pink-500/30 border border-white/5 flex items-center justify-center text-slate-300 hover:text-pink-400 transition-all duration-300 cursor-pointer">
-              <Heart className="w-4.5 h-4.5 group-hover:scale-110 transition-transform" />
+            <div className="w-10 h-10 rounded-full hover:bg-[#DFB15B]/15 flex items-center justify-center text-[#F5EFE0]/80 hover:text-[#DFB15B] transition-all duration-200 cursor-pointer">
+              <Heart className="w-4.5 h-4.5" />
               {wishlistCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1.5 rounded-full bg-pink-500 border border-[#120806] text-white text-[9px] font-black flex items-center justify-center animate-bounce">
+                <span className="absolute -top-0.5 -right-0.5 min-w-4 h-4 px-1 rounded-full bg-rose-500 border border-[#0D0D0D] text-white text-[8px] font-black flex items-center justify-center">
                   {wishlistCount}
                 </span>
               )}
             </div>
-            {/* Premium Tooltip */}
-            <div className="absolute right-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-[#140603] border border-white/10 text-[10px] font-black uppercase tracking-wider text-white opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all pointer-events-none whitespace-nowrap shadow-xl">
-              My Wishlist
+            <div className="absolute right-12 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-md bg-[#0D0D0D] border border-[#DFB15B]/30 text-[9px] font-bold uppercase tracking-wider text-[#F5EFE0] opacity-0 group-hover:opacity-100 translate-x-1 group-hover:translate-x-0 transition-all pointer-events-none whitespace-nowrap shadow-xl">
+              Wishlist
             </div>
           </Link>
 
-          {/* Cart Button */}
-          <Link to="/cart" onClick={playBtnTap} className="relative group">
-            <div className="w-11 h-11 rounded-xl bg-white/5 hover:bg-amber-600/10 hover:border-amber-500/30 border border-white/5 flex items-center justify-center text-slate-300 hover:text-amber-400 transition-all duration-300 cursor-pointer">
-              <ShoppingBag className="w-4.5 h-4.5 group-hover:scale-110 transition-transform" />
-              {cartCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1.5 rounded-full bg-amber-500 border border-[#120806] text-white text-[9px] font-black flex items-center justify-center animate-bounce">
-                  {cartCount}
-                </span>
-              )}
+          {/* 2. 3D Cake Studio */}
+          <Link to="/ai-designer" onClick={playBtnTap} className="relative group">
+            <div className="w-10 h-10 rounded-full hover:bg-[#DFB15B]/15 flex items-center justify-center text-[#F5EFE0]/80 hover:text-[#DFB15B] transition-all duration-200 cursor-pointer">
+              <Camera className="w-4.5 h-4.5" />
             </div>
-            <div className="absolute right-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-[#140603] border border-white/10 text-[10px] font-black uppercase tracking-wider text-white opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all pointer-events-none whitespace-nowrap shadow-xl">
-              Shopping Cart
+            <div className="absolute right-12 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-md bg-[#0D0D0D] border border-[#DFB15B]/30 text-[9px] font-bold uppercase tracking-wider text-[#F5EFE0] opacity-0 group-hover:opacity-100 translate-x-1 group-hover:translate-x-0 transition-all pointer-events-none whitespace-nowrap shadow-xl">
+              3D Cake Studio
             </div>
           </Link>
 
-          {/* Recently Viewed Button */}
-          <button 
-            onClick={() => {
-              setIsRecentOpen(true);
-              playBtnTap();
-            }}
-            className="relative group focus:outline-none"
-          >
-            <div className="w-11 h-11 rounded-xl bg-white/5 hover:bg-purple-600/10 hover:border-purple-500/30 border border-white/5 flex items-center justify-center text-slate-300 hover:text-purple-400 transition-all duration-300 cursor-pointer">
-              <History className="w-4.5 h-4.5 group-hover:scale-110 transition-transform" />
-              {recentlyViewed.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-purple-500 border border-[#120806]" />
-              )}
+          {/* 3. Midnight Delivery Express */}
+          <Link to="/shop?category=midnight" onClick={playBtnTap} className="relative group">
+            <div className="w-10 h-10 rounded-full hover:bg-[#DFB15B]/15 flex items-center justify-center text-[#F5EFE0]/80 hover:text-[#DFB15B] transition-all duration-200 cursor-pointer">
+              <Clock className="w-4.5 h-4.5" />
             </div>
-            <div className="absolute right-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-[#140603] border border-white/10 text-[10px] font-black uppercase tracking-wider text-white opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all pointer-events-none whitespace-nowrap shadow-xl">
-              Recently Viewed
+            <div className="absolute right-12 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-md bg-[#0D0D0D] border border-[#DFB15B]/30 text-[9px] font-bold uppercase tracking-wider text-[#F5EFE0] opacity-0 group-hover:opacity-100 translate-x-1 group-hover:translate-x-0 transition-all pointer-events-none whitespace-nowrap shadow-xl">
+              Midnight Delivery
             </div>
-          </button>
+          </Link>
 
-          {/* Divider */}
-          <div className="w-full h-px bg-white/10" />
-
-          {/* WhatsApp Direct Care */}
-          <a 
-            href="https://wa.me/917318531953?text=Hi%20CakeUrban,%20I%20would%20like%20to%20order%20a%20luxury%20cake."
-            target="_blank"
-            rel="noreferrer"
-            onClick={playBtnTap}
-            className="relative group"
-          >
-            <div className="w-11 h-11 rounded-xl bg-emerald-600/15 hover:bg-emerald-600/30 border border-emerald-500/20 flex items-center justify-center text-emerald-400 transition-all duration-300 cursor-pointer">
-              <MessageSquare className="w-4.5 h-4.5" />
+          {/* 4. Cake Builder / Sliders */}
+          <Link to="/custom-order" onClick={playBtnTap} className="relative group">
+            <div className="w-10 h-10 rounded-full hover:bg-[#DFB15B]/15 flex items-center justify-center text-[#F5EFE0]/80 hover:text-[#DFB15B] transition-all duration-200 cursor-pointer">
+              <SlidersHorizontal className="w-4.5 h-4.5" />
             </div>
-            <div className="absolute right-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-[#140603] border border-white/10 text-[10px] font-black uppercase tracking-wider text-white opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all pointer-events-none whitespace-nowrap shadow-xl">
-              WhatsApp Support
+            <div className="absolute right-12 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-md bg-[#0D0D0D] border border-[#DFB15B]/30 text-[9px] font-bold uppercase tracking-wider text-[#F5EFE0] opacity-0 group-hover:opacity-100 translate-x-1 group-hover:translate-x-0 transition-all pointer-events-none whitespace-nowrap shadow-xl">
+              Cake Builder
             </div>
-          </a>
+          </Link>
 
-          {/* Hotline Call */}
+          {/* 5. Order Tracking / Box */}
+          <Link to="/track-order" onClick={playBtnTap} className="relative group">
+            <div className="w-10 h-10 rounded-full hover:bg-[#DFB15B]/15 flex items-center justify-center text-[#F5EFE0]/80 hover:text-[#DFB15B] transition-all duration-200 cursor-pointer">
+              <Package className="w-4.5 h-4.5" />
+            </div>
+            <div className="absolute right-12 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-md bg-[#0D0D0D] border border-[#DFB15B]/30 text-[9px] font-bold uppercase tracking-wider text-[#F5EFE0] opacity-0 group-hover:opacity-100 translate-x-1 group-hover:translate-x-0 transition-all pointer-events-none whitespace-nowrap shadow-xl">
+              Track Order
+            </div>
+          </Link>
+
+          {/* 6. Phone Support */}
           <a 
             href="tel:+917318531953"
             onClick={playBtnTap}
             className="relative group"
           >
-            <div className="w-11 h-11 rounded-xl bg-indigo-600/15 hover:bg-indigo-600/30 border border-indigo-500/20 flex items-center justify-center text-indigo-400 transition-all duration-300 cursor-pointer">
+            <div className="w-10 h-10 rounded-full hover:bg-[#DFB15B]/15 flex items-center justify-center text-[#F5EFE0]/80 hover:text-[#DFB15B] transition-all duration-200 cursor-pointer">
               <Phone className="w-4.5 h-4.5" />
             </div>
-            <div className="absolute right-14 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-[#140603] border border-white/10 text-[10px] font-black uppercase tracking-wider text-white opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all pointer-events-none whitespace-nowrap shadow-xl">
-              Call Hotline Desk
+            <div className="absolute right-12 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-md bg-[#0D0D0D] border border-[#DFB15B]/30 text-[9px] font-bold uppercase tracking-wider text-[#F5EFE0] opacity-0 group-hover:opacity-100 translate-x-1 group-hover:translate-x-0 transition-all pointer-events-none whitespace-nowrap shadow-xl">
+              Hotline Support
             </div>
           </a>
 
@@ -190,7 +172,7 @@ export function GlobalFloatingActions() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
               onClick={scrollToTop}
-              className="w-11 h-11 rounded-xl bg-[#DFB15B] hover:bg-white text-[#140603] flex items-center justify-center shadow-lg hover:shadow-xl transition-all cursor-pointer focus:outline-none"
+              className="w-10 h-10 rounded-full bg-[#DFB15B] hover:bg-white text-[#0D0D0D] flex items-center justify-center shadow-lg transition-all cursor-pointer focus:outline-none"
             >
               <ArrowUp className="w-4.5 h-4.5" />
             </motion.button>
