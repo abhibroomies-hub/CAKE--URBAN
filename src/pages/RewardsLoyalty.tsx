@@ -309,23 +309,23 @@ export default function RewardsLoyalty() {
         {/* 2. REWARD BALANCE BOX */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
-          <div className="lg:col-span-5 bg-[#1E0B07]/80 border border-[#DFB15B]/30 p-8 rounded-[36px] text-left space-y-4 shadow-xl relative overflow-hidden backdrop-blur-md">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-[#DFB15B]/10 rounded-full blur-2xl opacity-40 pointer-events-none" />
-            <span className="text-[10px] font-black uppercase text-[#DFB15B] tracking-wider">Active Coin Balance</span>
+          <div className="lg:col-span-5 luxury-glass-tile p-8 rounded-[36px] text-left space-y-4">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#DFB15B]/20 rounded-full blur-2xl opacity-40 pointer-events-none" />
+            <span className="text-[11px] font-bold uppercase text-[#DFB15B] tracking-wider">Active Coin Balance</span>
             
             <div className="flex items-baseline gap-2">
               <span className="text-4xl md:text-5xl font-black text-white">{coinBalance}</span>
-              <span className="text-xs font-black uppercase tracking-widest text-[#DFB15B] bg-[#DFB15B]/10 border border-[#DFB15B]/30 px-2.5 py-0.5 rounded-lg">Cake Coins</span>
+              <span className="text-xs font-black uppercase tracking-widest text-[#DFB15B] bg-[#DFB15B]/20 border border-[#DFB15B]/40 px-2.5 py-0.5 rounded-lg">Cake Coins</span>
             </div>
 
-            <div className="space-y-2 pt-4 border-t border-[#DFB15B]/20 text-xs font-bold text-slate-300">
+            <div className="space-y-2.5 pt-4 border-t border-white/10 text-xs font-semibold text-slate-300">
               <div className="flex justify-between">
                 <span>Value in INR</span>
-                <span className="text-white font-extrabold">₹{(coinBalance / 10).toFixed(2)}</span>
+                <span className="text-white font-black text-sm">₹{(coinBalance / 10).toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Active Multiplier</span>
-                <span className="text-[#DFB15B] font-extrabold">1.5x Gold Tier boost</span>
+                <span className="text-[#DFB15B] font-black">1.5x Gold Tier boost</span>
               </div>
             </div>
           </div>
@@ -335,7 +335,7 @@ export default function RewardsLoyalty() {
             <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">
               10 Cake Coins = ₹1 Cash Value
             </h2>
-            <p className="text-slate-300 text-xs md:text-sm font-semibold leading-relaxed">
+            <p className="text-slate-300 text-xs md:text-sm font-normal leading-relaxed">
               Earn coins automatically on checkout, review submissions, Custom Cake creation, or successful referral invite claims. Your coins never expire as long as you maintain an active celebratory schedule.
             </p>
           </div>
@@ -345,11 +345,11 @@ export default function RewardsLoyalty() {
         {/* 3. VIP LEVELS */}
         <div className="space-y-6 text-left">
           <div>
-            <h3 className="text-lg font-black tracking-tight text-white flex items-center gap-2">
+            <h3 className="text-xl font-black tracking-tight text-white flex items-center gap-2">
               <Award className="w-5 h-5 text-[#DFB15B]" />
               Sovereign VIP Tiers
             </h3>
-            <p className="text-xs text-slate-300 font-medium">Progress your level by choosing custom cake recipes.</p>
+            <p className="text-sm text-slate-300 font-normal">Progress your level by choosing custom cake recipes.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
@@ -357,27 +357,27 @@ export default function RewardsLoyalty() {
               return (
                 <div 
                   key={level.id}
-                  className={`bg-[#1E0B07]/80 backdrop-blur-md border rounded-[30px] p-6 text-left relative overflow-hidden transition-all duration-300 ${
+                  className={`luxury-glass-tile rounded-[30px] p-6 text-left relative overflow-hidden transition-all duration-300 ${
                     level.active 
-                      ? 'border-[#DFB15B] scale-102 shadow-[0_15px_35px_rgba(223,177,91,0.2)] ring-1 ring-[#DFB15B]' 
-                      : 'border-[#DFB15B]/20 shadow-sm opacity-80 hover:opacity-100 hover:border-[#DFB15B]/50'
+                      ? 'border-[#DFB15B] scale-102 shadow-[0_15px_35px_rgba(223,177,91,0.3)] ring-1 ring-[#DFB15B]' 
+                      : 'opacity-85 hover:opacity-100'
                   }`}
                 >
                   {/* Current Active Ribbon */}
                   {level.active && (
-                    <div className="absolute top-3 right-3 bg-[#DFB15B]/20 border border-[#DFB15B]/40 px-2 py-0.5 rounded-full">
+                    <div className="absolute top-3 right-3 bg-[#DFB15B]/20 border border-[#DFB15B]/50 px-2 py-0.5 rounded-full">
                       <span className="text-[8px] font-black uppercase tracking-widest text-[#DFB15B]">Current</span>
                     </div>
                   )}
 
-                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-tr ${level.color} shrink-0 mb-6 flex items-center justify-center text-white text-sm font-black`}>
+                  <div className={`w-11 h-11 rounded-xl bg-gradient-to-tr ${level.color} shrink-0 mb-6 flex items-center justify-center text-white text-sm font-black shadow-md`}>
                     {level.label.substring(0, 2)}
                   </div>
 
-                  <div className="space-y-1">
-                    <h4 className="text-sm font-black text-white tracking-tight">{level.label}</h4>
-                    <span className="text-[9px] font-bold text-[#DFB15B] uppercase block tracking-wider">{level.threshold}</span>
-                    <p className="text-[10px] text-slate-300 leading-tight font-semibold pt-1">
+                  <div className="space-y-1.5">
+                    <h4 className="text-base font-bold text-white tracking-tight">{level.label}</h4>
+                    <span className="text-[10px] font-bold text-[#DFB15B] uppercase block tracking-wider">{level.threshold}</span>
+                    <p className="text-xs text-slate-300 leading-relaxed font-normal pt-1">
                       {level.desc}
                     </p>
                   </div>
@@ -390,25 +390,25 @@ export default function RewardsLoyalty() {
         {/* 4. BENEFITS */}
         <div id="benefits-section" className="space-y-6 text-left">
           <div>
-            <h3 className="text-lg font-black tracking-tight text-white flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#DFB15B]" />
+            <h3 className="text-xl font-black tracking-tight text-white flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-[#DFB15B]" />
               Exclusive Gold Perks
             </h3>
-            <p className="text-xs text-slate-300 font-medium">Unlocked automatically for your active VIP tier status.</p>
+            <p className="text-sm text-slate-300 font-normal">Unlocked automatically for your active VIP tier status.</p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {BENEFITS.map((b) => (
               <div 
                 key={b.label}
-                className="bg-[#1E0B07]/80 backdrop-blur-md border border-[#DFB15B]/30 p-6 rounded-[30px] text-left hover:border-[#DFB15B] transition-all shadow-md group"
+                className="luxury-glass-tile p-6 rounded-[30px] text-left group"
               >
-                <div className="w-12 h-12 rounded-2xl bg-[#2D120B] flex items-center justify-center text-2xl border border-[#DFB15B]/30 transition-all mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-2xl border border-white/20 group-hover:border-[#DFB15B]/50 group-hover:scale-105 transition-all mb-4">
                   {b.icon}
                 </div>
-                <div className="space-y-1">
-                  <h4 className="text-sm font-black text-white tracking-tight">{b.label}</h4>
-                  <p className="text-[10px] text-slate-300 leading-relaxed font-semibold">{b.desc}</p>
+                <div className="space-y-1.5">
+                  <h4 className="text-base font-bold text-white tracking-tight">{b.label}</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed font-normal">{b.desc}</p>
                 </div>
               </div>
             ))}
@@ -421,19 +421,19 @@ export default function RewardsLoyalty() {
           {/* Scratch cards left (Col 6) */}
           <div className="lg:col-span-6 space-y-5">
             <div>
-              <h3 className="text-lg font-black tracking-tight text-white flex items-center gap-2">
+              <h3 className="text-xl font-black tracking-tight text-white flex items-center gap-2">
                 🎁 Scratch & Reveal Coupons
               </h3>
-              <p className="text-xs text-slate-300 font-medium">Use your mouse/touch on the card to peel away the cover.</p>
+              <p className="text-sm text-slate-300 font-normal">Use your mouse/touch on the card to peel away the cover.</p>
             </div>
 
-            <div className="bg-[#1E0B07]/80 backdrop-blur-md border border-[#DFB15B]/30 p-6 rounded-[36px] shadow-md flex flex-col md:flex-row items-center gap-6 relative overflow-hidden">
+            <div className="luxury-glass-tile p-6 rounded-[36px] flex flex-col md:flex-row items-center gap-6 relative overflow-hidden">
               {/* Actual Playable Scratch Block */}
-              <div className="relative w-48 h-28 bg-[#0F0503] rounded-2xl overflow-hidden shrink-0 shadow-lg border border-[#DFB15B]/40">
+              <div className="relative w-48 h-28 bg-[#121212] rounded-2xl overflow-hidden shrink-0 shadow-lg border border-[#DFB15B]/50">
                 {/* Underneath coupon code */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-3 bg-gradient-to-tr from-[#DFB15B]/20 to-purple-500/10">
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-3 bg-gradient-to-tr from-[#DFB15B]/25 to-purple-500/15">
                   <span className="text-[8px] font-black text-slate-300 uppercase tracking-widest block mb-1">Coupon Unlocked</span>
-                  <span className="text-xs font-black text-[#DFB15B] tracking-widest bg-[#1E0B07] border border-[#DFB15B]/40 px-3 py-1.5 rounded-lg shadow-sm">
+                  <span className="text-xs font-black text-[#DFB15B] tracking-widest bg-[#181818] border border-[#DFB15B]/50 px-3 py-1.5 rounded-lg shadow-sm">
                     GOLD-SPONGE-250
                   </span>
                   <span className="text-[8px] text-emerald-400 font-black uppercase mt-1.5 tracking-wider">Active now</span>
@@ -453,12 +453,12 @@ export default function RewardsLoyalty() {
 
               <div className="space-y-2 flex-1">
                 <span className="text-[10px] font-black text-[#DFB15B] uppercase tracking-widest">Scratch To Claim</span>
-                <h4 className="text-base font-black text-white tracking-tight">Weekly Confection Bonus</h4>
-                <p className="text-[11px] text-slate-300 leading-relaxed font-semibold">
+                <h4 className="text-base font-bold text-white tracking-tight">Weekly Confection Bonus</h4>
+                <p className="text-xs text-slate-300 leading-relaxed font-normal">
                   Melt the gold cover to receive up to 500 bonus points or complimentary toppings coupons.
                 </p>
                 {isScratched ? (
-                  <span className="text-[10px] font-extrabold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-3 py-1 rounded-full inline-block uppercase tracking-wider">
+                  <span className="text-[10px] font-extrabold text-emerald-300 bg-emerald-950/80 border border-emerald-500/40 px-3 py-1 rounded-full inline-block uppercase tracking-wider">
                     Claimed +250 Coins
                   </span>
                 ) : (
@@ -473,13 +473,13 @@ export default function RewardsLoyalty() {
           {/* Spin and win right (Col 6) */}
           <div className="lg:col-span-6 space-y-5">
             <div>
-              <h3 className="text-lg font-black tracking-tight text-white flex items-center gap-2">
+              <h3 className="text-xl font-black tracking-tight text-white flex items-center gap-2">
                 🎡 Royal Fortune Spin Wheel
               </h3>
-              <p className="text-xs text-slate-300 font-medium">Claim your persistent daily reward.</p>
+              <p className="text-sm text-slate-300 font-normal">Claim your persistent daily reward.</p>
             </div>
 
-            <div className="bg-[#1E0B07]/80 backdrop-blur-md border border-[#DFB15B]/30 p-6 rounded-[36px] shadow-md flex flex-col md:flex-row items-center gap-6 relative overflow-hidden">
+            <div className="luxury-glass-tile p-6 rounded-[36px] flex flex-col md:flex-row items-center gap-6 relative overflow-hidden">
               
               {/* Wheel Graphic Container */}
               <div className="relative w-40 h-40 shrink-0 flex items-center justify-center">
@@ -491,7 +491,7 @@ export default function RewardsLoyalty() {
 
                 {/* Main Wheel */}
                 <div 
-                  className="w-full h-full rounded-full border-4 border-[#DFB15B] bg-gradient-to-r from-[#2D120B] via-[#3D1A10] to-[#1E0B07] relative shadow-md transition-transform duration-[3000ms] ease-out flex items-center justify-center overflow-hidden"
+                  className="w-full h-full rounded-full border-4 border-[#DFB15B] bg-gradient-to-r from-[#222222] via-[#2a241c] to-[#181818] relative shadow-md transition-transform duration-[3000ms] ease-out flex items-center justify-center overflow-hidden"
                   style={{ 
                     transform: `rotate(${spinDegree}deg)`,
                     transitionTimingFunction: 'cubic-bezier(0.1, 0.8, 0.1, 1)' 
@@ -505,7 +505,7 @@ export default function RewardsLoyalty() {
                   </div>
 
                   {/* central pin */}
-                  <div className="w-8 h-8 rounded-full bg-[#1E0B07] border border-[#DFB15B] z-10 flex items-center justify-center shadow-lg">
+                  <div className="w-8 h-8 rounded-full bg-[#181818] border border-[#DFB15B] z-10 flex items-center justify-center shadow-lg">
                     <span className="text-[10px] text-white">🍰</span>
                   </div>
                 </div>
@@ -514,14 +514,14 @@ export default function RewardsLoyalty() {
               {/* Spin Details and Action */}
               <div className="space-y-3 flex-1">
                 <span className="text-[10px] font-black text-[#DFB15B] uppercase tracking-widest">Persistent Daily Sweep</span>
-                <h4 className="text-base font-black text-white tracking-tight">Fortune Confection</h4>
+                <h4 className="text-base font-bold text-white tracking-tight">Fortune Confection</h4>
                 
-                <p className="text-[11px] text-slate-300 leading-relaxed font-semibold">
+                <p className="text-xs text-slate-300 leading-relaxed font-normal">
                   Spin to win cake coins, free shipping coupons, or complimentary design consults.
                 </p>
 
                 {spinResult ? (
-                  <div className="p-2 bg-[#DFB15B]/10 rounded-xl border border-[#DFB15B]/30 text-[10px] font-black text-[#DFB15B] uppercase tracking-wider text-center">
+                  <div className="p-2 bg-[#DFB15B]/20 rounded-xl border border-[#DFB15B]/40 text-[10px] font-black text-[#DFB15B] uppercase tracking-wider text-center">
                     Won: {spinResult}
                   </div>
                 ) : null}
@@ -529,7 +529,7 @@ export default function RewardsLoyalty() {
                 <button 
                   onClick={spinWheel}
                   disabled={isSpinning}
-                  className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#DFB15B] to-[#B88E3D] text-[#1E0B07] font-black text-[10px] uppercase tracking-widest hover:brightness-110 transition-colors disabled:opacity-50 cursor-pointer"
+                  className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#DFB15B] to-[#B88E3D] text-slate-950 font-black text-[10px] uppercase tracking-widest hover:brightness-110 transition-colors disabled:opacity-50 cursor-pointer shadow-md"
                 >
                   {isSpinning ? 'SPINNING WHEEL...' : 'SPIN THE WHEEL'}
                 </button>
@@ -541,26 +541,26 @@ export default function RewardsLoyalty() {
         </div>
 
         {/* 6. REFERRAL PROGRAM */}
-        <div id="refer" className="bg-[#1E0B07]/80 backdrop-blur-md border border-[#DFB15B]/30 rounded-[38px] p-8 md:p-12 text-left relative overflow-hidden group shadow-md">
+        <div id="refer" className="luxury-glass-tile rounded-[38px] p-8 md:p-12 text-left relative overflow-hidden group">
           {/* Glowing purple ambient reflection */}
-          <div className="absolute top-0 right-0 w-80 h-80 bg-[#DFB15B]/10 rounded-full blur-3xl pointer-events-none opacity-55" />
+          <div className="absolute top-0 right-0 w-80 h-80 bg-[#DFB15B]/15 rounded-full blur-3xl pointer-events-none opacity-55" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
             <div className="lg:col-span-7 space-y-5">
-              <span className="bg-[#DFB15B]/10 text-[#DFB15B] border border-[#DFB15B]/30 text-[10px] font-black px-3.5 py-1.5 rounded-full uppercase tracking-widest inline-block">
+              <span className="bg-[#DFB15B]/20 text-[#DFB15B] border border-[#DFB15B]/40 text-[10px] font-black px-3.5 py-1.5 rounded-full uppercase tracking-widest inline-block">
                 Invite Friends & Family
               </span>
               <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight leading-none">
                 Give ₹200, Get ₹200
               </h2>
-              <p className="text-slate-300 text-xs md:text-sm font-semibold leading-relaxed">
+              <p className="text-slate-300 text-xs md:text-sm font-normal leading-relaxed">
                 Send your unique confectionery code. When they order their first Belgian gold or design-custom cake, you both secure ₹200 sweet credits instantly in your wallet balance.
               </p>
 
               {/* Copy Share Code Capsule */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 bg-[#0F0503] border border-[#DFB15B]/30 p-2 rounded-2xl max-w-lg">
-                <div className="flex-1 px-3 py-1 bg-[#1E0B07] rounded-xl border border-[#DFB15B]/30 flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 bg-black/40 border border-white/15 p-2 rounded-2xl max-w-lg">
+                <div className="flex-1 px-3 py-1.5 bg-white/5 rounded-xl border border-white/10 flex items-center justify-between">
                   <span className="text-xs font-mono font-black text-[#DFB15B] tracking-widest">
                     CAKE-ABHISHEK-7241
                   </span>
@@ -570,7 +570,7 @@ export default function RewardsLoyalty() {
                 </div>
                 <button 
                   onClick={copyReferralCode}
-                  className="px-5 py-2.5 bg-gradient-to-r from-[#DFB15B] to-[#B88E3D] text-[#1E0B07] hover:brightness-110 text-xs font-black uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="px-5 py-2.5 bg-gradient-to-r from-[#DFB15B] to-[#B88E3D] text-slate-950 hover:brightness-110 text-xs font-black uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md"
                 >
                   <Copy className="w-4 h-4" />
                   Copy Code
@@ -579,14 +579,14 @@ export default function RewardsLoyalty() {
             </div>
 
             {/* QR Code and Social actions Right (Col 5) */}
-            <div className="lg:col-span-5 flex flex-col sm:flex-row items-center gap-6 justify-center bg-[#2D120B]/60 border border-[#DFB15B]/20 p-6 rounded-3xl">
+            <div className="lg:col-span-5 flex flex-col sm:flex-row items-center gap-6 justify-center bg-white/5 border border-white/10 p-6 rounded-3xl">
               {/* Mock QR design */}
               <div className="w-28 h-28 bg-white border border-[#DFB15B]/40 p-2.5 rounded-2xl shadow-sm flex items-center justify-center">
                 <QrCode className="w-full h-full text-slate-900" />
               </div>
               <div className="space-y-2 text-center sm:text-left">
                 <h4 className="text-xs font-black text-white uppercase tracking-widest">Scan QR Code</h4>
-                <p className="text-[10px] text-slate-300 font-semibold max-w-[150px] leading-relaxed">
+                <p className="text-[10px] text-slate-300 font-medium max-w-[150px] leading-relaxed">
                   Let your guests scan and unlock immediate cake-coins instantly.
                 </p>
                 <button 
@@ -608,11 +608,11 @@ export default function RewardsLoyalty() {
         {/* 7. ACHIEVEMENTS SYSTEM */}
         <div className="space-y-6 text-left">
           <div>
-            <h3 className="text-lg font-black tracking-tight text-white flex items-center gap-2">
+            <h3 className="text-xl font-black tracking-tight text-white flex items-center gap-2">
               <Flame className="w-5 h-5 text-[#DFB15B] animate-pulse" />
               Gourmet Achievements
             </h3>
-            <p className="text-xs text-slate-300 font-medium">Unlocks extra coin multipliers and chef level flags.</p>
+            <p className="text-sm text-slate-300 font-normal">Unlocks extra coin multipliers and chef level flags.</p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
@@ -623,21 +623,21 @@ export default function RewardsLoyalty() {
                   toast.info(`${ach.label}: ${ach.desc}`);
                   playSound('tap');
                 }}
-                className={`bg-[#1E0B07]/80 backdrop-blur-md border rounded-[30px] p-6 text-left cursor-pointer hover:border-[#DFB15B] transition-all relative overflow-hidden flex flex-col justify-between ${
-                  ach.unlocked ? 'border-[#DFB15B]/50 bg-[#DFB15B]/5' : 'border-[#DFB15B]/20 opacity-60'
+                className={`luxury-glass-tile rounded-[30px] p-6 text-left cursor-pointer transition-all relative overflow-hidden flex flex-col justify-between group ${
+                  ach.unlocked ? 'border-[#DFB15B]/60' : 'opacity-70'
                 }`}
               >
                 <div>
-                  <div className="w-12 h-12 rounded-2xl bg-[#2D120B] border border-[#DFB15B]/30 shadow-sm flex items-center justify-center text-2xl mb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 shadow-sm flex items-center justify-center text-2xl group-hover:border-[#DFB15B]/50 group-hover:scale-105 transition-all mb-4">
                     {ach.icon}
                   </div>
-                  <h4 className="text-sm font-black text-white tracking-tight">{ach.label}</h4>
-                  <p className="text-[10px] text-slate-300 leading-tight font-semibold mt-1">
+                  <h4 className="text-base font-bold text-white tracking-tight">{ach.label}</h4>
+                  <p className="text-xs text-slate-300 leading-relaxed font-normal mt-1">
                     {ach.desc}
                   </p>
                 </div>
 
-                <div className="mt-6 flex justify-between items-center text-[9px] font-bold text-slate-400 border-t border-[#DFB15B]/20 pt-3">
+                <div className="mt-6 flex justify-between items-center text-[10px] font-bold text-slate-400 border-t border-white/10 pt-3">
                   <span>{ach.progress}</span>
                   <span className={ach.unlocked ? 'text-[#DFB15B] font-extrabold uppercase tracking-wide' : 'uppercase'}>
                     {ach.unlocked ? 'Unlocked' : 'Locked'}

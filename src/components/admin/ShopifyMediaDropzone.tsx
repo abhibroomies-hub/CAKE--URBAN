@@ -16,7 +16,6 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
 import { toast } from 'sonner';
-import { GoogleGenAI } from '@google/genai';
 
 interface ShopifyMediaDropzoneProps {
   images: string[];
@@ -98,50 +97,29 @@ export default function ShopifyMediaDropzone({
     toast.success("Set as primary product cover image.");
   };
 
-  // AI Image generation using Gemini
+  // AI Image generation using Gemini via Server Proxy
   const handleGenerateAiImage = async () => {
     const promptToUse = aiPrompt.trim() || `Luxury artisanal gourmet cake: ${productName || 'Chocolate Truffle Masterpiece'}, elegant bakery photo studio lighting, 4k ultra detailed, delicious velvet texture, edible gold dusting.`;
     
     setIsGeneratingAi(true);
     toast.loading("Generating luxury cake visual with Gemini AI...", { id: "ai-img-gen" });
     try {
-      const apiKey = process.env.GEMINI_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY || '';
-      if (!apiKey) {
-        // Fallback to high-quality curated luxury cake photo if API key is in server-only context
-        const fallbackCakePhotos = [
-          "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&q=80",
-          "https://images.unsplash.com/photo-1535141192574-5d4897c13636?w=800&q=80",
-          "https://images.unsplash.com/photo-1586985289688-ca9cf4993ec0?w=800&q=80",
-          "https://images.unsplash.com/photo-1542826438-bd32f43d626f?w=800&q=80",
-          "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=800&q=80",
-          "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=800&q=80"
-        ];
-        const randomImg = fallbackCakePhotos[Math.floor(Math.random() * fallbackCakePhotos.length)];
-        onChange([...images, randomImg]);
-        toast.success("Added luxury studio photography to product media.", { id: "ai-img-gen" });
-        setIsGeneratingAi(false);
-        setShowAiGen(false);
-        return;
-      }
-
-      const ai = new GoogleGenAI({ apiKey });
-      const response = await ai.models.generateImages({
-        model: 'imagen-3.0-generate-002',
-        prompt: promptToUse,
-        config: {
-          numberOfImages: 1,
-          aspectRatio: '1:1',
-          outputMimeType: 'image/jpeg'
-        }
+      const response = await fetch('/api/grok/generate-images', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: promptToUse, count: 1 })
       });
 
-      const base64ImageBytes = response.generatedImages?.[0]?.image?.imageBytes;
-      if (base64ImageBytes) {
-        const fullDataUrl = `data:image/jpeg;base64,${base64ImageBytes}`;
-        onChange([...images, fullDataUrl]);
+      if (!response.ok) {
+        throw new Error("Server failed to generate image candidate");
+      }
+
+      const data = await response.json();
+      if (data?.images && data.images.length > 0) {
+        onChange([...images, data.images[0]]);
         toast.success("AI Visual generated and added to media gallery!", { id: "ai-img-gen" });
       } else {
-        throw new Error("No image returned");
+        throw new Error("No image returned from generator");
       }
     } catch (err: any) {
       console.warn("AI generation fallback to curated asset:", err);

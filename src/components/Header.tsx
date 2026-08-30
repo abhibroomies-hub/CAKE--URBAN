@@ -48,11 +48,12 @@ import { Input } from './ui/input';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { db, auth } from '../lib/firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 import { toast } from 'sonner';
 import { playSuccessChime, playBtnTap, playSlidePop } from '../lib/sound';
 import { useTheme, THEME_PRESETS } from '../lib/theme';
+import { CategoryCollection } from '../types';
 
 // ---------------------------------------------------------
 // TYPING PLACEHOLDER ANIMATION FOR SEARCH BAR
@@ -100,6 +101,65 @@ export function Header() {
   // Load products dynamically for search suggestions
   const [dbProducts, setDbProducts] = useState<any[]>([]);
   const [wishlistItems, setWishlistItems] = useState<any[]>([]);
+  const [liveCategories, setLiveCategories] = useState<CategoryCollection[]>([]);
+
+  // Real-time categories listener for Dynamic MegaMenu & Mobile Navigation
+  useEffect(() => {
+    const unsub = onSnapshot(
+      collection(db, 'categories'),
+      (snapshot) => {
+        if (!snapshot.empty) {
+          const cats = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as CategoryCollection));
+          cats.sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+          setLiveCategories(cats);
+        } else {
+          setLiveCategories([]);
+        }
+      },
+      (err) => {
+        console.warn("Real-time header categories snapshot warning:", err);
+      }
+    );
+    return () => unsub();
+  }, []);
+
+  const birthdayCategories = React.useMemo(() => {
+    return liveCategories.filter(c => c.group === 'birthday' || (!c.group && (c.title.toLowerCase().includes('birthday') || c.title.toLowerCase().includes('chocolate') || c.title.toLowerCase().includes('forest') || c.title.toLowerCase().includes('velvet') || c.title.toLowerCase().includes('butterscotch') || c.title.toLowerCase().includes('fruit') || c.title.toLowerCase().includes('eggless'))));
+  }, [liveCategories]);
+
+  const designerCategories = React.useMemo(() => {
+    return liveCategories.filter(c => c.group === 'designer' || (!c.group && (c.title.toLowerCase().includes('designer') || c.title.toLowerCase().includes('wedding') || c.title.toLowerCase().includes('anniversary') || c.title.toLowerCase().includes('kids') || c.title.toLowerCase().includes('photo') || c.title.toLowerCase().includes('custom') || c.title.toLowerCase().includes('corporate') || c.title.toLowerCase().includes('theme'))));
+  }, [liveCategories]);
+
+  const trendingCategories = React.useMemo(() => {
+    return liveCategories.filter(c => c.group === 'trending' || (!c.group && (c.title.toLowerCase().includes('trend') || c.title.toLowerCase().includes('hamper') || c.title.toLowerCase().includes('bento') || c.title.toLowerCase().includes('special') || c.title.toLowerCase().includes('cupcake') || c.title.toLowerCase().includes('cookie') || c.title.toLowerCase().includes('dessert') || c.title.toLowerCase().includes('top'))));
+  }, [liveCategories]);
+
+  const otherCategories = React.useMemo(() => {
+    return liveCategories.filter(c => 
+      !birthdayCategories.some(b => b.id === c.id) &&
+      !designerCategories.some(d => d.id === c.id) &&
+      !trendingCategories.some(t => t.id === c.id)
+    );
+  }, [liveCategories, birthdayCategories, designerCategories, trendingCategories]);
+
+  const featuredBannerCollection = React.useMemo(() => {
+    return liveCategories.find(c => c.isFeatured) || liveCategories[0];
+  }, [liveCategories]);
+
+  const getCategoryDestination = (cat: CategoryCollection) => {
+    const name = cat.title.toLowerCase();
+    if (name.includes('wedding')) return '/wedding-cakes';
+    if (name.includes('anniversary')) return '/anniversary-cakes';
+    if (name.includes('birthday')) return '/birthday-cakes';
+    if (name.includes('kids')) return '/kids-cakes';
+    if (name.includes('cookies')) return '/cookies';
+    if (name.includes('cupcakes')) return '/cupcakes';
+    if (name.includes('desserts')) return '/desserts';
+    if (name.includes('hampers')) return '/gift-hampers';
+    if (name.includes('custom') || name.includes('bespoke')) return '/custom-order';
+    return `/shop?category=${encodeURIComponent(cat.title)}`;
+  };
 
   // Mini Login / Signup states inside the profile popover
   const [miniAuthMode, setMiniAuthMode] = useState<'login' | 'signup'>('login');
@@ -881,7 +941,7 @@ export function Header() {
       </header>
 
       {/* =========================================================
-          LUXURY MEGA MENU (When Hovering "Cakes")
+          LUXURY MEGA MENU (When Hovering "Cakes") - 100% Dynamic & Shopify-like
           ========================================================= */}
       <AnimatePresence>
         {megaMenuOpen && (
@@ -905,160 +965,171 @@ export function Header() {
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }} // Tesla ease curve
               className="relative max-w-[1180px] mx-auto bg-white/95 backdrop-blur-[20px] border border-slate-100 shadow-[0_30px_70px_rgba(0,0,0,0.12)] rounded-[32px] p-10 z-20 pointer-events-auto mt-4 grid grid-cols-12 gap-8 text-left"
             >
-              {/* Column 1: Birthday Cakes */}
-              <div className="col-span-3 space-y-4">
-                <span className="text-xs font-black text-pink-500 uppercase tracking-widest block border-b border-slate-50 pb-2">
-                  BIRTHDAY COLLECTION
-                </span>
-                <ul className="space-y-2">
-                  {[
-                    "Birthday Cakes 🎂",
-                    "Chocolate Cakes 🍫",
-                    "Red Velvet Fantasy ❤️",
-                    "Classic Black Forest 🍒",
-                    "Golden Butterscotch 🍯",
-                    "Fresh Fruit Gateaux 🍓",
-                    "Eggless Celebrations 🌱",
-                    "Premium Royal Collection 👑"
-                  ].map((item) => {
-                    const isBirthday = item.includes("Birthday");
-                    const isWedding = item.includes("Wedding");
-                    const isAnniversary = item.includes("Anniversary");
-                    const isKids = item.includes("Kids");
-                    const isCorporate = item.includes("Corporate");
-                    const isCustomOrBespoke = item.includes("Bespoke") || item.includes("Custom");
-                    const isPhoto = item.includes("Photo");
-
-                    const destination = isBirthday ? "/birthday-cakes"
-                      : isWedding ? "/wedding-cakes"
-                      : isAnniversary ? "/anniversary-cakes"
-                      : isKids ? "/kids-cakes"
-                      : isCorporate ? "/corporate-catering"
-                      : isCustomOrBespoke ? "/custom-order"
-                      : isPhoto ? "/shop?category=photo"
-                      : `/shop?search=${encodeURIComponent(item.replace(/[^\w\s]/g, '').trim())}`;
-
-                    return (
-                      <li key={item}>
-                        <Link 
-                          to={destination}
-                          onClick={() => { setMegaMenuOpen(false); triggerBtnSound(); }}
-                          className="group flex items-center justify-between py-1 text-[15px] font-semibold text-slate-600 hover:text-slate-900 transition-colors"
-                        >
-                          <span>{item}</span>
-                          <ArrowRight className="w-3.5 h-3.5 text-pink-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-
-              {/* Column 2: Occasions & Designer */}
-              <div className="col-span-3 space-y-4">
-                <span className="text-xs font-black text-purple-600 uppercase tracking-widest block border-b border-slate-50 pb-2">
-                  DESIGNER CLASS
-                </span>
-                <ul className="space-y-2">
-                  {[
-                    "Grand Wedding Cakes 👰",
-                    "Romantic Anniversary 💖",
-                    "Playful Kids Fantasy 🎈",
-                    "High-Def Photo Cakes 📸",
-                    "Bespoke Theme Cakes 🎨",
-                    "Architectural Designer Cakes 🏛️",
-                    "Corporate Milestone Cakes 💼"
-                  ].map((item) => {
-                    const isBirthday = item.includes("Birthday");
-                    const isWedding = item.includes("Wedding");
-                    const isAnniversary = item.includes("Anniversary");
-                    const isKids = item.includes("Kids");
-                    const isCorporate = item.includes("Corporate");
-                    const isCustomOrBespoke = item.includes("Bespoke") || item.includes("Custom");
-                    const isPhoto = item.includes("Photo");
-
-                    const destination = isBirthday ? "/birthday-cakes"
-                      : isWedding ? "/wedding-cakes"
-                      : isAnniversary ? "/anniversary-cakes"
-                      : isKids ? "/kids-cakes"
-                      : isCorporate ? "/corporate-catering"
-                      : isCustomOrBespoke ? "/custom-order"
-                      : isPhoto ? "/shop?category=photo"
-                      : `/shop?search=${encodeURIComponent(item.replace(/[^\w\s]/g, '').trim())}`;
-
-                    return (
-                      <li key={item}>
-                        <Link 
-                          to={destination}
-                          onClick={() => { setMegaMenuOpen(false); triggerBtnSound(); }}
-                          className="group flex items-center justify-between py-1 text-[15px] font-semibold text-slate-600 hover:text-slate-900 transition-colors"
-                        >
-                          <span>{item}</span>
-                          <ArrowRight className="w-3.5 h-3.5 text-purple-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-
-              {/* Column 3: Large Promotional Banner */}
-              <div className="col-span-3">
-                <div className="relative rounded-[24px] overflow-hidden bg-gradient-to-tr from-pink-500 via-rose-500 to-purple-600 h-full p-6 text-white flex flex-col justify-between group">
-                  {/* Subtle background cake image */}
-                  <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400')] bg-cover bg-center mix-blend-overlay opacity-25 group-hover:scale-105 transition-transform duration-700" />
-                  
-                  <div className="space-y-1 relative z-10">
-                    <span className="bg-white/20 text-white font-extrabold text-[9px] uppercase tracking-widest px-3 py-1 rounded-full inline-block backdrop-blur-md">
-                      LIMITED TIME GIFT
+              {liveCategories.length === 0 ? (
+                /* Dynamic Empty / Fresh State with 1-click discovery */
+                <div className="col-span-12 py-10 px-8 text-center space-y-4">
+                  <div className="w-16 h-16 rounded-3xl bg-pink-50 border border-pink-100 flex items-center justify-center mx-auto text-pink-500 shadow-sm">
+                    <Sparkles className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-xl font-black text-slate-800">
+                    Boutique Collections Studio
+                  </h3>
+                  <p className="text-sm text-slate-500 max-w-md mx-auto font-medium">
+                    No custom collections added yet. Add collections from the Admin Dashboard or seed luxury presets in one click!
+                  </p>
+                  <div className="flex items-center justify-center gap-3 pt-2">
+                    <Link
+                      to="/shop"
+                      onClick={() => setMegaMenuOpen(false)}
+                      className="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase tracking-wider py-3 px-6 rounded-2xl transition-all"
+                    >
+                      Browse All Pastries
+                    </Link>
+                    {isAdmin && (
+                      <Link
+                        to="/admin"
+                        onClick={() => setMegaMenuOpen(false)}
+                        className="bg-pink-500 hover:bg-pink-600 text-white font-black text-xs uppercase tracking-wider py-3 px-6 rounded-2xl shadow-lg transition-all"
+                      >
+                        + Manage Collections in Admin
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {/* Column 1: Birthday & Classic Collections */}
+                  <div className="col-span-3 space-y-4">
+                    <span className="text-xs font-black text-pink-500 uppercase tracking-widest block border-b border-slate-50 pb-2">
+                      BIRTHDAY & CLASSICS ({birthdayCategories.length})
                     </span>
-                    <h4 className="text-2xl font-black tracking-tight leading-tight pt-2">
-                      Flat 20% OFF
-                    </h4>
-                    <p className="text-[11px] text-pink-100 font-semibold leading-relaxed">
-                      On our signature Red Velvet and Belgian truffle collections.
-                    </p>
+                    <ul className="space-y-1.5 max-h-[300px] overflow-y-auto pr-1">
+                      {(birthdayCategories.length > 0 ? birthdayCategories : liveCategories.slice(0, 6)).map((cat) => {
+                        const destination = getCategoryDestination(cat);
+                        return (
+                          <li key={cat.id || cat.slug || cat.title}>
+                            <Link 
+                              to={destination}
+                              onClick={() => { setMegaMenuOpen(false); playBtnTap(); }}
+                              className="group flex items-center justify-between py-1.5 px-2 rounded-xl hover:bg-pink-50/50 text-[14px] font-semibold text-slate-700 hover:text-pink-600 transition-colors"
+                            >
+                              <span className="flex items-center gap-2 truncate">
+                                <span>{cat.icon || '🎂'}</span>
+                                <span className="truncate">{cat.title}</span>
+                              </span>
+                              {cat.badge ? (
+                                <span className="text-[9px] font-black uppercase tracking-wider bg-pink-100 text-pink-600 px-2 py-0.5 rounded-full">
+                                  {cat.badge}
+                                </span>
+                              ) : (
+                                <ArrowRight className="w-3.5 h-3.5 text-pink-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
+                              )}
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </div>
 
-                  <Link 
-                    to="/shop"
-                    onClick={() => { setMegaMenuOpen(false); triggerBtnSound(); }}
-                    className="bg-white hover:bg-pink-50 text-pink-600 font-black text-xs uppercase tracking-wider py-3.5 px-5 rounded-2xl shadow-lg relative z-10 transition-all text-center flex items-center justify-center gap-1.5"
-                  >
-                    <span>Explore Collection</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </div>
+                  {/* Column 2: Designer & Occasion Collections */}
+                  <div className="col-span-3 space-y-4">
+                    <span className="text-xs font-black text-purple-600 uppercase tracking-widest block border-b border-slate-50 pb-2">
+                      DESIGNER & OCCASIONS ({designerCategories.length})
+                    </span>
+                    <ul className="space-y-1.5 max-h-[300px] overflow-y-auto pr-1">
+                      {(designerCategories.length > 0 ? designerCategories : liveCategories.slice(6, 12)).map((cat) => {
+                        const destination = getCategoryDestination(cat);
+                        return (
+                          <li key={cat.id || cat.slug || cat.title}>
+                            <Link 
+                              to={destination}
+                              onClick={() => { setMegaMenuOpen(false); playBtnTap(); }}
+                              className="group flex items-center justify-between py-1.5 px-2 rounded-xl hover:bg-purple-50/50 text-[14px] font-semibold text-slate-700 hover:text-purple-600 transition-colors"
+                            >
+                              <span className="flex items-center gap-2 truncate">
+                                <span>{cat.icon || '✨'}</span>
+                                <span className="truncate">{cat.title}</span>
+                              </span>
+                              {cat.badge ? (
+                                <span className="text-[9px] font-black uppercase tracking-wider bg-purple-100 text-purple-600 px-2 py-0.5 rounded-full">
+                                  {cat.badge}
+                                </span>
+                              ) : (
+                                <ArrowRight className="w-3.5 h-3.5 text-purple-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
+                              )}
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
 
-              {/* Column 4: Trending Collection */}
-              <div className="col-span-3 space-y-4">
-                <span className="text-xs font-black text-slate-800 uppercase tracking-widest block border-b border-slate-50 pb-2">
-                  TRENDING NOW
-                </span>
-                <ul className="space-y-2">
-                  {[
-                    { label: "Top Rated Collections", badge: "4.9★", color: "bg-amber-100 text-amber-700" },
-                    { label: "Best Selling Bentos", badge: "HOT", color: "bg-red-100 text-red-600" },
-                    { label: "Chef Signature specials", badge: "CHEF", color: "bg-pink-100 text-pink-600" },
-                    { label: "New Pastel Arrivals", badge: "NEW", color: "bg-blue-100 text-blue-600" },
-                    { label: "Limited Edition Hampers", badge: "RARE", color: "bg-purple-100 text-purple-600" }
-                  ].map((item) => (
-                    <li key={item.label}>
-                      <Link 
-                        to="/shop"
-                        onClick={() => { setMegaMenuOpen(false); triggerBtnSound(); }}
-                        className="flex items-center justify-between py-1.5 px-3 rounded-xl hover:bg-slate-50 text-[15px] font-semibold text-slate-600 hover:text-slate-900 transition-all group"
-                      >
-                        <span>{item.label}</span>
-                        <span className={`${item.color} font-black text-[9px] tracking-widest uppercase px-2 py-0.5 rounded-full scale-90`}>
-                          {item.badge}
+                  {/* Column 3: Large Dynamic Featured Collection Banner */}
+                  <div className="col-span-3">
+                    <div className="relative rounded-[24px] overflow-hidden bg-gradient-to-tr from-pink-500 via-rose-500 to-purple-600 h-full min-h-[280px] p-6 text-white flex flex-col justify-between group shadow-md">
+                      {/* Subtle background cake image */}
+                      <div 
+                        className="absolute inset-0 bg-cover bg-center mix-blend-overlay opacity-30 group-hover:scale-105 transition-transform duration-700" 
+                        style={{ backgroundImage: `url(${featuredBannerCollection?.image || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400'})` }}
+                      />
+                      
+                      <div className="space-y-2 relative z-10">
+                        <span className="bg-white/20 text-white font-extrabold text-[9px] uppercase tracking-widest px-3 py-1 rounded-full inline-block backdrop-blur-md">
+                          {featuredBannerCollection?.badge || 'FEATURED COLLECTION'}
                         </span>
+                        <h4 className="text-2xl font-black tracking-tight leading-tight pt-1 line-clamp-2">
+                          {featuredBannerCollection?.title || 'Luxury Artisan Cakes'}
+                        </h4>
+                        <p className="text-[11px] text-pink-100 font-semibold leading-relaxed line-clamp-2">
+                          {featuredBannerCollection?.description || 'Handcrafted bespoke confectionary baked fresh with gourmet single-origin ingredients.'}
+                        </p>
+                      </div>
+
+                      <Link 
+                        to={featuredBannerCollection ? getCategoryDestination(featuredBannerCollection) : '/shop'}
+                        onClick={() => { setMegaMenuOpen(false); playBtnTap(); }}
+                        className="bg-white hover:bg-pink-50 text-pink-600 font-black text-xs uppercase tracking-wider py-3.5 px-5 rounded-2xl shadow-lg relative z-10 transition-all text-center flex items-center justify-center gap-1.5"
+                      >
+                        <span>Explore {featuredBannerCollection?.title || 'Collection'}</span>
+                        <ArrowRight className="w-4 h-4" />
                       </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                    </div>
+                  </div>
+
+                  {/* Column 4: Trending Now & Specials */}
+                  <div className="col-span-3 space-y-4">
+                    <span className="text-xs font-black text-slate-800 uppercase tracking-widest block border-b border-slate-50 pb-2">
+                      TRENDING & SPECIALS ({trendingCategories.length + otherCategories.length})
+                    </span>
+                    <ul className="space-y-1.5 max-h-[300px] overflow-y-auto pr-1">
+                      {[...trendingCategories, ...otherCategories].map((item) => {
+                        const destination = getCategoryDestination(item);
+                        return (
+                          <li key={item.id || item.slug || item.title}>
+                            <Link 
+                              to={destination}
+                              onClick={() => { setMegaMenuOpen(false); playBtnTap(); }}
+                              className="flex items-center justify-between py-1.5 px-2.5 rounded-xl hover:bg-slate-50 text-[14px] font-semibold text-slate-700 hover:text-slate-900 transition-all group"
+                            >
+                              <span className="flex items-center gap-2 truncate">
+                                <span>{item.icon || '🔥'}</span>
+                                <span className="truncate">{item.title}</span>
+                              </span>
+                              {item.badge ? (
+                                <span className="bg-amber-100 text-amber-800 font-black text-[9px] tracking-widest uppercase px-2 py-0.5 rounded-full scale-90">
+                                  {item.badge}
+                                </span>
+                              ) : (
+                                <ArrowRight className="w-3.5 h-3.5 text-slate-400 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" />
+                              )}
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </>
+              )}
 
             </motion.div>
           </div>
@@ -1339,37 +1410,99 @@ export function Header() {
 
                 {/* Animated Navigation Items */}
                 <div className="space-y-1">
-                  {[
-                    { label: "Home", href: "/" },
-                    { label: "Birthday Cakes 🎂", href: "/birthday-cakes" },
-                    { label: "Anniversary Cakes 💖", href: "/anniversary-cakes" },
-                    { label: "Wedding Cakes 👰", href: "/wedding-cakes" },
-                    { label: "Gourmet Cookies 🍪", href: "/cookies" },
-                    { label: "Celebration Cupcakes 🧁", href: "/cupcakes" },
-                    { label: "Photo Cakes 📸", href: "/shop?category=photo" },
-                    { label: "Kids Cakes 🎈", href: "/kids-cakes" },
-                    { label: "Designer Cakes 🎨", href: "/shop?category=designer" },
-                    { label: "Custom Cakes", href: "/custom-order" },
-                    { label: "Desserts 🍨", href: "/desserts" },
-                    { label: "Gift Hampers 🎁", href: "/gift-hampers" },
-                    { label: "Offers", href: "/shop?tab=offers" },
-                    { label: "Contact Us", href: "/contact" }
-                  ].map((item, index) => (
-                    <motion.div 
-                      key={item.label}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 }}
+                  <motion.div 
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                  >
+                    <Link 
+                      to="/"
+                      onClick={() => { setMobileMenuOpen(false); triggerBtnSound(); }}
+                      className="block py-2.5 text-[15px] font-bold text-slate-700 hover:text-pink-600 transition-colors"
                     >
-                      <Link 
-                        to={item.href}
-                        onClick={() => { setMobileMenuOpen(false); triggerBtnSound(); }}
-                        className="block py-2.5 text-[15px] font-bold text-slate-600 hover:text-pink-600 transition-colors"
+                      Home
+                    </Link>
+                  </motion.div>
+
+                  {/* Dynamic Collections if added */}
+                  {liveCategories.map((cat, index) => {
+                    const href = getCategoryDestination(cat);
+                    return (
+                      <motion.div 
+                        key={cat.id || cat.title}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: (index + 1) * 0.03 }}
                       >
-                        {item.label}
-                      </Link>
-                    </motion.div>
-                  ))}
+                        <Link 
+                          to={href}
+                          onClick={() => { setMobileMenuOpen(false); triggerBtnSound(); }}
+                          className="flex items-center justify-between py-2.5 text-[15px] font-semibold text-slate-600 hover:text-pink-600 transition-colors"
+                        >
+                          <span className="flex items-center gap-2">
+                            <span>{cat.icon || '🍰'}</span>
+                            <span>{cat.title}</span>
+                          </span>
+                          {cat.badge && (
+                            <span className="text-[9px] font-black uppercase tracking-wider bg-pink-100 text-pink-600 px-2 py-0.5 rounded-full">
+                              {cat.badge}
+                            </span>
+                          )}
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
+
+                  {/* Core Fallback Items if no categories yet */}
+                  {liveCategories.length === 0 && (
+                    <>
+                      <Link to="/birthday-cakes" onClick={() => setMobileMenuOpen(false)} className="block py-2.5 text-[15px] font-semibold text-slate-600 hover:text-pink-600">🎂 Birthday Cakes</Link>
+                      <Link to="/anniversary-cakes" onClick={() => setMobileMenuOpen(false)} className="block py-2.5 text-[15px] font-semibold text-slate-600 hover:text-pink-600">💖 Anniversary Cakes</Link>
+                      <Link to="/wedding-cakes" onClick={() => setMobileMenuOpen(false)} className="block py-2.5 text-[15px] font-semibold text-slate-600 hover:text-pink-600">👰 Wedding Cakes</Link>
+                      <Link to="/shop" onClick={() => setMobileMenuOpen(false)} className="block py-2.5 text-[15px] font-semibold text-slate-600 hover:text-pink-600">🍰 Explore All Bakes</Link>
+                    </>
+                  )}
+
+                  <motion.div 
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <Link 
+                      to="/custom-order"
+                      onClick={() => { setMobileMenuOpen(false); triggerBtnSound(); }}
+                      className="block py-2.5 text-[15px] font-bold text-slate-700 hover:text-pink-600 transition-colors border-t border-slate-100 mt-2 pt-3"
+                    >
+                      🎨 Custom Bespoke Cake Studio
+                    </Link>
+                  </motion.div>
+
+                  <motion.div 
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.25 }}
+                  >
+                    <Link 
+                      to="/shop?tab=offers"
+                      onClick={() => { setMobileMenuOpen(false); triggerBtnSound(); }}
+                      className="block py-2.5 text-[15px] font-bold text-pink-600 hover:text-pink-700 transition-colors"
+                    >
+                      🏷️ Exclusive Offers & Scratch Cards
+                    </Link>
+                  </motion.div>
+
+                  <motion.div 
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <Link 
+                      to="/contact"
+                      onClick={() => { setMobileMenuOpen(false); triggerBtnSound(); }}
+                      className="block py-2.5 text-[15px] font-bold text-slate-600 hover:text-pink-600 transition-colors"
+                    >
+                      📞 Contact & Support
+                    </Link>
+                  </motion.div>
                 </div>
               </div>
 

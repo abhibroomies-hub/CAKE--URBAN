@@ -54,6 +54,7 @@ export default function Shop() {
 
   // 1. DATA HOOK STATE
   const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [categoriesList, setCategoriesList] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   // 2. SEARCH & FILTER PARAMS
@@ -154,7 +155,7 @@ export default function Shop() {
   // ---------------------------------------------------------
   useEffect(() => {
     setLoading(true);
-    const unsubscribe = onSnapshot(
+    const unsubscribeProducts = onSnapshot(
       collection(db, 'products'),
       (snap) => {
         const prods = snap.docs.map(doc => {
@@ -187,7 +188,24 @@ export default function Shop() {
         setLoading(false);
       }
     );
-    return () => unsubscribe();
+
+    const unsubscribeCategories = onSnapshot(
+      collection(db, 'categories'),
+      (snap) => {
+        if (!snap.empty) {
+          const list = snap.docs.map(d => d.data().title || d.id);
+          setCategoriesList(list);
+        }
+      },
+      (err) => {
+        console.warn("Categories subscription error:", err);
+      }
+    );
+
+    return () => {
+      unsubscribeProducts();
+      unsubscribeCategories();
+    };
   }, []);
 
   // HYDRATE COLLECTIONS FROM STORAGE
@@ -382,7 +400,13 @@ export default function Shop() {
 
       // 3. Selected Categories
       if (selectedCategories.length > 0) {
-        const matchesCat = prod.categories.some(cat => selectedCategories.includes(cat));
+        const matchesCat = prod.categories.some(cat => 
+          selectedCategories.some(sc => {
+            const scLower = sc.toLowerCase().trim();
+            const catLower = cat.toLowerCase().trim();
+            return scLower === catLower || catLower.includes(scLower) || scLower.includes(catLower);
+          })
+        );
         if (!matchesCat) return false;
       }
 
@@ -511,6 +535,7 @@ export default function Shop() {
           
           {/* Smart Filter Sidebar component */}
           <SmartFilterSidebar 
+            categoriesList={categoriesList}
             selectedCategories={selectedCategories}
             setSelectedCategories={setSelectedCategories}
             selectedOccasions={selectedOccasions}

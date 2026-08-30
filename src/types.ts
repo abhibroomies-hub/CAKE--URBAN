@@ -47,6 +47,9 @@ export interface CategoryCollection {
   slug: string;
   description?: string;
   image?: string;
+  group?: 'birthday' | 'designer' | 'trending' | 'general';
+  icon?: string;
+  badge?: string;
   productCount?: number;
   isFeatured?: boolean;
   sortOrder?: number;

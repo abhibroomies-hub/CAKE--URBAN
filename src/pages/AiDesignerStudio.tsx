@@ -49,14 +49,14 @@ const STEPS = [
 ];
 
 const OCCASIONS = [
-  { id: 'Birthday', label: 'Birthday 🎂', desc: 'Festive, vibrant, & full of smiles', color: 'from-pink-500/10 to-rose-500/5 border-pink-200/60' },
-  { id: 'Anniversary', label: 'Anniversary 💖', desc: 'Elegant, romantic, with metallic lace', color: 'from-rose-500/10 to-red-500/5 border-rose-200/60' },
-  { id: 'Wedding', label: 'Wedding 👑', desc: 'Grand, architectural royal tiers', color: 'from-amber-400/10 to-yellow-500/5 border-amber-200/60' },
-  { id: 'Kids', label: 'Kids 🎉', desc: 'Whimsical pastel fantasy characters', color: 'from-sky-400/10 to-indigo-500/5 border-sky-200/60' },
-  { id: 'Baby Shower', label: 'Baby Shower 👶', desc: 'Dreamy soft cloud frosting bakes', color: 'from-purple-400/10 to-pink-500/5 border-purple-200/60' },
-  { id: 'Corporate', label: 'Corporate 🏢', desc: 'Sleek, minimalist branding logs', color: 'from-slate-500/10 to-zinc-600/5 border-slate-200/60' },
-  { id: 'Festival', label: 'Festival 🏮', desc: 'Traditional design and spices', color: 'from-orange-500/10 to-yellow-600/5 border-orange-200/60' },
-  { id: 'Graduation', label: 'Graduation 🎓', desc: 'Prestigious academic gold honor ribbons', color: 'from-blue-500/10 to-cyan-500/5 border-blue-200/60' }
+  { id: 'Birthday', label: 'Birthday', icon: '🎂', badge: 'MOST POPULAR', desc: 'Festive, vibrant, & full of smiles', color: 'from-pink-500/15 to-rose-500/5' },
+  { id: 'Anniversary', label: 'Anniversary', icon: '💖', badge: 'ROMANTIC', desc: 'Elegant, romantic, with metallic lace', color: 'from-rose-500/15 to-red-500/5' },
+  { id: 'Wedding', label: 'Wedding', icon: '👑', badge: 'ROYAL TIERS', desc: 'Grand, architectural royal tiers', color: 'from-amber-400/15 to-yellow-500/5' },
+  { id: 'Kids', label: 'Kids Party', icon: '🎉', badge: 'PLAYFUL', desc: 'Whimsical pastel fantasy characters', color: 'from-sky-400/15 to-indigo-500/5' },
+  { id: 'Baby Shower', label: 'Baby Shower', icon: '👶', badge: 'PASTEL CLOUD', desc: 'Dreamy soft cloud frosting bakes', color: 'from-purple-400/15 to-pink-500/5' },
+  { id: 'Corporate', label: 'Corporate', icon: '🏢', badge: 'EXECUTIVE', desc: 'Sleek, minimalist branding logos', color: 'from-slate-500/15 to-zinc-600/5' },
+  { id: 'Festival', label: 'Festival', icon: '🏮', badge: 'TRADITIONAL', desc: 'Traditional design & festive spices', color: 'from-orange-500/15 to-yellow-600/5' },
+  { id: 'Graduation', label: 'Graduation', icon: '🎓', badge: 'HONORS', desc: 'Prestigious academic gold ribbons', color: 'from-blue-500/15 to-cyan-500/5' }
 ];
 
 const SHAPES = [
@@ -423,38 +423,53 @@ export default function AiDesignerStudio() {
             </div>
 
             {/* STEP CONTAINER CONTROLLER */}
-            <div className="min-h-[340px] pt-4">
+            <div className="min-h-[340px] pt-4 text-slate-900">
               
               {/* STEP 1: OCCASION */}
               {currentStep === 0 && (
                 <motion.div 
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="grid grid-cols-2 gap-4"
+                  className="grid grid-cols-1 sm:grid-cols-2 gap-4"
                 >
                   {OCCASIONS.map((occ) => {
                     const isSelected = occasion === occ.id;
                     return (
                       <button
                         key={occ.id}
+                        type="button"
                         onClick={() => { setOccasion(occ.id); playSound('pop'); }}
-                        className={`bg-white border p-5 rounded-[28px] text-left transition-all relative overflow-hidden flex flex-col justify-between h-36 shadow-sm cursor-pointer group ${
+                        className={`border-2 p-5 rounded-[26px] text-left transition-all relative overflow-hidden flex flex-col justify-between min-h-[135px] cursor-pointer group ${
                           isSelected 
-                            ? 'border-pink-500 ring-1 ring-pink-500 shadow-md scale-102' 
-                            : 'border-slate-200/60 hover:border-pink-200 hover:scale-[1.01]'
+                            ? 'border-pink-500 bg-gradient-to-br from-pink-50/90 via-white to-rose-50/60 shadow-lg ring-2 ring-pink-500/20 scale-[1.02]' 
+                            : 'border-slate-200/90 bg-white hover:border-pink-300 hover:shadow-md hover:-translate-y-0.5'
                         }`}
                       >
-                        {/* selection circle */}
-                        <div className="flex justify-between items-center w-full">
-                          <span className="text-xl font-bold">{occ.label}</span>
-                          <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all ${
-                            isSelected ? 'bg-pink-500 border-pink-500 text-white' : 'border-slate-300 bg-white'
+                        {/* Top row: Icon + Title + Selected Badge */}
+                        <div className="flex items-center justify-between w-full">
+                          <div className="flex items-center gap-3">
+                            <span className="text-2xl w-11 h-11 rounded-2xl bg-slate-50 group-hover:bg-pink-50 border border-slate-200/80 flex items-center justify-center transition-all shrink-0 shadow-xs">
+                              {occ.icon}
+                            </span>
+                            <div>
+                              <span className="text-base font-black text-slate-900 block leading-tight tracking-tight">
+                                {occ.label}
+                              </span>
+                              <span className="text-[9px] font-black uppercase tracking-wider text-pink-600 bg-pink-50/80 px-2 py-0.5 rounded-full inline-block mt-0.5">
+                                {occ.badge}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all shrink-0 ${
+                            isSelected ? 'bg-pink-500 border-pink-500 text-white shadow-xs' : 'border-slate-300 bg-white group-hover:border-pink-300'
                           }`}>
-                            {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                            {isSelected && <Check className="w-3.5 h-3.5 stroke-[3.5]" />}
                           </div>
                         </div>
 
-                        <p className="text-[11px] text-slate-400 leading-relaxed font-semibold mt-4 group-hover:text-slate-600 transition-colors">
+                        {/* Bottom Description */}
+                        <p className="text-xs text-slate-600 leading-relaxed font-semibold mt-3 group-hover:text-slate-800 transition-colors">
                           {occ.desc}
                         </p>
                       </button>
@@ -475,26 +490,41 @@ export default function AiDesignerStudio() {
                     return (
                       <button
                         key={sh.id}
+                        type="button"
                         onClick={() => { setShape(sh.id); playSound('pop'); }}
-                        className={`bg-white border p-5 rounded-[28px] text-left transition-all flex items-center gap-4 cursor-pointer group ${
+                        className={`border-2 p-5 rounded-[26px] text-left transition-all flex items-center justify-between cursor-pointer group ${
                           isSelected 
-                            ? 'border-pink-500 ring-1 ring-pink-500 shadow-md' 
-                            : 'border-slate-200/60 hover:border-pink-200'
+                            ? 'border-pink-500 bg-gradient-to-br from-pink-50/90 via-white to-rose-50/60 shadow-lg ring-2 ring-pink-500/20 scale-[1.02]' 
+                            : 'border-slate-200/90 bg-white hover:border-pink-300 hover:shadow-md hover:-translate-y-0.5'
                         }`}
                       >
-                        <span className="text-3xl p-3 bg-slate-50 group-hover:bg-pink-50 rounded-2xl border border-slate-100 transition-all shrink-0">
-                          {sh.icon}
-                        </span>
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <h4 className="text-sm font-black text-slate-900">{sh.label}</h4>
-                            {sh.addPrice > 0 && (
-                              <span className="text-[8px] font-black text-pink-500 uppercase bg-pink-50 px-1.5 py-0.5 rounded">
-                                +₹{sh.addPrice}
-                              </span>
-                            )}
+                        <div className="flex items-center gap-3.5">
+                          <span className="text-3xl w-14 h-14 bg-slate-50 group-hover:bg-pink-50 rounded-2xl border border-slate-200/80 flex items-center justify-center transition-all shrink-0 shadow-xs">
+                            {sh.icon}
+                          </span>
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <h4 className="text-sm font-black text-slate-900 leading-tight">{sh.label}</h4>
+                            </div>
+                            <p className="text-xs text-slate-600 leading-tight font-semibold">{sh.desc}</p>
+                            <div>
+                              {sh.addPrice > 0 ? (
+                                <span className="text-[10px] font-black text-pink-600 uppercase bg-pink-50 px-2 py-0.5 rounded-full inline-block">
+                                  +₹{sh.addPrice}
+                                </span>
+                              ) : (
+                                <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full inline-block">
+                                  Standard
+                                </span>
+                              )}
+                            </div>
                           </div>
-                          <p className="text-[10px] text-slate-400 leading-tight font-semibold">{sh.desc}</p>
+                        </div>
+
+                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all shrink-0 ${
+                          isSelected ? 'bg-pink-500 border-pink-500 text-white shadow-xs' : 'border-slate-300 bg-white group-hover:border-pink-300'
+                        }`}>
+                          {isSelected && <Check className="w-3.5 h-3.5 stroke-[3.5]" />}
                         </div>
                       </button>
                     );
@@ -509,37 +539,54 @@ export default function AiDesignerStudio() {
                   animate={{ opacity: 1, y: 0 }}
                   className="space-y-6"
                 >
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3.5">
                     {WEIGHTS.map((wt) => {
                       const isSelected = weight === wt.id;
                       return (
                         <button
                           key={wt.id}
+                          type="button"
                           onClick={() => { setWeight(wt.id); playSound('pop'); }}
-                          className={`bg-white border p-5 rounded-3xl text-center flex flex-col justify-center gap-1.5 transition-all cursor-pointer ${
+                          className={`border-2 p-4 rounded-3xl text-center flex flex-col justify-between items-center min-h-[120px] transition-all cursor-pointer ${
                             isSelected 
-                              ? 'border-pink-500 ring-1 ring-pink-500 bg-pink-50/5' 
-                              : 'border-slate-200/60 hover:border-pink-100'
+                              ? 'border-pink-500 bg-gradient-to-br from-pink-50/90 via-white to-purple-50/60 shadow-lg ring-2 ring-pink-500/20 scale-[1.03]' 
+                              : 'border-slate-200/90 bg-white hover:border-pink-300 hover:shadow-md'
                           }`}
                         >
-                          <span className="text-lg font-black text-slate-900 block">{wt.label}</span>
-                          {wt.addPrice > 0 ? (
-                            <span className="text-[9px] font-black text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">
-                              +₹{wt.addPrice}
-                            </span>
-                          ) : (
-                            <span className="text-[9px] font-bold text-slate-400">Included</span>
-                          )}
+                          <div className="w-full flex justify-end">
+                            <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                              isSelected ? 'bg-pink-500 border-pink-500 text-white' : 'border-slate-300'
+                            }`}>
+                              {isSelected && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                            </div>
+                          </div>
+                          
+                          <div>
+                            <span className="text-xl font-black text-slate-900 block leading-tight">{wt.label}</span>
+                            <span className="text-[10px] font-semibold text-slate-500 block mt-1">{wt.desc}</span>
+                          </div>
+
+                          <div className="mt-1">
+                            {wt.addPrice > 0 ? (
+                              <span className="text-[10px] font-black text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full inline-block">
+                                +₹{wt.addPrice}
+                              </span>
+                            ) : (
+                              <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full inline-block">
+                                Standard
+                              </span>
+                            )}
+                          </div>
                         </button>
                       );
                     })}
                   </div>
 
-                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100/80 flex items-start gap-3">
+                  <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200/80 flex items-start gap-3">
                     <span className="text-xl">💡</span>
                     <div className="space-y-0.5 text-xs">
-                      <span className="font-bold text-slate-700 block">Chef’s Mass Recommendation</span>
-                      <p className="text-slate-400 font-medium">For medium gatherings of 10 to 12 guests, a **1.0 KG** sponge ensures perfect balance and structure stability.</p>
+                      <span className="font-bold text-amber-950 block">Chef’s Mass Recommendation</span>
+                      <p className="text-amber-800 font-medium leading-relaxed">For medium gatherings of 8 to 12 guests, a <strong>1.0 KG</strong> sponge ensures ideal tiered stability and generous gourmet servings.</p>
                     </div>
                   </div>
                 </motion.div>
@@ -550,43 +597,56 @@ export default function AiDesignerStudio() {
                 <motion.div 
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="grid grid-cols-1 sm:grid-cols-3 gap-4"
+                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
                 >
                   {FLAVORS.map((flav) => {
                     const isSelected = flavor === flav.id;
                     return (
                       <button
                         key={flav.id}
+                        type="button"
                         onClick={() => { setFlavor(flav.id); playSound('pop'); }}
-                        className={`bg-white border rounded-[30px] overflow-hidden text-left transition-all cursor-pointer group flex flex-col justify-between ${
+                        className={`border-2 rounded-[26px] overflow-hidden text-left transition-all cursor-pointer group flex flex-col justify-between ${
                           isSelected 
-                            ? 'border-pink-500 ring-1 ring-pink-500 shadow-md' 
-                            : 'border-slate-200/60 hover:border-pink-200'
+                            ? 'border-pink-500 bg-gradient-to-br from-pink-50/90 via-white to-rose-50/60 shadow-lg ring-2 ring-pink-500/20 scale-[1.02]' 
+                            : 'border-slate-200/90 bg-white hover:border-pink-300 hover:shadow-md'
                         }`}
                       >
-                        <div className="aspect-[4/3] w-full bg-slate-50 relative overflow-hidden">
+                        <div className="aspect-[16/10] w-full bg-slate-100 relative overflow-hidden">
                           <img 
                             src={flav.image} 
                             alt={flav.label}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                           />
-                          <div className="absolute top-2 right-2 w-4 h-4 rounded-full border border-white/60 bg-white flex items-center justify-center text-xs">
-                            <span className={`w-2.5 h-2.5 rounded-full ${flav.color}`} />
+                          <div className="absolute top-2.5 right-2.5 w-6 h-6 rounded-full border-2 border-white bg-white shadow-sm flex items-center justify-center">
+                            {isSelected ? (
+                              <div className="w-full h-full rounded-full bg-pink-500 flex items-center justify-center text-white">
+                                <Check className="w-3.5 h-3.5 stroke-[3]" />
+                              </div>
+                            ) : (
+                              <span className={`w-3 h-3 rounded-full ${flav.color}`} />
+                            )}
                           </div>
                         </div>
                         
-                        <div className="p-4 space-y-1">
-                          <div className="flex items-center justify-between gap-1">
-                            <span className="text-xs font-black text-slate-800 truncate">{flav.label}</span>
-                            {flav.addPrice > 0 && (
-                              <span className="text-[8px] font-bold text-pink-500 bg-pink-50 px-1 rounded shrink-0">
-                                +₹{flav.addPrice}
-                              </span>
-                            )}
+                        <div className="p-4 space-y-1.5 flex-1 flex flex-col justify-between">
+                          <div>
+                            <div className="flex items-center justify-between gap-1">
+                              <span className="text-sm font-black text-slate-900 truncate">{flav.label}</span>
+                              {flav.addPrice > 0 ? (
+                                <span className="text-[10px] font-black text-pink-600 bg-pink-50 px-2 py-0.5 rounded-full shrink-0">
+                                  +₹{flav.addPrice}
+                                </span>
+                              ) : (
+                                <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full shrink-0">
+                                  Included
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-xs text-slate-600 leading-normal font-medium line-clamp-2 mt-1">
+                              {flav.desc}
+                            </p>
                           </div>
-                          <p className="text-[9px] text-slate-400 leading-tight font-semibold line-clamp-2">
-                            {flav.desc}
-                          </p>
                         </div>
                       </button>
                     );
@@ -606,18 +666,19 @@ export default function AiDesignerStudio() {
                     return (
                       <button
                         key={col.id}
+                        type="button"
                         onClick={() => { setCreamColor(col.id); playSound('pop'); }}
-                        className={`bg-white border p-4 rounded-[28px] text-center flex flex-col items-center justify-center gap-3 cursor-pointer transition-all ${
+                        className={`border-2 p-4 rounded-[26px] text-center flex flex-col items-center justify-center gap-3 cursor-pointer transition-all ${
                           isSelected 
-                            ? 'border-pink-500 ring-1 ring-pink-500 shadow-md scale-102' 
-                            : 'border-slate-200/60 hover:border-pink-100'
+                            ? 'border-pink-500 bg-gradient-to-br from-pink-50/90 via-white to-rose-50/60 shadow-lg ring-2 ring-pink-500/20 scale-[1.03]' 
+                            : 'border-slate-200/90 bg-white hover:border-pink-300 hover:shadow-md'
                         }`}
                       >
-                        <div className={`w-14 h-14 rounded-full bg-gradient-to-tr ${col.gradient} shadow-inner border border-white flex items-center justify-center`}>
-                          {isSelected && <Check className="w-5 h-5 text-white drop-shadow stroke-[3]" />}
+                        <div className={`w-14 h-14 rounded-full bg-gradient-to-tr ${col.gradient} shadow-md border-2 border-white flex items-center justify-center`}>
+                          {isSelected && <Check className="w-6 h-6 text-white drop-shadow-md stroke-[3.5]" />}
                         </div>
                         <div className="space-y-0.5">
-                          <span className="text-[11px] font-black text-slate-950 block leading-tight">{col.name}</span>
+                          <span className="text-xs font-black text-slate-900 block leading-tight">{col.name}</span>
                         </div>
                       </button>
                     );
@@ -630,32 +691,35 @@ export default function AiDesignerStudio() {
                 <motion.div 
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="grid grid-cols-1 sm:grid-cols-3 gap-4"
+                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
                 >
                   {DECORATIONS.map((decor) => {
                     const isSelected = decorations.includes(decor.id);
                     return (
                       <button
                         key={decor.id}
+                        type="button"
                         onClick={() => handleToggleDecor(decor.id)}
-                        className={`bg-white border p-5 rounded-[28px] text-left transition-all cursor-pointer flex flex-col justify-between h-36 ${
+                        className={`border-2 p-4 rounded-[26px] text-left transition-all cursor-pointer flex flex-col justify-between min-h-[130px] group ${
                           isSelected 
-                            ? 'border-pink-500 ring-1 ring-pink-500 bg-pink-50/5 shadow-sm' 
-                            : 'border-slate-200/60 hover:border-pink-100'
+                            ? 'border-pink-500 bg-gradient-to-br from-pink-50/90 via-white to-rose-50/60 shadow-lg ring-2 ring-pink-500/20 scale-[1.02]' 
+                            : 'border-slate-200/90 bg-white hover:border-pink-300 hover:shadow-md'
                         }`}
                       >
                         <div className="flex justify-between items-start">
-                          <span className="text-3xl p-2 bg-slate-50 rounded-2xl border border-slate-100">{decor.emoji}</span>
-                          <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all ${
-                            isSelected ? 'bg-pink-500 border-pink-500 text-white' : 'border-slate-300 bg-white'
+                          <span className="text-3xl w-12 h-12 bg-slate-50 group-hover:bg-pink-50 rounded-2xl border border-slate-200/80 flex items-center justify-center shadow-xs">
+                            {decor.emoji}
+                          </span>
+                          <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                            isSelected ? 'bg-pink-500 border-pink-500 text-white shadow-xs' : 'border-slate-300 bg-white group-hover:border-pink-300'
                           }`}>
-                            {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                            {isSelected && <Check className="w-3.5 h-3.5 stroke-[3.5]" />}
                           </div>
                         </div>
 
-                        <div className="space-y-0.5 mt-4">
+                        <div className="space-y-1 mt-3">
                           <h4 className="text-xs font-black text-slate-900 leading-tight">{decor.label}</h4>
-                          <p className="text-[9px] text-slate-400 font-semibold leading-tight">{decor.desc}</p>
+                          <p className="text-[11px] text-slate-600 font-semibold leading-tight">{decor.desc}</p>
                         </div>
                       </button>
                     );
@@ -675,7 +739,7 @@ export default function AiDesignerStudio() {
                     <div 
                       onDragOver={handleDragOver}
                       onDrop={handleDrop}
-                      className="border-2 border-dashed border-slate-200 hover:border-pink-400 rounded-[32px] p-6 text-center bg-slate-50/50 hover:bg-pink-50/5 cursor-pointer transition-all"
+                      className="border-2 border-dashed border-slate-300 hover:border-pink-500 rounded-[28px] p-6 text-center bg-slate-50/70 hover:bg-pink-50/20 cursor-pointer transition-all shadow-xs"
                     >
                       <input 
                         type="file" 
@@ -697,12 +761,12 @@ export default function AiDesignerStudio() {
                         }}
                       />
                       <label htmlFor="cake-photo-upload" className="cursor-pointer space-y-3 block">
-                        <div className="w-12 h-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center mx-auto text-slate-400 shadow-sm">
+                        <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center mx-auto text-pink-500 shadow-sm">
                           <Upload className="w-5 h-5" />
                         </div>
                         <div className="space-y-1">
-                          <span className="text-xs font-black text-slate-700 block">Drag & Drop Image</span>
-                          <span className="text-[10px] text-slate-400 font-bold block">or click to browse local files (max 3MB)</span>
+                          <span className="text-sm font-black text-slate-800 block">Drag & Drop Image</span>
+                          <span className="text-xs text-slate-500 font-semibold block">or click to browse local files (max 3MB)</span>
                         </div>
                       </label>
                     </div>
@@ -710,31 +774,33 @@ export default function AiDesignerStudio() {
                     {/* AI Enhancement utilities */}
                     <div className="flex gap-2.5">
                       <button 
+                        type="button"
                         onClick={() => {
                           if (!uploadedPhoto) return toast.error('Upload photo first!');
                           setIsBgRemoved(!isBgRemoved);
                           playSound('tap');
                           toast.success('AI background remove toggle successful!');
                         }}
-                        className={`flex-1 py-2.5 rounded-xl border text-[10px] font-black uppercase tracking-wider transition-all ${
+                        className={`flex-1 py-2.5 rounded-xl border text-xs font-black uppercase tracking-wider transition-all ${
                           isBgRemoved 
-                            ? 'bg-purple-100 border-purple-200 text-purple-700' 
-                            : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                            ? 'bg-purple-100 border-purple-300 text-purple-800 shadow-xs' 
+                            : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
                         }`}
                       >
                         Remove Background
                       </button>
                       <button 
+                        type="button"
                         onClick={() => {
                           if (!uploadedPhoto) return toast.error('Upload photo first!');
                           setIsAiEnhanced(!isAiEnhanced);
                           playSound('success');
                           toast.success('AI Face & Glow Enhancement activated!');
                         }}
-                        className={`flex-1 py-2.5 rounded-xl border text-[10px] font-black uppercase tracking-wider transition-all ${
+                        className={`flex-1 py-2.5 rounded-xl border text-xs font-black uppercase tracking-wider transition-all ${
                           isAiEnhanced 
-                            ? 'bg-pink-100 border-pink-200 text-pink-700' 
-                            : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                            ? 'bg-pink-100 border-pink-300 text-pink-800 shadow-xs' 
+                            : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
                         }`}
                       >
                         AI Auto-Enhance
@@ -743,10 +809,10 @@ export default function AiDesignerStudio() {
                   </div>
 
                   {/* Preview controls */}
-                  <div className="md:col-span-6 bg-slate-50 border border-slate-100 p-5 rounded-[32px] flex flex-col justify-between">
+                  <div className="md:col-span-6 bg-slate-50 border border-slate-200 p-5 rounded-[28px] flex flex-col justify-between">
                     {uploadedPhoto ? (
                       <div className="space-y-4">
-                        <div className="aspect-[4/3] rounded-2xl bg-white border border-slate-200/60 overflow-hidden relative flex items-center justify-center">
+                        <div className="aspect-[4/3] rounded-2xl bg-white border border-slate-200 overflow-hidden relative flex items-center justify-center">
                           <img 
                             src={uploadedPhoto} 
                             alt="Uploaded memory" 
@@ -760,7 +826,7 @@ export default function AiDesignerStudio() {
 
                         {/* Adjusters slider */}
                         <div className="space-y-3">
-                          <div className="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                          <div className="flex items-center justify-between text-xs font-bold text-slate-600 uppercase tracking-wider">
                             <span>Wafer Zoom ({photoZoom}x)</span>
                             <input 
                               type="range" 
@@ -772,7 +838,7 @@ export default function AiDesignerStudio() {
                               className="w-2/3 accent-pink-500" 
                             />
                           </div>
-                          <div className="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                          <div className="flex items-center justify-between text-xs font-bold text-slate-600 uppercase tracking-wider">
                             <span>Rotate Angle</span>
                             <input 
                               type="range" 
@@ -786,10 +852,10 @@ export default function AiDesignerStudio() {
                         </div>
                       </div>
                     ) : (
-                      <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-2 text-slate-400">
+                      <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-2 text-slate-500">
                         <span className="text-4xl">📸</span>
-                        <span className="text-xs font-bold">No edible photo uploaded yet</span>
-                        <p className="text-[10px] text-slate-400 leading-tight max-w-[160px] font-semibold">Your image prints on sweet sugar-wafer sheet.</p>
+                        <span className="text-sm font-bold text-slate-700">No edible photo uploaded yet</span>
+                        <p className="text-xs text-slate-500 leading-tight max-w-[200px] font-semibold">Your image will be printed onto edible sweet sugar-wafer paper.</p>
                       </div>
                     )}
                   </div>
@@ -804,17 +870,17 @@ export default function AiDesignerStudio() {
                   className="space-y-6"
                 >
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase text-slate-400 tracking-wider">Message Engraved on Wafer/Cream</label>
+                    <label className="text-xs font-black uppercase text-slate-700 tracking-wider">Message Inscribed on Wafer/Cream</label>
                     <div className="relative">
                       <input 
                         type="text" 
                         maxLength={40}
                         value={customMessage} 
                         onChange={(e) => setCustomMessage(e.target.value)}
-                        className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-slate-200 text-sm font-black focus:border-pink-500 focus:outline-none"
+                        className="w-full px-5 py-4 rounded-2xl bg-white border-2 border-slate-200 text-base font-black text-slate-900 placeholder:text-slate-400 focus:border-pink-500 focus:outline-none shadow-xs"
                         placeholder="e.g. Happy Anniversary Mom & Dad"
                       />
-                      <span className="absolute right-4 top-4 text-[10px] font-bold text-slate-400">
+                      <span className="absolute right-4 top-4 text-xs font-bold text-slate-400">
                         {customMessage.length}/40
                       </span>
                     </div>
@@ -823,7 +889,7 @@ export default function AiDesignerStudio() {
                   {/* Fonts selector & color */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase text-slate-400 tracking-wider">Calligraphy Style</label>
+                      <label className="text-xs font-black uppercase text-slate-700 tracking-wider">Calligraphy Style</label>
                       <div className="grid grid-cols-3 gap-2">
                         {[
                           { id: 'font-sans', label: 'Moderne' },
@@ -832,11 +898,12 @@ export default function AiDesignerStudio() {
                         ].map(f => (
                           <button
                             key={f.id}
+                            type="button"
                             onClick={() => { setMessageFont(f.id); playSound('tap'); }}
-                            className={`py-2 rounded-xl border text-xs font-black transition-all ${
+                            className={`py-2.5 rounded-xl border-2 text-xs font-black transition-all ${
                               messageFont === f.id 
-                                ? 'bg-pink-50 border-pink-500 text-pink-600' 
-                                : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                                ? 'bg-pink-50 border-pink-500 text-pink-700 shadow-xs' 
+                                : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
                             }`}
                           >
                             {f.label}
@@ -846,14 +913,15 @@ export default function AiDesignerStudio() {
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-[10px] font-black uppercase text-slate-400 tracking-wider">Ink/Cream Color</label>
-                      <div className="flex gap-2">
-                        {['#ffffff', '#ff4081', '#ffffff', '#3e2723', '#ffd600', '#000000'].map(c => (
+                      <label className="text-xs font-black uppercase text-slate-700 tracking-wider">Ink / Cream Color</label>
+                      <div className="flex gap-2.5 items-center pt-1">
+                        {['#ffffff', '#ff4081', '#3e2723', '#ffd600', '#000000', '#8b5cf6'].map(c => (
                           <button
                             key={c}
+                            type="button"
                             onClick={() => setMessageColor(c)}
-                            className={`w-8 h-8 rounded-full border-2 transition-transform ${
-                              messageColor === c ? 'border-pink-500 scale-110 shadow-sm' : 'border-white'
+                            className={`w-8 h-8 rounded-full border-2 transition-transform shadow-xs ${
+                              messageColor === c ? 'border-pink-500 scale-125 ring-2 ring-pink-300' : 'border-slate-300'
                             }`}
                             style={{ backgroundColor: c }}
                           />
@@ -864,15 +932,16 @@ export default function AiDesignerStudio() {
 
                   {/* Emoji Quick addition */}
                   <div className="flex flex-wrap gap-2 items-center">
-                    <span className="text-[10px] font-black uppercase text-slate-400 tracking-wider mr-2">Quick Emojis:</span>
+                    <span className="text-xs font-black uppercase text-slate-700 tracking-wider mr-2">Quick Emojis:</span>
                     {['❤️', '🎉', '✨', '🎂', '👑', '🥂', '🌸', '👶'].map(em => (
                       <button
                         key={em}
+                        type="button"
                         onClick={() => {
                           setCustomMessage(prev => (prev + ' ' + em).substring(0, 40));
                           playSound('tap');
                         }}
-                        className="w-9 h-9 rounded-xl bg-slate-50 border border-slate-100 hover:bg-pink-50 hover:border-pink-100 flex items-center justify-center transition-all text-sm"
+                        className="w-10 h-10 rounded-xl bg-white border border-slate-200 hover:bg-pink-50 hover:border-pink-300 flex items-center justify-center transition-all text-base shadow-xs"
                       >
                         {em}
                       </button>
@@ -893,25 +962,28 @@ export default function AiDesignerStudio() {
                     return (
                       <button
                         key={cand.id}
+                        type="button"
                         onClick={() => handleToggleCandle(cand.id)}
-                        className={`bg-white border p-4 rounded-[28px] text-left cursor-pointer transition-all flex items-center justify-between group ${
+                        className={`border-2 p-4 rounded-[26px] text-left cursor-pointer transition-all flex items-center justify-between group ${
                           isSelected 
-                            ? 'border-pink-500 ring-1 ring-pink-500 bg-pink-50/5 shadow-sm' 
-                            : 'border-slate-200/60 hover:border-pink-100'
+                            ? 'border-pink-500 bg-gradient-to-br from-pink-50/90 via-white to-rose-50/60 shadow-lg ring-2 ring-pink-500/20 scale-[1.02]' 
+                            : 'border-slate-200/90 bg-white hover:border-pink-300 hover:shadow-md'
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <span className="text-2xl p-2 bg-slate-50 group-hover:bg-pink-50 rounded-xl transition-all">{cand.emoji}</span>
+                          <span className="text-2xl w-12 h-12 bg-slate-50 group-hover:bg-pink-50 rounded-2xl border border-slate-200/80 flex items-center justify-center shadow-xs transition-all">
+                            {cand.emoji}
+                          </span>
                           <div>
-                            <h4 className="text-xs font-black text-slate-800 leading-none">{cand.label}</h4>
-                            <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-wider block mt-1">₹{cand.price}</span>
+                            <h4 className="text-xs font-black text-slate-900 leading-tight">{cand.label}</h4>
+                            <span className="text-xs font-extrabold text-pink-600 uppercase tracking-wider block mt-1">₹{cand.price}</span>
                           </div>
                         </div>
 
-                        <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all ${
-                          isSelected ? 'bg-pink-500 border-pink-500 text-white' : 'border-slate-300 bg-white'
+                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all shrink-0 ${
+                          isSelected ? 'bg-pink-500 border-pink-500 text-white shadow-xs' : 'border-slate-300 bg-white group-hover:border-pink-300'
                         }`}>
-                          {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
+                          {isSelected && <Check className="w-3.5 h-3.5 stroke-[3.5]" />}
                         </div>
                       </button>
                     );
@@ -1080,27 +1152,27 @@ export default function AiDesignerStudio() {
               </div>
 
               {/* Specs meta box */}
-              <div className="p-4 bg-slate-50 rounded-2xl text-left text-xs font-semibold space-y-1.5 text-slate-500">
-                <div className="flex justify-between border-b border-slate-200/50 pb-1.5 text-slate-800">
-                  <span className="font-extrabold uppercase text-[10px] tracking-wider">Specifications Summary</span>
-                  <span>Active Spec</span>
+              <div className="p-5 bg-slate-50 border border-slate-200/90 rounded-2xl text-left text-xs font-semibold space-y-2 text-slate-600 shadow-xs">
+                <div className="flex justify-between border-b border-slate-200 pb-2 text-slate-900">
+                  <span className="font-black uppercase text-[11px] tracking-wider text-pink-600">Specifications Summary</span>
+                  <span className="text-[10px] font-bold text-slate-500 bg-white px-2 py-0.5 rounded-full border border-slate-200">Active Build</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Cake Silhouette:</span>
-                  <span className="text-slate-800 font-extrabold">{shape} ({occasion})</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-600 font-bold">Cake Architecture:</span>
+                  <span className="text-slate-950 font-black">{shape} ({occasion})</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Flavor / Weight:</span>
-                  <span className="text-slate-800 font-extrabold">{flavor} / {weight}</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-600 font-bold">Flavor / Net Weight:</span>
+                  <span className="text-slate-950 font-black">{flavor} / {weight}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Icing Color:</span>
-                  <span className="text-slate-800 font-extrabold">{creamColor}</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-600 font-bold">Cream Coating:</span>
+                  <span className="text-slate-950 font-black">{creamColor}</span>
                 </div>
                 {decorations.length > 0 && (
-                  <div className="flex justify-between">
-                    <span>Selected Toppings:</span>
-                    <span className="text-slate-800 font-extrabold truncate max-w-[150px]">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-600 font-bold">Artisan Decor:</span>
+                    <span className="text-slate-950 font-black truncate max-w-[170px]">
                       {decorations.join(', ')}
                     </span>
                   </div>

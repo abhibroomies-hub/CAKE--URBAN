@@ -26,7 +26,6 @@ import { Textarea } from '../ui/textarea';
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import ShopifyMediaDropzone from './ShopifyMediaDropzone';
-import { GoogleGenAI } from '@google/genai';
 import { toast } from 'sonner';
 
 interface ShopifyProductEditorProps {
@@ -191,27 +190,26 @@ export default function ShopifyProductEditor({
     toast.loading("Crafting mouth-watering luxury bakery description...", { id: "ai-desc" });
 
     try {
-      const apiKey = process.env.GEMINI_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY || '';
-      if (!apiKey) {
-        // High quality fallback
-        setDescription(`Handcrafted with pure Belgian chocolate, signature moist sponge, and silky Madagascan vanilla buttercream. Elegantly finished with hand-painted gold leaf accents. 100% Eggless perfection baked fresh on order.`);
-        toast.success("Generated luxury confection description.", { id: "ai-desc" });
-        setIsGeneratingAiCopy(false);
-        return;
-      }
-
-      const ai = new GoogleGenAI({ apiKey });
-      const prompt = `Write a mouth-watering, elegant, 2-3 sentence e-commerce product description for a luxury cake titled "${name}". Flavors: ${flavors.join(', ') || 'Belgian Chocolate'}. Bakery: CakeUrban (Faridabad & Delhi NCR). Emphasize fresh baking, eggless sponge, premium ingredients, and celebratory luxury feeling. Keep it crisp, appetizing, and high-converting.`;
-
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: prompt
+      const response = await fetch('/api/ai/describe-product', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name.trim(),
+          flavors: flavors.join(', ') || 'Belgian Chocolate',
+          category: primaryCategory
+        })
       });
 
-      const generatedText = response.text?.trim();
-      if (generatedText) {
-        setDescription(generatedText);
+      if (!response.ok) {
+        throw new Error("Failed to generate description from server");
+      }
+
+      const data = await response.json();
+      if (data?.description) {
+        setDescription(data.description);
         toast.success("AI description added successfully!", { id: "ai-desc" });
+      } else {
+        throw new Error("No description returned");
       }
     } catch (err: any) {
       console.warn("AI generation fallback:", err);
@@ -342,9 +340,9 @@ export default function ShopifyProductEditor({
         <div className="flex items-center gap-2.5">
           <Button
             type="button"
-            variant="outline"
+            variant="ghost"
             onClick={onCancel}
-            className="h-10 rounded-xl border-white/10 text-white hover:bg-white/5 text-xs font-bold cursor-pointer"
+            className="h-10 rounded-xl border border-white/15 bg-white/5 text-white hover:bg-white/10 hover:text-[#DFB15B] text-xs font-bold cursor-pointer transition-colors"
           >
             Discard
           </Button>
@@ -395,11 +393,11 @@ export default function ShopifyProductEditor({
                 </label>
                 <Button
                   type="button"
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
                   disabled={isGeneratingAiCopy}
                   onClick={handleGenerateAiDescription}
-                  className="h-7 text-[10px] font-bold rounded-lg border-[#DFB15B]/30 text-[#DFB15B] hover:bg-[#DFB15B]/10 cursor-pointer"
+                  className="h-7 text-[10px] font-bold rounded-lg border border-[#DFB15B]/30 bg-[#DFB15B]/10 text-[#DFB15B] hover:bg-[#DFB15B]/20 hover:text-white cursor-pointer transition-colors"
                 >
                   <Sparkles className="w-3 h-3 mr-1" /> AI Auto-Write Description
                 </Button>
@@ -709,11 +707,11 @@ export default function ShopifyProductEditor({
               </div>
               <Button
                 type="button"
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 disabled={isGeneratingAiSeo}
                 onClick={handleGenerateAiSeo}
-                className="h-7 text-[10px] font-bold rounded-lg border-[#DFB15B]/30 text-[#DFB15B] hover:bg-[#DFB15B]/10 cursor-pointer"
+                className="h-7 text-[10px] font-bold rounded-lg border border-[#DFB15B]/30 bg-[#DFB15B]/10 text-[#DFB15B] hover:bg-[#DFB15B]/20 hover:text-white cursor-pointer transition-colors"
               >
                 <Sparkles className="w-3 h-3 mr-1" /> 1-Click AI SEO Auto-Filler
               </Button>
@@ -1023,12 +1021,12 @@ export default function ShopifyProductEditor({
 
           <Button
             type="button"
-            variant="outline"
+            variant="ghost"
             onClick={() => {
               setStatus('draft');
               handleSubmit({ preventDefault: () => {} } as any);
             }}
-            className="text-xs border-white/15 text-white hover:bg-white/5 rounded-xl h-10 px-4 cursor-pointer font-bold"
+            className="text-xs border border-white/15 bg-white/5 text-white/90 hover:text-white hover:bg-white/10 rounded-xl h-10 px-4 cursor-pointer font-bold transition-colors"
           >
             Save as Draft
           </Button>

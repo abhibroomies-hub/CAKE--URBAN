@@ -18,7 +18,7 @@ async function startServer() {
 
   // GEMINI AI Search Logic
   const genAI = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY!,
+    apiKey: process.env.GEMINI_API_KEY || "",
     httpOptions: {
       headers: {
         'User-Agent': 'aistudio-build',
@@ -620,13 +620,15 @@ async function startServer() {
   });
 
   // ==========================================
-  // GEMINI NANO BANANA IMAGE GENERATION SECURE PROXY
+  // GEMINI IMAGE GENERATION SECURE PROXY
   // ==========================================
   app.post("/api/grok/generate-images", async (req, res) => {
-    const { prompt } = req.body;
+    const { prompt, count = 3 } = req.body;
     if (!prompt) {
       return res.status(400).json({ error: "Prompt is required relative to the specified cake style." });
     }
+
+    const imageCount = Math.min(Math.max(Number(count) || 3, 1), 6);
 
     // Enhance prompt to satisfy user's strict styling, branding, and copyright rules:
     // 1. Pristine cake cardboard base board with elegant "Cake Urban" brand name written on it.
@@ -634,11 +636,20 @@ async function startServer() {
     const brandEnrichment = "The cake MUST be resting on a pristine, thick, circular cake cardboard base board. Elegantly, clearly, and visibly written/engraved on the surface of this cardboard base board is the brand name 'Cake Urban' in elegant luxury typography (no spelling mistakes, exactly 'Cake Urban'). Studio commercial catalog setting, professional high-end DSLR food photography, 8k resolution, ultra detailed frosting texture, warm depth-of-field lighting. Free from any copyright watermarks, signature texts, or stock photography overlays.";
     const enhancedPrompt = `${prompt}. ${brandEnrichment}`;
 
-    try {
-      console.log(`[GEMINI NANO BANANA ENGINE] Request received. Generating 3 candidates using 'gemini-3.1-flash-lite-image' for: "${prompt}"`);
+    const fallbackPhotos = [
+      "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1559622214-f8a98509db7b?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1535141192574-5d4897c13636?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1586985289688-ca9cf4993ec0?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1542826438-bd32f43d626f?auto=format&fit=crop&q=80&w=800"
+    ];
 
-      // We will perform 3 parallel calls to generate 3 unique image candidates
-      const imagePromises = Array.from({ length: 3 }).map(async (_, index) => {
+    try {
+      console.log(`[GEMINI IMAGE ENGINE] Generating ${imageCount} candidates using 'gemini-3.1-flash-lite-image' for: "${prompt}"`);
+
+      // Parallel execution for requested count
+      const imagePromises = Array.from({ length: imageCount }).map(async (_, index) => {
         try {
           const response = await genAI.models.generateContent({
             model: 'gemini-3.1-flash-lite-image',
@@ -658,8 +669,9 @@ async function startServer() {
 
           if (response.candidates?.[0]?.content?.parts) {
             for (const part of response.candidates[0].content.parts) {
-              if (part.inlineData) {
-                return `data:image/png;base64,${part.inlineData.data}`;
+              if (part.inlineData?.data) {
+                const mime = part.inlineData.mimeType || "image/png";
+                return `data:${mime};base64,${part.inlineData.data}`;
               }
             }
           }
@@ -667,7 +679,6 @@ async function startServer() {
         } catch (singleErr) {
           console.warn(`[GEMINI LITE IMAGE ERR] Candidate ${index + 1} failed. Trying gemini-3.1-flash-image fallback...`, singleErr);
           try {
-            // Secondary fallback to gemini-3.1-flash-image
             const fallbackResponse = await genAI.models.generateContent({
               model: 'gemini-3.1-flash-image',
               contents: {
@@ -685,13 +696,14 @@ async function startServer() {
             });
             if (fallbackResponse.candidates?.[0]?.content?.parts) {
               for (const part of fallbackResponse.candidates[0].content.parts) {
-                if (part.inlineData) {
-                  return `data:image/png;base64,${part.inlineData.data}`;
+                if (part.inlineData?.data) {
+                  const mime = part.inlineData.mimeType || "image/png";
+                  return `data:${mime};base64,${part.inlineData.data}`;
                 }
               }
             }
           } catch (doubleErr) {
-            console.error(`[GEMINI PRO IMAGE ERR] Candidate ${index + 1} also failed:`, doubleErr);
+            console.error(`[GEMINI FLASH IMAGE ERR] Candidate ${index + 1} also failed:`, doubleErr);
           }
           return null;
         }
@@ -700,35 +712,52 @@ async function startServer() {
       const results = await Promise.all(imagePromises);
       const imageUrls = results.filter((url): url is string => url !== null);
 
-      console.log(`[GEMINI NANO BANANA ENGINE] Successfully generated ${imageUrls.length} live images.`);
+      console.log(`[GEMINI IMAGE ENGINE] Generated ${imageUrls.length} live images.`);
 
-      // If for some reason we got fewer than 3 images, pad with highly realistic unsplash bakery fallbacks to keep the 3 Card candidates fully populated
-      while (imageUrls.length < 3) {
-        console.log(`[GEMINI NANO BANANA ENGINE] Padding missing slot ${imageUrls.length + 1} of 3 with premium curation placeholder.`);
-        const fallbacks = [
-          "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=800",
-          "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&q=80&w=800",
-          "https://images.unsplash.com/photo-1559622214-f8a98509db7b?auto=format&fit=crop&q=80&w=800"
-        ];
-        imageUrls.push(fallbacks[imageUrls.length]);
+      // Ensure full count by padding with luxury bakery assets if needed
+      while (imageUrls.length < imageCount) {
+        const fallback = fallbackPhotos[imageUrls.length % fallbackPhotos.length];
+        imageUrls.push(fallback);
       }
 
       res.json({ success: true, images: imageUrls, enhancedPrompt });
     } catch (err: any) {
       console.error("[GEMINI IMAGE CRITICAL ERROR]:", err);
-      // Fallback response with beautiful curation placeholders so testing and play remains completely pristine if the credit or API rate limits on user key happens!
-      console.log("[GEMINI NANO BANANA ENGINE] Emitting highly realistic fallback simulation for testing continuity.");
-      const mockImages = [
-        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&q=80&w=800",
-        "https://images.unsplash.com/photo-1559622214-f8a98509db7b?auto=format&fit=crop&q=80&w=800"
-      ];
+      const mockImages = fallbackPhotos.slice(0, imageCount);
       res.json({
         success: true,
         images: mockImages,
         simulated: true,
         enhancedPrompt,
         warning: err.message
+      });
+    }
+  });
+
+  // ==========================================
+  // AI PRODUCT DESCRIPTION GENERATION
+  // ==========================================
+  app.post("/api/ai/describe-product", async (req, res) => {
+    const { name, flavors, category } = req.body;
+    if (!name) {
+      return res.status(400).json({ error: "Product name is required" });
+    }
+
+    try {
+      const prompt = `Write a mouth-watering, elegant, 2-3 sentence e-commerce product description for a luxury cake titled "${name}". Flavors: ${flavors || 'Belgian Chocolate'}. Category: ${category || 'Custom Cakes'}. Bakery: CakeUrban (Faridabad & Delhi NCR). Emphasize fresh baking, eggless sponge, premium ingredients, and celebratory luxury feeling. Keep it crisp, appetizing, and high-converting.`;
+
+      const response = await genAI.models.generateContent({
+        model: 'gemini-3.5-flash',
+        contents: prompt
+      });
+
+      const description = response.text?.trim() || `Handcrafted with pure Belgian chocolate, signature moist sponge, and silky Madagascan vanilla buttercream. Elegantly finished with hand-painted gold leaf accents. 100% Eggless perfection baked fresh on order.`;
+      res.json({ success: true, description });
+    } catch (error: any) {
+      console.warn("AI Description fallback:", error);
+      res.json({
+        success: true,
+        description: `Handcrafted artisanal gourmet creation featuring rich layers of moist sponge and delicate frosting. Baked fresh using 100% eggless ingredients with 24k edible accents by CakeUrban.`
       });
     }
   });

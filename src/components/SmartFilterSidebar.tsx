@@ -20,6 +20,7 @@ import { playBtnTap, playSlidePop } from '../lib/sound';
 
 interface SmartFilterSidebarProps {
   // Category
+  categoriesList?: string[];
   selectedCategories: string[];
   setSelectedCategories: (cats: string[]) => void;
   // Occasion
@@ -79,6 +80,7 @@ const DIET_OPTIONS = ["Eggless", "Sugar Free", "Gluten Free", "Vegan"];
 const PREMIUM_TIERS = ["Chef Special", "New Arrival", "Trending", "Best Seller", "Limited Edition"];
 
 export default function SmartFilterSidebar({
+  categoriesList,
   selectedCategories, setSelectedCategories,
   selectedOccasions, setSelectedOccasions,
   selectedFlavors, setSelectedFlavors,
@@ -94,6 +96,8 @@ export default function SmartFilterSidebar({
   onClose,
   totalCount
 }: SmartFilterSidebarProps) {
+
+  const effectiveCategories = categoriesList && categoriesList.length > 0 ? categoriesList : CATEGORIES;
 
   const handleResetFilters = () => {
     setSelectedCategories([]);
@@ -162,7 +166,7 @@ export default function SmartFilterSidebar({
       <div className="space-y-3 text-left">
         <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block">Category Suite</label>
         <div className="flex flex-wrap gap-1.5">
-          {CATEGORIES.map(cat => {
+          {effectiveCategories.map(cat => {
             const active = selectedCategories.includes(cat);
             return (
               <button

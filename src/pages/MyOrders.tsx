@@ -280,30 +280,30 @@ export default function MyOrders() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.05 }}
-              className={`bg-gradient-to-tr ${stat.color} border border-white/[0.08] p-5 md:p-6 rounded-[28px] text-left flex items-center justify-between shadow-lg relative overflow-hidden group`}
+              className="luxury-glass-tile p-5 md:p-6 rounded-[28px] text-left flex items-center justify-between shadow-lg relative overflow-hidden group"
             >
-              <div className="space-y-2">
-                <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">{stat.label}</span>
-                <span className={`text-xl md:text-2xl font-black tracking-tight ${stat.textColor}`}>{stat.value}</span>
+              <div className="space-y-1.5">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-300 block">{stat.label}</span>
+                <span className={`text-2xl md:text-3xl font-black tracking-tight ${stat.textColor}`}>{stat.value}</span>
               </div>
-              <span className="text-3xl md:text-4xl opacity-80 group-hover:scale-110 transition-transform duration-300">{stat.icon}</span>
+              <span className="text-3xl md:text-4xl opacity-90 group-hover:scale-110 transition-transform duration-300">{stat.icon}</span>
             </motion.div>
           ))}
         </div>
 
         {/* SEARCH & FILTERS CONTROLS */}
-        <div className="bg-white/[0.02] backdrop-blur-xl border border-white/[0.08] p-4 md:p-6 rounded-[32px] space-y-4">
+        <div className="luxury-glass-tile p-4 md:p-6 rounded-[32px] space-y-4">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             
             {/* Search Capsule */}
             <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input 
                 type="text" 
                 placeholder="Search orders by Order ID, flavor, or custom icing message..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-12 bg-white/5 hover:bg-white/10 focus:bg-white/10 rounded-2xl pl-11 pr-4 text-xs font-semibold text-white placeholder-slate-500 border-none focus:outline-none focus:ring-1 focus:ring-[#DFB15B]/40 transition-colors"
+                className="w-full h-12 bg-white/5 hover:bg-white/10 focus:bg-white/10 rounded-2xl pl-11 pr-4 text-xs font-semibold text-white placeholder-slate-400 border border-white/10 focus:outline-none focus:ring-1 focus:ring-[#DFB15B]/50 transition-colors"
               />
             </div>
 
@@ -320,8 +320,8 @@ export default function MyOrders() {
                   onClick={() => { setActiveTab(tab.id as any); playSound('tap'); }}
                   className={`h-11 px-5 rounded-2xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
                     activeTab === tab.id 
-                      ? 'bg-[#DFB15B] text-[#140603] shadow-[0_4px_15px_rgba(223,177,91,0.35)]' 
-                      : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/5'
+                      ? 'bg-gradient-to-r from-[#DFB15B] to-[#B88E3D] text-slate-950 shadow-[0_4px_15px_rgba(223,177,91,0.35)]' 
+                      : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
                   }`}
                 >
                   {tab.label}
@@ -332,8 +332,8 @@ export default function MyOrders() {
           </div>
 
           {/* Quick Filter Chips */}
-          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-white/5 text-left">
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-500 mr-2 flex items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-white/10 text-left">
+            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 mr-2 flex items-center gap-1.5">
               <SlidersHorizontal className="w-3.5 h-3.5" />
               Occasions:
             </span>
@@ -343,8 +343,8 @@ export default function MyOrders() {
                 onClick={() => { setActiveOccasionFilter(tag); playSound('tap'); }}
                 className={`px-3.5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
                   activeOccasionFilter === tag 
-                    ? 'bg-purple-500/20 text-purple-400 border border-purple-500/40' 
-                    : 'bg-white/5 hover:bg-white/10 text-slate-400 border border-transparent'
+                    ? 'bg-purple-500/20 text-purple-300 border border-purple-500/50' 
+                    : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
                 }`}
               >
                 {tag}
@@ -364,10 +364,10 @@ export default function MyOrders() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.4 }}
-                  className="bg-white/[0.02] backdrop-blur-2xl border border-white/[0.08] rounded-[36px] overflow-hidden shadow-2xl relative group"
+                  className="luxury-glass-tile rounded-[36px] overflow-hidden shadow-2xl relative group"
                 >
                   {/* Glossy line effect */}
-                  <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#DFB15B]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#DFB15B]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                   {/* CARD INNER LAYOUT */}
                   <div className="p-6 md:p-8 flex flex-col xl:flex-row gap-8 text-left">

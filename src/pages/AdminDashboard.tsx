@@ -3,7 +3,7 @@ import { db } from '../lib/firebase';
 import { 
   collection, getDocs, updateDoc, doc, query, orderBy, addDoc, deleteDoc, setDoc, getDoc, serverTimestamp, onSnapshot 
 } from 'firebase/firestore';
-import { Order, Product, Review } from '../types';
+import { Order, Product, Review, CategoryCollection } from '../types';
 import { useAuth } from '../hooks/useAuth';
 import { handleFirestoreError, OperationType } from '../lib/firebase';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
@@ -30,6 +30,7 @@ import ShopifyProductsTable from '../components/admin/ShopifyProductsTable';
 import ShopifyProductEditor from '../components/admin/ShopifyProductEditor';
 import ShopifyCategoriesManager from '../components/admin/ShopifyCategoriesManager';
 import ShopifyDiscountsManager from '../components/admin/ShopifyDiscountsManager';
+import { PRESET_LUXURY_COLLECTIONS } from '../data/categoriesData';
 
 const MOCK_ORDERS: Order[] = [
   {
@@ -348,6 +349,7 @@ export default function AdminDashboard() {
   // Custom Category & Bulk Action States
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
   const [newCategoryName, setNewCategoryName] = useState('');
+  const [categoriesData, setCategoriesData] = useState<CategoryCollection[]>([]);
   const [categoriesList, setCategoriesList] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem('cakeurban_categories_order');
@@ -998,8 +1000,28 @@ export default function AdminDashboard() {
       }
     );
 
-    // 5. Real-time categories config listener
+    // 5. Real-time categories collection listener
     const unsubCategories = onSnapshot(
+      collection(db, 'categories'),
+      (snapshot) => {
+        if (!snapshot.empty) {
+          const cats = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as CategoryCollection));
+          cats.sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+          setCategoriesData(cats);
+          const list = cats.map(c => c.title);
+          setCategoriesList(list);
+          localStorage.setItem('cakeurban_categories_order', JSON.stringify(list));
+        } else {
+          setCategoriesData([]);
+        }
+      },
+      (error) => {
+        console.warn("Real-time categories collection snapshot warning:", error);
+      }
+    );
+
+    // Fallback: real-time categories config listener
+    const unsubCategoriesConfig = onSnapshot(
       doc(db, 'settings', 'categories_config'),
       (docSnap) => {
         if (docSnap.exists() && docSnap.data().categories) {
@@ -1009,7 +1031,7 @@ export default function AdminDashboard() {
         }
       },
       (error) => {
-        console.warn("Real-time categories snapshot warning:", error);
+        console.warn("Real-time categories config snapshot warning:", error);
       }
     );
 
@@ -1019,6 +1041,7 @@ export default function AdminDashboard() {
       unsubCustom();
       unsubReviews();
       unsubCategories();
+      unsubCategoriesConfig();
     };
   }, [hasAdminAccess]);
 
@@ -3553,30 +3576,103 @@ export default function AdminDashboard() {
                 <div className="mt-6">
                   <ShopifyCategoriesManager
                     categoriesList={categoriesList}
+                    categoriesData={categoriesData}
                     products={products}
-                    onAddCategory={async (categoryName) => {
-                      if (!categoriesList.includes(categoryName)) {
-                        const updated = [...categoriesList, categoryName];
-                        setCategoriesList(updated);
-                        try {
-                          await setDoc(doc(db, 'settings', 'categories'), { list: updated });
-                          toast.success(`Category "${categoryName}" added to boutique!`);
-                        } catch (err) {
-                          console.error(err);
-                        }
+                    onAddCategory={async (categoryName, meta) => {
+                      const docId = meta?.slug || categoryName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                      const newDoc: CategoryCollection = {
+                        id: docId,
+                        title: categoryName,
+                        slug: meta?.slug || docId,
+                        group: meta?.group || 'birthday',
+                        icon: meta?.icon || '🎂',
+                        badge: meta?.badge || '',
+                        description: meta?.description || `Handcrafted ${categoryName} luxury collection.`,
+                        image: meta?.image || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&q=80',
+                        isFeatured: !!meta?.isFeatured,
+                        sortOrder: categoriesData.length + 1,
+                        createdAt: new Date().toISOString()
+                      };
+
+                      try {
+                        await setDoc(doc(db, 'categories', docId), newDoc, { merge: true });
+                        const updatedList = Array.from(new Set([...categoriesList, categoryName]));
+                        setCategoriesList(updatedList);
+                        await setDoc(doc(db, 'settings', 'categories_config'), { categories: updatedList }, { merge: true });
+                        toast.success(`Collection "${categoryName}" added and synced to Header!`);
+                      } catch (err) {
+                        console.error("Error adding category doc:", err);
+                        toast.error("Could not save collection to Firestore.");
                       }
                     }}
-                    onRemoveCategory={handleRemoveCategory}
+                    onUpdateCategory={async (catId, meta) => {
+                      try {
+                        await setDoc(doc(db, 'categories', catId), meta, { merge: true });
+                        toast.success("Collection updated in boutique catalog!");
+                      } catch (err) {
+                        console.error("Error updating category doc:", err);
+                        toast.error("Could not update collection.");
+                      }
+                    }}
+                    onRemoveCategory={async (catName) => {
+                      setConfirmAction({
+                        message: `Are you sure you want to delete "${catName}" collection? Products in this collection will remain safe.`,
+                        onConfirm: async () => {
+                          try {
+                            const found = categoriesData.find(c => c.title.toLowerCase() === catName.toLowerCase());
+                            const docId = found?.id || catName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                            await deleteDoc(doc(db, 'categories', docId));
+                            const updatedList = categoriesList.filter(c => c.toLowerCase() !== catName.toLowerCase());
+                            setCategoriesList(updatedList);
+                            await setDoc(doc(db, 'settings', 'categories_config'), { categories: updatedList }, { merge: true });
+                            toast.success(`Collection "${catName}" deleted from boutique.`);
+                          } catch (err) {
+                            console.error("Error deleting category doc:", err);
+                          }
+                        }
+                      });
+                    }}
                     onReorderCategory={async (oldIdx, newIdx) => {
-                      const updated = [...categoriesList];
+                      const updated = [...(categoriesData.length > 0 ? categoriesData : categoriesList.map((c, i) => ({ id: c.toLowerCase().replace(/[^a-z0-9]+/g, '-'), title: c, slug: c.toLowerCase().replace(/[^a-z0-9]+/g, '-'), sortOrder: i + 1 } as CategoryCollection)))];
                       const [moved] = updated.splice(oldIdx, 1);
                       updated.splice(newIdx, 0, moved);
-                      setCategoriesList(updated);
+                      
                       try {
-                        await setDoc(doc(db, 'settings', 'categories'), { list: updated });
-                        toast.success('Categories reordered in boutique');
+                        for (let i = 0; i < updated.length; i++) {
+                          const item = updated[i];
+                          const docId = item.id || item.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                          await setDoc(doc(db, 'categories', docId), { ...item, sortOrder: i + 1 }, { merge: true });
+                        }
+                        const updatedTitles = updated.map(u => u.title);
+                        setCategoriesList(updatedTitles);
+                        await setDoc(doc(db, 'settings', 'categories_config'), { categories: updatedTitles }, { merge: true });
+                        toast.success('Categories reordered in Header & Boutique');
                       } catch (err) {
-                        console.error(err);
+                        console.error("Error reordering categories:", err);
+                      }
+                    }}
+                    onSeedPresets={async () => {
+                      try {
+                        toast.loading("Seeding 16+ luxury preset collections...", { id: "seed-cats" });
+                        for (let i = 0; i < PRESET_LUXURY_COLLECTIONS.length; i++) {
+                          const preset = PRESET_LUXURY_COLLECTIONS[i];
+                          const docId = preset.slug || preset.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                          await setDoc(doc(db, 'categories', docId), {
+                            id: docId,
+                            ...preset,
+                            sortOrder: i + 1,
+                            createdAt: new Date().toISOString()
+                          }, { merge: true });
+                        }
+                        const presetTitles = PRESET_LUXURY_COLLECTIONS.map(p => p.title);
+                        setCategoriesList(presetTitles);
+                        await setDoc(doc(db, 'settings', 'categories_config'), { categories: presetTitles }, { merge: true });
+                        toast.dismiss("seed-cats");
+                        toast.success("✨ 16+ Luxury Collections seeded & synced to Header!");
+                      } catch (err) {
+                        console.error("Error seeding preset categories:", err);
+                        toast.dismiss("seed-cats");
+                        toast.error("Could not seed collections.");
                       }
                     }}
                     onBulkAssignCategory={handleBulkAssignCategory}
